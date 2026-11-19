@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Potential Outcomes Lab</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widget.css">
+<script src="theme.js"></script>
+<style>
+  svg.grid { width: 100%; max-width: 520px; height: auto; display: block; }
+  .t0 { fill: var(--wash); stroke: var(--rule); }
+  .dead { fill: var(--bad); }
+  .alive { fill: var(--good-wash); }
+  .unk { fill: var(--paper); stroke: var(--rule); stroke-dasharray: 3 3; }
+  .q { font: 600 13px var(--font-body); fill: var(--faint); }
+  .smk { stroke: var(--band); stroke-width: 3; fill: none; }
+  .drk { fill: var(--warn); }
+  .key { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--dim); align-items: center; }
+  .key i { display: inline-block; width: 14px; height: 14px; vertical-align: middle; margin-right: 5px; border: 1px solid var(--rule); }
+  .types td:first-child { font-weight: 600; }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 1</p>
+  <h1>Potential Outcomes Lab</h1>
+  <p>Every man has two possible futures: one if he smokes, one if he never does. We only ever see one of them.</p>
+</div></header>
+<main>
+  <section class="panel story">
+    <p>Gajalakshmi and colleagues found that men in Tamil Nadu who smoked had 4.5 times the TB death rate of never smokers. They did not adjust for alcohol. Here is a made-up group of 100 men to show what that could mean. We built the true effect of smoking into it ourselves, so we can check any method against it. The risks are exaggerated so that you can see them.</p>
+  </section>
+
+  <section class="panel">
+    <h2>What can you see?</h2>
+    <div class="seg" id="view" role="group" aria-label="View">
+      <button type="button" data-v="god">Both futures (thought experiment)</button>
+      <button type="button" data-v="real">Only what happened</button>
+    </div>
+    <h2 style="margin-top:10px">Who smokes?</h2>
+    <div class="row">
+      <div class="seg" id="assign" role="group" aria-label="Who smokes">
+        <button type="button" data-a="life">As in life: drinkers smoke more</button>
+        <button type="button" data-a="coin">A coin toss decides</button>
+      </div>
+      <button type="button" class="act ghost" id="toss" hidden>Toss again</button>
+    </div>
+    <label class="check"><input type="checkbox" id="showdrk"> Mark the men who drink alcohol</label>
+    <label class="check"><input type="checkbox" id="strat"> Compare within drinkers and within non-drinkers</label>
+  </section>
+
+  <section class="panel">
+    <svg class="grid" id="grid" viewBox="0 0 420 420" role="img" aria-label="Grid of 100 men"></svg>
+    <div class="key" id="key"></div>
+  </section>
+
+  <section class="stats" aria-live="polite" id="stats"></section>
+  <section class="panel" id="stratbox" hidden><div class="scroll"><table id="stab"></table></div></section>
+  <p class="claim" id="msg" aria-live="polite"></p>
+
+  <section class="panel">
+    <h2>Four kinds of men</h2>
+    <div class="scroll"><table class="types" id="types"></table></div>
+    <p class="note">Rothman's sufficient-cause model says the same thing in another language: for some men, smoking completes a sufficient cause of TB death; for others the cause is already complete, or never will be.</p>
+  </section>
+  <footer>Illustrative group of 100 men, constructed for teaching; only the 4.5 comes from the study (Gajalakshmi et al., Lancet 2003).</footer>
+</main>
+<script>
+// Each man: drink (0/1), y0 (dies if he never smokes), y1 (dies if he smokes), lifeSmoke (smokes in the "as in life" world).
+const men = [];
+function add(n, drink, y0, y1, smokers) { for (let i = 0; i < n; i++) men.push({ drink, y0, y1, lifeSmoke: i < smokers ? 1 : 0 }); }
+// Drinkers (40): 10 die anyway, 20 die only if they smoke, 10 never die. 24 of 40 smoke.
+add(10, 1, 1, 1, 6); add(20, 1, 0, 1, 12); add(10, 1, 0, 0, 6);
+// Non-drinkers (60): 3 die anyway, 6 die only if they smoke, 51 never die. 20 of 60 smoke.
+add(3, 0, 1, 1, 1); add(6, 0, 0, 1, 2); add(51, 0, 0, 0, 17);
+// Fixed shuffle so the grid looks mixed, not sorted.
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+for (let i = men.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [men[i], men[j]] = [men[j], men[i]]; }
+
+let view = 'god', assign = 'life', coin = [];
+function toss() { const idx = men.map((_, i) => i).sort(() => Math.random() - 0.5); coin = men.map(() => 0); idx.slice(0, 50).forEach(i => coin[i] = 1); }
+toss();
+const smokes = i => assign === 'life' ? men[i].lifeSmoke : coin[i];
+const f = x => isFinite(x) ? x.toFixed(2) : 'n/a';
+const pct = x => (100 * x).toFixed(0) + '%';
+
+function risk(filter, val) { let n = 0, d = 0; men.forEach((m, i) => { if (filter(m, i)) { n++; d += val(m, i); } }); return { n, d, r: n ? d / n : NaN }; }
+
+function draw() {
+  document.querySelectorAll('#view button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === view));
+  document.querySelectorAll('#assign button').forEach(b => b.setAttribute('aria-pressed', b.dataset.a === assign));
+  document.getElementById('toss').hidden = assign !== 'coin';
+  const showD = document.getElementById('showdrk').checked, strat = document.getElementById('strat').checked;
+  const svg = document.getElementById('grid'); let s = '';
+  men.forEach((m, i) => {
+    const cx = (i % 10) * 42 + 2, cy = Math.floor(i / 10) * 42 + 2, sm = smokes(i);
+    s += `<rect class="t0" x="${cx}" y="${cy}" width="38" height="38" rx="4"/>`;
+    // left half: never smokes (y0); right half: smokes (y1)
+    const half = (x, val, seen) => seen ? `<rect class="${val ? 'dead' : 'alive'}" x="${x}" y="${cy + 4}" width="15" height="30" rx="2"/>` : `<rect class="unk" x="${x}" y="${cy + 4}" width="15" height="30" rx="2"/><text class="q" x="${x + 7.5}" y="${cy + 24}" text-anchor="middle">?</text>`;
+    const see0 = view === 'god' || !sm, see1 = view === 'god' || sm;
+    s += half(cx + 3, m.y0, see0) + half(cx + 20, m.y1, see1);
+    s += `<rect class="smk" x="${cx + (sm ? 18.5 : 1.5)}" y="${cy + 2.5}" width="18" height="33" rx="3" ${view === 'god' ? 'opacity=".55"' : ''}/>`;
+    if (showD && m.drink) s += `<circle class="drk" cx="${cx + 34}" cy="${cy + 5}" r="4.5"/>`;
+  });
+  svg.innerHTML = s;
+  document.getElementById('key').innerHTML = `<span>Left half: if he never smokes. Right half: if he smokes.</span><span><i style="background:var(--bad)"></i>dies of TB</span><span><i style="background:var(--good-wash)"></i>survives</span><span><i style="border:2px solid var(--band)"></i>what he actually did</span>` + (showD ? `<span><i style="background:var(--warn);border-radius:50%"></i>drinks alcohol</span>` : '');
+
+  const all = () => true;
+  const truth = risk(all, m => m.y1).r / risk(all, m => m.y0).r;
+  const obsS = risk((m, i) => smokes(i), m => m.y1), obsN = risk((m, i) => !smokes(i), m => m.y0);
+  const obs = obsS.r / obsN.r;
+  document.getElementById('stats').innerHTML =
+    `<div class="stat ${view === 'god' ? 'good' : ''}"><div class="n">${view === 'god' ? f(truth) : 'hidden'}</div><div class="l">true causal risk ratio: everyone smokes vs nobody smokes</div></div>` +
+    `<div class="stat"><div class="n">${obsS.d}/${obsS.n}</div><div class="l">smokers who died (${pct(obsS.r)})</div></div>` +
+    `<div class="stat"><div class="n">${obsN.d}/${obsN.n}</div><div class="l">non-smokers who died (${pct(obsN.r)})</div></div>` +
+    `<div class="stat ${Math.abs(obs - truth) > 0.6 ? 'bad' : 'good'}"><div class="n">${f(obs)}</div><div class="l">observed risk ratio, smokers vs non-smokers</div></div>`;
+  const sb = document.getElementById('stratbox'); sb.hidden = !strat;
+  if (strat) {
+    const row = (d, name) => {
+      const a = risk((m, i) => m.drink === d && smokes(i), m => m.y1), b = risk((m, i) => m.drink === d && !smokes(i), m => m.y0);
+      return `<tr><td>${name}</td><td class="num">${a.d}/${a.n}</td><td class="num">${b.d}/${b.n}</td><td class="num"><b>${f(a.r / b.r)}</b></td></tr>`;
+    };
+    document.getElementById('stab').innerHTML = `<tr><th></th><th class="num">Smokers died</th><th class="num">Non-smokers died</th><th class="num">Risk ratio</th></tr>` + row(1, 'Drinkers') + row(0, 'Non-drinkers');
+  }
+  const msg = document.getElementById('msg');
+  if (assign === 'life') {
+    msg.className = 'claim warn';
+    msg.textContent = view === 'god'
+      ? `Smoking triples each man's risk here (3.00), yet smokers vs non-smokers gives ${f(obs)}. Drinkers smoke more and die more for reasons of their own: the two groups are not exchangeable.`
+      : `This is all a study can see. Is ${f(obs)} the effect of smoking? Switch to "both futures" to check.` + (strat ? ' Within each drinking group the ratio is back to the truth.' : '');
+  } else {
+    msg.className = 'claim good';
+    msg.textContent = `With a coin toss, smokers and non-smokers are alike on average, drinkers included. The observed ratio, ${f(obs)}, is close to the truth and moves around it by chance each time you toss.`;
+  }
+  const types = [['Doomed', 'dies either way', m => m.y0 && m.y1], ['Smoking-caused', 'dies only if he smokes', m => !m.y0 && m.y1], ['Protected', 'dies only if he does not smoke', m => m.y0 && !m.y1], ['Immune', 'survives either way', m => !m.y0 && !m.y1]];
+  document.getElementById('types').innerHTML = '<tr><th>Type</th><th>Meaning</th><th class="num">Drinkers</th><th class="num">Non-drinkers</th></tr>' +
+    types.map(([t, d, fn]) => `<tr><td>${t}</td><td>${d}</td><td class="num">${men.filter(m => m.drink && fn(m)).length}</td><td class="num">${men.filter(m => !m.drink && fn(m)).length}</td></tr>`).join('');
+}
+document.querySelectorAll('#view button').forEach(b => b.onclick = () => { view = b.dataset.v; draw(); });
+document.querySelectorAll('#assign button').forEach(b => b.onclick = () => { assign = b.dataset.a; draw(); });
+document.getElementById('toss').onclick = () => { toss(); draw(); };
+document.getElementById('showdrk').onchange = draw;
+document.getElementById('strat').onchange = draw;
+draw();
+</script>
+</body>
+</html>

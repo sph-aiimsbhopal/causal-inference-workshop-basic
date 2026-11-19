@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Causal Inference in Epidemiology: A Basic Workshop</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widgets/widget.css">
+<script src="widgets/theme.js"></script>
+<style>
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  a.card { display: grid; gap: 6px; align-content: start; background: var(--wash); border-top: 4px solid var(--band); padding: 18px; color: var(--ink); text-decoration: none; }
+  a.card:hover { background: var(--rule); }
+  a.card:focus-visible { outline: 3px solid var(--warn); outline-offset: 2px; }
+  a.card h2 { margin: 0; }
+  a.card p { margin: 0; color: var(--dim); font-size: 15px; }
+  a.card .go { color: var(--ink); font-weight: 600; font-size: 15px; margin-top: 4px; }
+  ol.steps { margin: 0; padding-left: 1.2em; max-width: 70ch; }
+  ol.steps li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker">Pre-conference workshop for MD students</p>
+  <h1>Causal Inference in Epidemiology: A Basic Workshop</h1>
+  <p>Three hours on counterfactual thinking, causal diagrams, bias and choosing what to adjust for. Every exercise uses a published study.</p>
+</div></header>
+<main>
+  <section class="panel">
+    <h2>By the end of the workshop you will be able to</h2>
+    <ol class="steps">
+      <li>Explain causal effects using the counterfactual framework, and draw causal diagrams (DAGs).</li>
+      <li>Identify and assess bias and confounding in observational studies using causal diagrams.</li>
+      <li>Choose an adjustment set from a diagram, and frame and interpret causal research questions in Community Medicine.</li>
+    </ol>
+  </section>
+
+  <section class="cards" aria-label="Workshop materials">
+    <a class="card" href="slides/causal-inference.html">
+      <span class="label">Slides</span>
+      <h2>Did the hormones protect the heart?</h2>
+      <p>The workshop deck. Arrow keys to move, F for full screen.</p>
+      <span class="go">Open the slides →</span>
+    </a>
+    <a class="card" href="widgets/quiz.html">
+      <span class="label">Quiz</span>
+      <h2>Before and After Quiz</h2>
+      <p>Eight questions, once at the start and once at the end.</p>
+      <span class="go">Open the quiz →</span>
+    </a>
+    <a class="card" href="widgets/potential-outcomes.html">
+      <span class="label">Lab 1</span>
+      <h2>Potential Outcomes Lab</h2>
+      <p>See both futures of 100 men, then only the one that happened. Smoking, alcohol and TB deaths.</p>
+      <span class="go">Open Lab 1 →</span>
+    </a>
+    <a class="card" href="widgets/dag-lab.html">
+      <span class="label">Lab 2</span>
+      <h2>Causal Diagram Lab</h2>
+      <p>Forks, chains and colliders, then hormone therapy, smoking and TB, and the birth weight paradox. Tap to adjust.</p>
+      <span class="go">Open Lab 2 →</span>
+    </a>
+    <a class="card" href="widgets/birthweight-lab.html">
+      <span class="label">Lab 3</span>
+      <h2>Birth Weight Paradox Lab</h2>
+      <p>Why smoking seems to protect small babies, and why it does not.</p>
+      <span class="go">Open Lab 3 →</span>
+    </a>
+    <a class="card" href="widgets/capstone-lab.html">
+      <span class="label">Lab 4</span>
+      <h2>Cooking Fuel and ARI</h2>
+      <p>Build your own diagram for an NFHS-4 analysis and test the authors' model.</p>
+      <span class="go">Open Lab 4 →</span>
+    </a>
+    <a class="card" href="Causal-Inference-Handbook.pdf">
+      <span class="label">Handbook</span>
+      <h2>Participant Handbook</h2>
+      <p>Everything in one A4 PDF: slides two to a page with room for notes, the workbook, glossary and reading list.</p>
+      <span class="go">Download the handbook →</span>
+    </a>
+    <a class="card" href="workbook.html">
+      <span class="label">Workbook</span>
+      <h2>Exercise Workbook</h2>
+      <p>The paper exercises, printable on A4.</p>
+      <span class="go">Open the workbook →</span>
+    </a>
+    <a class="card" href="further-learning.html">
+      <span class="label">Reading</span>
+      <h2>Further Learning</h2>
+      <p>Rothman's Modern Epidemiology chapter by chapter, free courses and books, and key papers.</p>
+      <span class="go">Open the reading list →</span>
+    </a>
+  </section>
+
+  <section class="panel">
+    <h2>How the three hours run</h2>
+    <ol class="steps">
+      <li>Opening: the hormone therapy puzzle, and the before quiz</li>
+      <li>Thinking causally: counterfactuals, exchangeability, sufficient causes. Exercise 1, smoking and TB deaths in Tamil Nadu</li>
+      <li>Causal diagrams and the structure of bias: forks, chains, colliders. Exercises 2 and 3, hormone therapy and the birth weight paradox</li>
+      <li>From diagram to adjustment: back-door paths, what not to adjust for, the Table 2 fallacy. Group exercise on cooking fuel and childhood ARI</li>
+      <li>Report back, the after quiz, and where to go next</li>
+    </ol>
+  </section>
+
+  <footer>AIIMS Bhopal. Slides, labs and workbook built with Claude (Anthropic) as drafting and coding assistant, reviewed by the faculty. Studies are cited where they are used; the teaching populations in Labs 1 and 3 are constructed for teaching and labelled as such.</footer>
+</main>
+</body>
+</html>

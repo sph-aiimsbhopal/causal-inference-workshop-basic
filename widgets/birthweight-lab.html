@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Birth Weight Paradox Lab</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widget.css">
+<script src="theme.js"></script>
+<style>
+  .sl { display: grid; gap: 4px; max-width: 520px; }
+  .sl input { width: 100%; accent-color: var(--band); }
+  .sl .v { font-weight: 600; }
+  .bar0 { fill: var(--mark2); } .bar1 { fill: var(--mark); }
+  svg.bars text { font-size: 14px; fill: var(--ink); }
+  svg.bars .dimt { fill: var(--dim); }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 3</p>
+  <h1>Birth Weight Paradox Lab</h1>
+  <p>Restrict to low birth weight babies and smoking appears to protect them. Find out why, and why that does not make smoking safe.</p>
+</div></header>
+<main>
+  <section class="panel story">
+    <h2>What the US data showed, 1991</h2>
+    <div class="stats">
+      <div class="stat"><div class="n">1,235</div><div class="l">infant deaths per 100,000 births, mothers who smoked</div></div>
+      <div class="stat"><div class="n">805</div><div class="l">per 100,000, mothers who did not smoke</div></div>
+      <div class="stat bad"><div class="n">1.55</div><div class="l">rate ratio, all births</div></div>
+      <div class="stat warn"><div class="n">0.79</div><div class="l">rate ratio, low birth weight babies only</div></div>
+    </div>
+    <p class="src">Hernández-Díaz S, Schisterman EF, Hernán MA. The birth weight "paradox" uncovered? Am J Epidemiol 2006;164:1115-20.</p>
+  </section>
+
+  <section class="panel">
+    <h2>The model behind this lab</h2>
+    <svg class="dag" id="dag" role="img" aria-label="Diagram: smoking causes low birth weight and infant death; birth defects cause low birth weight and infant death"></svg>
+    <p class="note">The lab computes death rates from this diagram. Its numbers were chosen to come close to the 1991 figures. In this model smoking <b>never</b> helps any baby: it lowers birth weight and, by default, adds direct harm too.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Which babies do you compare?</h2>
+    <div class="seg" id="grp" role="group" aria-label="Babies compared">
+      <button type="button" data-g="all">All babies</button>
+      <button type="button" data-g="1">Low birth weight only</button>
+      <button type="button" data-g="0">Normal weight only</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <svg class="bars" id="bars" viewBox="0 0 420 130" role="img" aria-label="Infant deaths per 100,000"></svg>
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <p class="claim" id="msg" aria-live="polite"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Change the world</h2>
+    <div class="sl"><label for="direct">Direct harm of smoking, apart from birth weight: <span class="v" id="vdirect"></span></label><input type="range" id="direct" min="1" max="1.6" step="0.05" value="1.2"></div>
+    <div class="sl"><label for="ud">Death risk of a low birth weight baby who has a birth defect: <span class="v" id="vud"></span></label><input type="range" id="ud" min="0.03" max="0.6" step="0.01" value="0.30"></div>
+    <div class="sl"><label for="pu">How common are birth defects and other serious causes: <span class="v" id="vpu"></span></label><input type="range" id="pu" min="0" max="0.05" step="0.0025" value="0.02"></div>
+    <button class="act ghost" type="button" id="reset">Back to the 1991-like setting</button>
+  </section>
+
+  <section class="panel">
+    <h2>Why small babies of smokers do better</h2>
+    <div class="scroll"><table id="why"></table></div>
+    <p class="note">A low birth weight baby has to be small for some reason. If the mother smoked, smoking is often the reason, and it is a mild one. If she did not smoke, the reason is more often a birth defect or another serious cause. Restricting to low birth weight compares babies who are small for different reasons.</p>
+  </section>
+  <footer>Model constructed for teaching, tuned to come close to the published 1991 rates; it is not the original data.</footer>
+</main>
+<script src="dag.js"></script>
+<script src="dags.js"></script>
+<script>
+const P_S = 0.18;
+const LBW = { s0u0: 0.05, s1u0: 0.14, s0u1: 0.50, s1u1: 0.55 };
+const DEF = { direct: 1.2, ud: 0.30, pu: 0.02 };
+let grp = '1';
+const el = id => document.getElementById(id);
+
+function model() {
+  const direct = +el('direct').value, ud = +el('ud').value, pu = +el('pu').value;
+  const death = (lb, u, s) => Math.min(1, [[0.003, 0.03], [0.06, ud]][u][lb] * (s ? direct : 1));
+  // returns death rate for smoking s within birth weight group sel (null = all), and P(defect | LBW, s)
+  function rate(s, sel) {
+    let num = 0, den = 0;
+    for (const u of [0, 1]) {
+      const pU = u ? pu : 1 - pu, pl = LBW[`s${s}u${u}`];
+      for (const lb of [0, 1]) {
+        if (sel !== null && lb !== sel) continue;
+        const w = pU * (lb ? pl : 1 - pl);
+        num += w * death(lb, u, s); den += w;
+      }
+    }
+    return num / den;
+  }
+  function defectShare(s) { const a = pu * LBW[`s${s}u1`], b = (1 - pu) * LBW[`s${s}u0`]; return a / (a + b); }
+  return { rate, defectShare, direct, ud, pu };
+}
+
+function draw() {
+  document.querySelectorAll('#grp button').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === grp));
+  const m = model();
+  el('vdirect').textContent = m.direct === 1 ? 'none (× 1.00)' : '× ' + m.direct.toFixed(2);
+  el('vud').textContent = Math.round(m.ud * 100) + '%';
+  el('vpu').textContent = (m.pu * 100).toFixed(2).replace(/\.?0+$/, '') + '% of babies';
+  const sel = grp === 'all' ? null : +grp;
+  const r1 = m.rate(1, sel) * 1e5, r0 = m.rate(0, sel) * 1e5, rr = r1 / r0;
+  const mx = Math.max(r1, r0) * 1.15, W = 250;
+  const name = { all: 'all babies', 1: 'low birth weight babies', 0: 'normal weight babies' }[grp];
+  el('bars').innerHTML = `<text x="0" y="16" class="dimt">Infant deaths per 100,000, ${name}</text>` +
+    [[1, r1, 'Mother smoked'], [0, r0, 'Did not smoke']].map(([s, r, l], i) => `<text x="0" y="${55 + i * 45}">${l}</text>
+      <rect class="bar${s}" x="120" y="${36 + i * 45}" width="${Math.max(2, r / mx * W)}" height="28" rx="3"/>
+      <text x="${126 + r / mx * W}" y="${55 + i * 45}">${Math.round(r).toLocaleString('en-IN')}</text>`).join('');
+  const all = m.rate(1, null) / m.rate(0, null), lo = m.rate(1, 1) / m.rate(0, 1), hi = m.rate(1, 0) / m.rate(0, 0);
+  const cls = v => v < 1 ? 'warn' : 'bad';
+  el('stats').innerHTML = [['all', all, 'all babies'], ['1', lo, 'low birth weight only'], ['0', hi, 'normal weight only']].map(([k, v, l]) =>
+    `<div class="stat ${cls(v)}" ${k === grp ? 'style="outline:2px solid var(--ink)"' : ''}><div class="n">${v.toFixed(2)}</div><div class="l">rate ratio, ${l}</div></div>`).join('');
+  const msg = el('msg');
+  if (grp === '1' && lo < 1) { msg.className = 'claim warn'; msg.textContent = `Smoking looks protective (${lo.toFixed(2)}) among small babies, though in this model it harms every baby. Low birth weight is a collider: restricting to it links smoking to the absence of birth defects.`; }
+  else if (grp === '1') { msg.className = 'claim'; msg.textContent = `With these settings the paradox has gone (${lo.toFixed(2)}). Try making birth defects deadlier or more common.`; }
+  else if (grp === 'all') { msg.className = 'claim good'; msg.textContent = `Comparing all babies gives ${all.toFixed(2)}: the total effect of smoking, since nothing here confounds smoking and death.`; }
+  else { msg.className = 'claim'; msg.textContent = `Among normal weight babies the ratio is ${hi.toFixed(2)}, close to the direct harm you set (× ${m.direct.toFixed(2)}): few of these babies have birth defects in either group.`; }
+  el('why').innerHTML = `<tr><th>Among low birth weight babies</th><th class="num">Mother smoked</th><th class="num">Did not smoke</th></tr>
+    <tr><td>Share with a birth defect or other serious cause</td><td class="num">${(100 * m.defectShare(1)).toFixed(1)}%</td><td class="num">${(100 * m.defectShare(0)).toFixed(1)}%</td></tr>
+    <tr><td>Deaths per 100,000</td><td class="num">${Math.round(m.rate(1, 1) * 1e5).toLocaleString('en-IN')}</td><td class="num">${Math.round(m.rate(0, 1) * 1e5).toLocaleString('en-IN')}</td></tr>`;
+}
+const g = DAG.create(window.DAGS.bw);
+DAG.render(el('dag'), g, { x: 'smk', y: 'die', Z: new Set(), width: 420, height: window.DAGS.bw.height, fontSize: 16 });
+document.querySelectorAll('#grp button').forEach(b => b.onclick = () => { grp = b.dataset.g; draw(); });
+['direct', 'ud', 'pu'].forEach(id => el(id).oninput = draw);
+el('reset').onclick = () => { el('direct').value = DEF.direct; el('ud').value = DEF.ud; el('pu').value = DEF.pu; draw(); };
+draw();
+</script>
+</body>
+</html>

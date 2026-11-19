@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Exercise Workbook: Causal Inference Workshop</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widgets/widget.css">
+<script src="widgets/theme.js"></script>
+<style>
+  .page { max-width: 760px; margin: 0 auto; display: grid; gap: 12px; }
+  .page h2 { font-size: 22px; border-bottom: 3px solid var(--band); padding-bottom: 6px; margin: 0; }
+  .page .pno { float: right; font: 600 13px var(--font-body); color: var(--dim); letter-spacing: .08em; text-transform: uppercase; }
+  .box { border: 1px solid var(--rule); background: var(--wash); padding: 10px 14px; }
+  .box p { margin: 0 0 6px; }
+  .ans { border: 1px solid var(--rule); min-height: 64px; background: var(--paper); }
+  .ans.tall { min-height: 150px; } .ans.draw { min-height: 260px; }
+  ol.q > li { margin-bottom: 12px; }
+  ol.q > li > p { margin: 0 0 6px; }
+  table.fill td { height: 34px; min-width: 120px; }
+  .mcq li { margin-bottom: 4px; }
+  .printbar { display: flex; gap: 10px; align-items: center; }
+  @media print {
+    @page { size: A4; margin: 15mm 14mm; }
+    :root { --paper: #fff; --wash: #f3f5f9; }
+    body { font-size: 11.5pt; background: #fff; color: #000; }
+    header.band, .printbar, .theme-toggle, footer.screen { display: none !important; }
+    main { padding: 0; gap: 0; max-width: none; }
+    .page { break-after: page; max-width: none; }
+    .page:last-child { break-after: auto; }
+    .box, .ans { break-inside: avoid; }
+    .ans { min-height: 56px; } .ans.draw { min-height: 215px; }
+    .page { gap: 9px; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="index.html">Causal inference workshop</a> · Workbook</p>
+  <h1>Exercise Workbook</h1>
+  <p>The paper exercises for the workshop. Print it on A4, or write your answers alongside the labs.</p>
+</div></header>
+<main>
+  <div class="printbar"><button class="act" type="button" onclick="window.print()">Print or save as PDF</button><span class="note">Six A4 pages.</span></div>
+
+  <!-- Page 1 -->
+  <section class="page">
+    <h2><span class="pno">Page 1</span>Causal Inference in Epidemiology: A Basic Workshop</h2>
+    <p>Name: ______________________________ &nbsp; Institute: ______________________________</p>
+    <p><b>Before quiz on paper</b> (only if your phone cannot open the site). Circle one answer each.</p>
+    <ol class="q mcq">
+      <li>For one man, the causal effect of smoking on TB death is the difference between: (a) his risk and the average non-smoker's risk; (b) his outcome if he smokes and if he never smokes, at the same time; (c) his outcome before and after he starts smoking; (d) risk in smokers and non-smokers in his village.</li>
+      <li>Smokers and non-smokers are "exchangeable" when: (a) the groups are the same size; (b) non-smokers would have had the smokers' risk had they smoked, and vice versa; (c) they live in the same district; (d) the confidence interval is narrow.</li>
+      <li>Alcohol use causes smoking and raises TB death risk. In a diagram, alcohol use is: (a) a mediator; (b) a collider; (c) a common cause (confounder); (d) an effect modifier only.</li>
+      <li>For the total effect of maternal smoking on infant death, adjusting for birth weight will: (a) remove confounding; (b) remove part of the effect and can create a spurious association; (c) only improve precision; (d) change nothing.</li>
+      <li>A variable changed the odds ratio by more than 10%. This shows it: (a) is a confounder; (b) is a mediator; (c) is associated with the estimate, but whether to adjust needs causal reasoning; (d) is an instrument.</li>
+      <li>Controls taken from other hospital patients, when both exposure and disease raise admission, cause: (a) recall bias; (b) bias from conditioning on a collider; (c) confounding by indication; (d) outcome misclassification.</li>
+      <li>One model gives odds ratios for fuel, education and wealth: (a) each is a total effect; (b) only the variable the model was built for may be read as an effect, if its adjustment set is right; (c) the largest is the main cause; (d) all are unbiased because adjusted.</li>
+      <li>A confounder in your diagram was never measured: (a) adjust for everything else and the bias goes; (b) no adjustment set from your data is enough, so consider another design, a negative control or a bias analysis; (c) use a larger sample; (d) drop it from the diagram.</li>
+    </ol>
+  </section>
+
+  <!-- Page 2 -->
+  <section class="page">
+    <h2><span class="pno">Page 2</span>Exercise 1 · Smoking and TB deaths in Tamil Nadu</h2>
+    <div class="box">
+      <p>Gajalakshmi and colleagues studied the smoking habits of 43,000 men who died in Tamil Nadu from medical causes, and 35,000 living men. Surviving family members reported each man's smoking. Ever smokers (current or former) were compared with never smokers.</p>
+      <p>Urban men aged 25 to 69: <b>TB death risk ratio 4.5 (95% CI 4.0 to 5.0)</b>, standardised for age, educational level and tobacco chewing. Smokers also had a raised death rate from alcoholism or cirrhosis (3.3). Alcohol was not adjusted for.</p>
+      <p class="src">Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</p>
+    </div>
+    <ol class="q">
+      <li><p>Write the causal question as a change: who, what change, what outcome, over what time.</p><div class="ans"></div></li>
+      <li><p>If you could run a trial to answer it, describe it in two lines. Who would be randomised, to what?</p><div class="ans"></div></li>
+      <li><p>For the never smokers to stand in for what smokers would have experienced without smoking, how should they resemble the smokers? Name two ways they might differ.</p><div class="ans"></div></li>
+      <li><p>Is "ever smoked" a well-defined exposure? What versions of smoking does it mix?</p><div class="ans"></div></li>
+      <li><p>Lab 1: what is the true risk ratio, and what is the observed one? What brings them together?</p><div class="ans"></div></li>
+    </ol>
+  </section>
+
+  <!-- Page 3 -->
+  <section class="page">
+    <h2><span class="pno">Page 3</span>Exercise 2 · Hormone therapy and heart disease</h2>
+    <div class="box">
+      <p><b>Nurses' Health Study</b> (cohort, 59,337 women, up to 16 years): users of oestrogen plus progestin vs never users, adjusted relative risk of major coronary heart disease <b>0.39</b>.</p>
+      <p><b>Women's Health Initiative</b> (trial, 16,608 women): oestrogen plus progestin vs placebo, hazard ratio of coronary heart disease <b>1.29 (1.02 to 1.63)</b>.</p>
+      <p class="src">Grodstein F et al. N Engl J Med 1996;335:453-61. Writing Group for the WHI Investigators. JAMA 2002;288:321-33.</p>
+    </div>
+    <ol class="q">
+      <li><p>Draw a causal diagram with: hormone therapy, CHD, age, education and income, smoking/diet/BMI, health-seeking behaviour, lipids and blood pressure after starting.</p><div class="ans draw"></div></li>
+      <li><p>List every back-door path from hormone therapy to CHD.</p><div class="ans"></div></li>
+      <li><p>Which can the cohort block with what it measured? Which cannot be blocked?</p><div class="ans"></div></li>
+      <li><p>Should lipids and blood pressure measured after starting hormones be adjusted for? Why?</p><div class="ans"></div></li>
+    </ol>
+  </section>
+
+  <!-- Page 4 -->
+  <section class="page">
+    <h2><span class="pno">Page 4</span>Exercise 3 · Is smoking good for small babies?</h2>
+    <div class="box">
+      <p>United States births, 1991. Infant deaths per 100,000 live births: <b>1,235</b> for babies of mothers who smoked, <b>805</b> for babies of mothers who did not. Rate ratio <b>1.55</b>.</p>
+      <p>Among low birth weight babies only, infant mortality was <b>lower</b> for babies of smokers: rate ratio <b>0.79</b>.</p>
+      <p class="src">Hernández-Díaz S, Schisterman EF, Hernán MA. Am J Epidemiol 2006;164:1115-20.</p>
+    </div>
+    <ol class="q">
+      <li><p>Draw a diagram with maternal smoking, low birth weight, infant death, and birth defects (and other serious causes of low birth weight).</p><div class="ans draw"></div></li>
+      <li><p>On which path is low birth weight a mediator? On which is it a collider?</p><div class="ans"></div></li>
+      <li><p>Lab 3: choose "Low birth weight only", then raise the direct harm of smoking. How harmful can smoking be for every baby and still look protective among small babies? Why?</p><div class="ans"></div></li>
+      <li><p>A colleague wants to "control for birth weight" in her study of anaemia in pregnancy and neonatal death. What do you tell her?</p><div class="ans"></div></li>
+    </ol>
+  </section>
+
+  <!-- Page 5 -->
+  <section class="page">
+    <h2><span class="pno">Page 5</span>Group exercise · Cooking fuel and childhood ARI</h2>
+    <div class="box">
+      <p>Mondal and Paul analysed NFHS-4 (2015-16): 247,743 living children under five. ARI: cough with short, rapid or difficult breathing in the last two weeks, reported by the mother. "Biomass" included kerosene, coal, lignite, charcoal, wood, straw, crop waste and dung.</p>
+      <p>One logistic model included: biomass fuel, separate kitchen, household smoking, child's age and sex, birth order, mother's age and education, caste, religion, wealth quintile, TB in the household, crowding. Adjusted odds ratios: biomass fuel <b>1.10 (1.01 to 1.20)</b>; no separate kitchen <b>1.22 (1.14 to 1.30)</b>; mother's education, primary vs none <b>1.32</b>.</p>
+      <p class="src">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
+    </div>
+    <p>Our group's exposure (circle): &nbsp; biomass fuel &nbsp; · &nbsp; separate kitchen &nbsp; · &nbsp; mother's education</p>
+    <ol class="q">
+      <li><p>Our causal question, as a change:</p><div class="ans"></div></li>
+      <li><p>Our diagram (draw it here, then in Lab 4):</p><div class="ans draw"></div></li>
+      <li><p>Our minimal adjustment set. Is the paper's model enough under our diagram? What is missing, and what should not be there?</p><div class="ans"></div></li>
+      <li><p>One minute for the room: what should the authors have done differently?</p><div class="ans"></div></li>
+    </ol>
+  </section>
+
+  <!-- Page 6 -->
+  <section class="page">
+    <h2><span class="pno">Page 6</span>Your own causal question</h2>
+    <p>Take your thesis topic, or one you would like to study. Fill in the trial you wish you could run.</p>
+    <table class="fill">
+      <tr><th>Element</th><th>Your study</th></tr>
+      <tr><td>Who is eligible</td><td></td></tr>
+      <tr><td>Change compared (two strategies)</td><td></td></tr>
+      <tr><td>How people end up in each strategy in your data</td><td></td></tr>
+      <tr><td>Outcome and follow-up period</td><td></td></tr>
+      <tr><td>Time zero</td><td></td></tr>
+      <tr><td>Causal contrast (risk ratio, risk difference)</td><td></td></tr>
+    </table>
+    <p>Draw your diagram:</p>
+    <div class="ans draw"></div>
+    <div class="box">
+      <p><b>Keep going.</b> Modern Epidemiology, 4th ed., chapters 2, 3, 12, 13 and 14. Hernán and Robins, <i>Causal Inference: What If</i> (free online). HarvardX: <i>Causal Diagrams: Draw Your Assumptions Before Your Conclusions</i>. DAGitty, dagitty.net. The full list is on the workshop site under Further Learning.</p>
+    </div>
+  </section>
+  <footer class="screen">Workbook prepared by the workshop faculty.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Before and After Quiz</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widget.css">
+<script src="theme.js"></script>
+<style>
+  fieldset { border: 0; margin: 0; padding: 14px; background: var(--wash); display: grid; gap: 8px; }
+  legend { font-weight: 600; padding: 0; margin-bottom: 6px; float: left; width: 100%; }
+  fieldset label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; cursor: pointer; }
+  fieldset label input { margin-top: 3px; accent-color: var(--band); }
+  fieldset label.right { border-color: var(--good); background: var(--good-wash); }
+  fieldset label.wrong { border-color: var(--bad); background: var(--bad-wash); }
+  .exp { font-size: 15px; color: var(--ink); border-left: 4px solid var(--band); padding: 6px 10px; background: var(--paper); }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Quiz</p>
+  <h1>Before and After Quiz</h1>
+  <p>Eight questions. Take it at the start, then again at the end. Your answers stay on your phone.</p>
+</div></header>
+<main>
+  <section class="panel">
+    <div class="seg" id="mode" role="group" aria-label="Which attempt">
+      <button type="button" data-m="pre">Before the workshop</button>
+      <button type="button" data-m="post">After the workshop</button>
+    </div>
+  </section>
+  <form id="quiz" class="panel"></form>
+  <section class="panel">
+    <div class="row"><button class="act" type="button" id="submit">Check my answers</button><button class="act ghost" type="button" id="again">Start again</button></div>
+    <p class="claim" id="score" hidden aria-live="polite"></p>
+  </section>
+  <footer>Questions written by the workshop faculty. Nothing is sent anywhere; the "before" score is kept only in this browser.</footer>
+</main>
+<script>
+const Q = [
+  { q: 'For one person, the causal effect of smoking on TB death is best defined as the difference between:',
+    o: ['His risk and the average risk of non-smokers', 'His outcome if he smokes and his outcome if he never smokes, at the same time', 'His outcome before and after he starts smoking', 'The risk in smokers and non-smokers in the same village'], a: 1,
+    e: 'A causal effect contrasts two potential outcomes of the same person under two exposures. Only one can ever be observed; the other is counterfactual.' },
+  { q: 'Smokers and non-smokers are "exchangeable" when:',
+    o: ['They are the same size', 'Non-smokers would have had the smokers\' risk if they had smoked, and the other way round', 'They come from the same district', 'The study is large enough to give a narrow confidence interval'], a: 1,
+    e: 'Exchangeability means the groups differ only in exposure: swap their exposures and you would see the same risks. Randomisation gives it on average; observational studies have to argue for it.' },
+  { q: 'Alcohol use makes men more likely to smoke and also raises TB death risk. In a diagram, alcohol use is:',
+    o: ['A mediator', 'A collider', 'A common cause (confounder) of smoking and TB death', 'An effect modifier only'], a: 2,
+    e: 'Smoking ← Alcohol → TB death is a fork. It opens a back-door path, so alcohol use confounds the smoking and TB death association unless blocked.' },
+  { q: 'You want the total effect of maternal smoking on infant death. Adjusting for birth weight will:',
+    o: ['Remove confounding', 'Remove the part of the effect that works through birth weight, and can create a spurious association', 'Increase precision without changing the estimate', 'Have no effect, because birth weight comes after smoking'], a: 1,
+    e: 'Birth weight is caused by smoking (a mediator) and shares causes with death, such as birth defects (a collider). Adjusting for it both cuts part of the effect and opens a non-causal path.' },
+  { q: 'Adding a variable changed the odds ratio by more than 10%. This shows that the variable:',
+    o: ['Is a confounder and must be kept', 'Is a mediator', 'Is associated with the estimate, but whether to adjust for it needs causal reasoning', 'Is an instrumental variable'], a: 2,
+    e: 'Colliders and mediators also change estimates when added. The change-in-estimate rule cannot tell them apart from confounders; a causal diagram can.' },
+  { q: 'A hospital-based case-control study takes controls from other admitted patients. If both the exposure and the disease raise the chance of admission, the bias is best described as:',
+    o: ['Recall bias', 'Conditioning on a common effect (collider) of exposure and disease', 'Confounding by indication', 'Misclassification of the outcome'], a: 1,
+    e: 'Admission is caused by both exposure and disease. Restricting to admitted patients conditions on a collider and can create an association (Berkson\'s bias).' },
+  { q: 'One regression model gives odds ratios for cooking fuel, mother\'s education and wealth. Which reading is correct?',
+    o: ['Each odds ratio is the total effect of that variable', 'Only the variable the model was built for can be read as a total effect, and only if its adjustment set is right', 'The largest odds ratio is the most important cause', 'All odds ratios are unbiased because they are adjusted'], a: 1,
+    e: 'This is the "Table 2 fallacy". The covariates were chosen for one exposure. For another variable, the same model may adjust for its mediators or miss its confounders.' },
+  { q: 'Your diagram shows that a confounder of the effect you want was never measured. What follows?',
+    o: ['Adjust for everything else you measured; the bias goes away', 'No adjustment set from your data is enough; consider another design, a negative control, or a bias analysis', 'Use a larger sample', 'Drop the confounder from the diagram'], a: 1,
+    e: 'Adjustment can only use measured variables. If an open back-door path runs through something unmeasured, more adjustment on what you have cannot close it.' }
+];
+let mode = 'pre';
+const KEY = 'ci-quiz-pre';
+const get = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+const set = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+function render() {
+  document.querySelectorAll('#mode button').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === mode));
+  document.getElementById('quiz').innerHTML = Q.map((x, i) => `<fieldset id="f${i}"><legend>${i + 1}. ${x.q}</legend>` +
+    x.o.map((o, j) => `<label><input type="radio" name="q${i}" value="${j}"><span>${o}</span></label>`).join('') + '</fieldset>').join('');
+  document.getElementById('score').hidden = true;
+}
+document.querySelectorAll('#mode button').forEach(b => b.onclick = () => { mode = b.dataset.m; render(); });
+document.getElementById('again').onclick = render;
+document.getElementById('submit').onclick = () => {
+  let s = 0, blank = 0;
+  Q.forEach((x, i) => {
+    const f = document.getElementById('f' + i), pick = f.querySelector('input:checked');
+    if (!pick) blank++;
+    f.querySelectorAll('label').forEach((l, j) => { l.classList.toggle('right', j === x.a); l.classList.toggle('wrong', !!pick && +pick.value === j && j !== x.a); });
+    if (pick && +pick.value === x.a) s++;
+    if (!f.querySelector('.exp')) f.insertAdjacentHTML('beforeend', `<p class="exp">${x.e}</p>`);
+  });
+  const el = document.getElementById('score'); el.hidden = false;
+  let t = `You scored ${s} out of ${Q.length}.` + (blank ? ` ${blank} left blank.` : '');
+  if (mode === 'pre') { set(String(s)); el.className = 'claim'; }
+  else { const p = get(); el.className = 'claim good'; if (p !== null) t += ` Before the workshop you scored ${p}.`; }
+  el.textContent = t;
+};
+render();
+</script>
+</body>
+</html>

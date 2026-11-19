@@ -1,0 +1,7 @@
+{
+  "name": "causal-inference-workshop-basic",
+  "private": true,
+  "type": "module",
+  "scripts": { "check": "node src/chk.mjs causal-inference" },
+  "devDependencies": { "playwright-core": "^1.50.0" }
+}

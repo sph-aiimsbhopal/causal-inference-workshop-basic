@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Causal Diagram Lab</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widget.css">
+<script src="theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 2</p>
+  <h1>Causal Diagram Lab</h1>
+  <p>Pick a diagram. Tap a box to adjust for it. Watch which paths between exposure and outcome open and close.</p>
+</div></header>
+<main>
+  <section class="panel">
+    <h2>Choose a diagram</h2>
+    <div class="row" id="presets" role="group" aria-label="Diagram"></div>
+  </section>
+
+  <section class="panel story" id="story"></section>
+
+  <section class="panel">
+    <svg class="dag" id="dag" role="group" aria-label="Causal diagram"></svg>
+    <div class="legend"><span class="lx">exposure or outcome</span><span class="la">adjusted for</span><span class="lu">not measured</span></div>
+    <div class="row">
+      <span class="label">Adjusted for</span><span id="zlist" class="note"></span>
+      <button class="act ghost" id="clear" type="button">Clear</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Paths between <span id="xy"></span></h2>
+    <ul class="paths" id="paths" aria-live="polite"></ul>
+    <p class="note">Tap a path to highlight it. Green: a causal path left open. Red: a non-causal path left open, which biases the estimate.</p>
+  </section>
+
+  <section class="panel">
+    <p class="claim" id="verdict" aria-live="polite"></p>
+    <div class="row"><button class="act" id="show" type="button">Show the sets that work</button></div>
+    <div class="reveal-box" id="sets" hidden></div>
+  </section>
+
+  <footer>Diagrams drawn by the workshop faculty from the cited studies. A diagram is a set of assumptions; yours may differ.</footer>
+</main>
+<script src="dag.js"></script>
+<script src="dags.js"></script>
+<script>
+const P = window.DAGS;
+const order = ['fork', 'chain', 'collider', 'hrt', 'tb', 'bw'];
+let key = new URLSearchParams(location.search).get('d');
+if (!P[key]) key = 'fork';
+let g, Z = new Set(), hl = null;
+
+function load(k) {
+  key = k; const d = P[k];
+  g = DAG.create(d); Z = new Set(); hl = null;
+  document.getElementById('sets').hidden = true;
+  document.getElementById('story').innerHTML = `<h2>${d.title}</h2>${d.story}<p class="src">${d.src}</p>`;
+  history.replaceState(null, '', '?d=' + k);
+  draw();
+}
+function lab(id) { return g.label(id).replace(/-\n/g, '').replace(/\n/g, ' '); }
+function draw() {
+  const d = P[key];
+  document.getElementById('presets').innerHTML = order.map(k => `<button class="chip" type="button" data-k="${k}" aria-pressed="${k === key}">${P[k].title}</button>`).join('');
+  document.querySelectorAll('#presets button').forEach(b => b.onclick = () => load(b.dataset.k));
+  DAG.render(document.getElementById('dag'), g, { x: d.x, y: d.y, Z, highlight: hl, width: 420, height: d.height, fontSize: 16,
+    onTap: id => { Z.has(id) ? Z.delete(id) : Z.add(id); hl = null; draw(); } });
+  document.getElementById('xy').textContent = `${lab(d.x)} and ${lab(d.y)}`;
+  document.getElementById('zlist').textContent = Z.size ? [...Z].map(lab).join(', ') : 'nothing yet';
+  const c = g.check(d.x, d.y, Z);
+  const ul = document.getElementById('paths');
+  ul.innerHTML = '';
+  const rank = i => i.kind === 'causal' ? 0 : i.open ? 1 : 2;
+  c.all.slice().sort((a, b) => rank(a) - rank(b)).forEach((info, i) => {
+    const li = document.createElement('li');
+    const txt = info.path.map(lab).reduce((s, n, j) => j ? s + (info.arrows[j - 1] === '>' ? ' → ' : ' ← ') + n : n, '');
+    let pill, cls, why;
+    if (info.kind === 'causal') {
+      cls = info.open ? 'good' : 'off'; pill = info.open ? '<span class="pill good">causal, open</span>' : '<span class="pill warn">causal, blocked</span>';
+      why = info.open ? 'Part of the effect you want to estimate.' : `Blocked because you adjusted for ${info.blockedBy.map(b => lab(b.node)).join(', ')}, which lies on the causal path. You removed part of the effect.`;
+    } else {
+      cls = info.open ? 'bad' : 'off'; pill = info.open ? '<span class="pill bad">non-causal, open</span>' : '<span class="pill">non-causal, blocked</span>';
+      const opened = info.openedBy.map(o => o.collider === o.via ? `${lab(o.collider)} is a collider and you adjusted for it` : `you adjusted for ${lab(o.via)}, a descendant of the collider ${lab(o.collider)}`);
+      if (info.open) why = (info.kind === 'backdoor' ? 'A back-door path: it starts with an arrow into the exposure. ' : '') + (opened.length ? 'Opened because ' + opened.join('; ') + '.' : 'Nothing on it is adjusted for and it has no collider.');
+      else why = 'Blocked at ' + info.blockedBy.map(b => b.why === 'collider' ? `${lab(b.node)} (a collider, left alone)` : `${lab(b.node)} (adjusted)`).join(', ') + '.';
+    }
+    li.className = cls + (hl && hl.path.join() === info.path.join() ? ' sel' : '');
+    li.tabIndex = 0;
+    li.innerHTML = `<span class="p">${txt}</span>${pill}<span class="why">${why}</span>`;
+    li.onclick = () => { hl = (hl && hl.path.join() === info.path.join()) ? null : info; draw(); };
+    li.onkeydown = e => { if (e.key === 'Enter') li.onclick(); };
+    ul.appendChild(li);
+  });
+  if (!c.all.length) ul.innerHTML = '<li class="off"><span class="p">No path at all</span><span class="why">Exposure and outcome are not connected in this diagram.</span></li>';
+  const v = document.getElementById('verdict');
+  const noArrow = !g.has(d.x, d.y) && !c.all.some(i => i.kind === 'causal');
+  if (c.valid) {
+    v.className = 'claim good';
+    v.textContent = noArrow ? `With this adjustment, ${lab(d.x)} and ${lab(d.y)} should show no association. Any association you find would be bias or chance.`
+      : `This adjustment set is enough, if the diagram is right. Every non-causal path is blocked and no causal path is cut.`;
+  } else {
+    const r = [];
+    if (c.openNonCausal.length) r.push(`${c.openNonCausal.length} non-causal path${c.openNonCausal.length > 1 ? 's are' : ' is'} still open`);
+    if (c.badDesc.length) r.push(`you adjusted for ${c.badDesc.map(lab).join(', ')}, which ${c.badDesc.length > 1 ? 'are' : 'is'} caused by the exposure`);
+    if (c.unobservedInZ.length) r.push(`${c.unobservedInZ.map(lab).join(', ')} ${c.unobservedInZ.length > 1 ? 'were' : 'was'} not measured, so you cannot really adjust for ${c.unobservedInZ.length > 1 ? 'them' : 'it'}`);
+    v.className = 'claim warn';
+    v.textContent = (noArrow ? `${lab(d.x)} and ${lab(d.y)} would look associated, though neither causes the other: ` : 'Biased for the total effect: ') + r.join('; ') + '.';
+  }
+}
+document.getElementById('clear').onclick = () => { Z = new Set(); hl = null; draw(); };
+document.getElementById('show').onclick = () => {
+  const d = P[key], box = document.getElementById('sets');
+  const sets = g.minimalSets(d.x, d.y);
+  if (!sets.length) {
+    const any = DAG.create(Object.assign({}, d, { nodes: d.nodes.map(n => Object.assign({}, n, { observed: true })) })).minimalSets(d.x, d.y);
+    box.innerHTML = `<p><b>No set of measured variables blocks every non-causal path.</b> ${any.length ? 'You would need to measure ' + any.map(s => s.length ? s.map(lab).join(' + ') : 'nothing').join(', or ') + '.' : ''}</p><p class="note">This is unmeasured confounding. More adjustment on what you have cannot fix it; a different design or data source can.</p>`;
+  } else {
+    box.innerHTML = '<p><b>Minimal sets that are enough for the total effect:</b></p><ul>' + sets.map(s => `<li>${s.length ? s.map(lab).join(' + ') : 'Adjust for nothing'}</li>`).join('') + '</ul><p class="note">Adding variables that are not on any path does not help bias. Adding a mediator or a collider makes it worse.</p>';
+  }
+  box.hidden = false;
+};
+load(key);
+</script>
+</body>
+</html>

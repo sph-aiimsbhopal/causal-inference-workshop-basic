@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Causal inference in epidemiology: a basic workshop</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<style>
+  /* per-deck: causal diagrams, potential outcome tables, QR, two-column layout */
+  svg.dag { display: block; height: auto; }
+  svg.dag .edge { stroke: var(--dim); stroke-width: 2.2; }
+  svg.dag .edge.on { stroke: var(--ink); stroke-width: 4; }
+  svg.dag .edge.good { stroke: var(--good); stroke-width: 5; }
+  svg.dag .edge.bad { stroke: var(--bad); stroke-width: 5; }
+  svg.dag .edge.blocked { stroke-dasharray: 8 6; }
+  svg.dag .ah.edge { fill: var(--dim); } svg.dag .ah.on { fill: var(--ink); } svg.dag .ah.good { fill: var(--good); } svg.dag .ah.bad { fill: var(--bad); }
+  svg.dag .node rect { fill: var(--wash); stroke: var(--dim); stroke-width: 1.5; }
+  svg.dag .node text { fill: var(--ink); font-family: var(--font-body); }
+  svg.dag .node.expo rect, svg.dag .node.outc rect { fill: var(--band); stroke: var(--band); }
+  svg.dag .node.expo text, svg.dag .node.outc text { fill: #fff; font-weight: 600; }
+  svg.dag .node.unobs rect { stroke-dasharray: 5 4; fill: var(--paper); }
+  svg.dag .node.adj rect { fill: var(--warn-wash); stroke: var(--warn); stroke-width: 2.5; }
+  svg.dag .node.adj rect.inner { fill: none; stroke: var(--warn); stroke-width: 1.5; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .two.wide-left { grid-template-columns: 1.15fr 0.85fr; }
+  .two > div > :last-child { margin-bottom: 0; }
+  .reveal table.po td, .reveal table.po th { text-align: center; padding: 6px 16px; }
+  .reveal table.po td.l { text-align: left; }
+  .q { color: var(--faint); }
+  .dead { color: var(--bad); font-weight: 700; }
+  .qr { width: 230px; height: 230px; display: block; }
+  .url { font-family: var(--font-body); font-size: var(--fs-small); color: var(--band); word-break: break-all; }
+  .pie { display: block; margin: 0 auto; }
+  .pie text { font: 19px var(--font-body); fill: var(--ink); }
+  .pie .w { fill: #fff; font-weight: 600; }
+  .steps li { margin-bottom: 6px; }
+  .tag { display: inline-block; font-size: var(--fs-min); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+  .timer { float: right; font-size: var(--fs-small); color: #f6c177; font-weight: 600; margin-top: 6px; font-variant: normal; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1 -->
+<section class="cover">
+  <p class="kicker">Pre-conference workshop for MD students · Causal inference in epidemiology</p>
+  <h1>Did the hormones protect the heart, or did we fool ourselves?</h1>
+  <p class="lede dim">Counterfactuals, causal diagrams, bias, and choosing what to adjust for</p>
+  <p class="small faint">Three hours · Bring your phone and a pencil</p>
+  <aside class="notes">Both facilitators. Welcome everyone. Say who you are in one line each. Tell them this is a working session: there is a workbook, there are labs on their phones, and every exercise uses a real published study. Ask them to keep phones out today, for once, because the labs need them. Anchor text is Rothman's Modern Epidemiology, 4th edition; the reading list at the end maps chapters to what we cover.</aside>
+</section>
+
+<!-- 2 -->
+<section>
+  <h2>Two studies, same hormones, opposite answers</h2>
+  <div class="two">
+    <div class="card"><span class="tag">Cohort · Nurses' Health Study</span>
+      <div class="stat"><span class="n">0.39</span><span class="l">adjusted relative risk of major coronary heart disease, oestrogen plus progestin users vs never users</span></div>
+      <p class="small dim" style="margin-top:12px">59,337 nurses followed for up to 16 years</p></div>
+    <div class="card bad"><span class="tag">Randomised trial · Women's Health Initiative</span>
+      <div class="stat"><span class="n">1.29</span><span class="l">hazard ratio of coronary heart disease, oestrogen plus progestin vs placebo (95% CI 1.02 to 1.63)</span></div>
+      <p class="small dim" style="margin-top:12px">16,608 women, stopped early at 5.2 years</p></div>
+  </div>
+  <p class="claim">Which would you believe? And what exactly went wrong in the other?</p>
+  <p class="cite">Grodstein F et al. N Engl J Med 1996;335:453-61. Writing Group for the WHI Investigators. JAMA 2002;288:321-33.</p>
+  <aside class="notes">Opening hook, about 4 minutes. Read the two numbers. The cohort said hormone therapy cut coronary risk by more than half. Millions of women were prescribed it partly on that basis. Then the trial showed harm. Ask the room: which would you believe, and why? Take 3 or 4 answers. Expect "the trial, because it is randomised", and "the cohort had confounding, healthy women took hormones". Do not resolve it now. Say: by the end of today you will be able to draw why they disagreed, and you will find the story is more interesting than "healthy user bias". We return to this at the end.</aside>
+</section>
+
+<!-- 3 -->
+<section>
+  <h2>Before we start: eight questions on your phone</h2>
+  <div class="two wide-left">
+    <div>
+      <p class="lede">Scan the code, open <b>Quiz</b>, choose <b>Before the workshop</b>.</p>
+      <p>Five minutes. Nobody sees your score but you. You will take the same quiz at the end.</p>
+      <p>Keep the site open. All four labs are there.</p>
+      <p class="url">sph-aiimsbhopal.github.io/causal-inference-workshop-basic</p>
+    </div>
+    <div><img class="qr" src="../assets/qr.svg" alt="QR code for the workshop site"></div>
+  </div>
+  <aside class="notes">Five minutes. Walk around and help anyone whose phone will not open the site. The score stays on their phone only; the after-quiz shows both scores. If the network is poor, the paper workbook has the same eight questions on its first page.</aside>
+</section>
+
+<!-- 4 -->
+<section>
+  <h2>Three hours, three questions</h2>
+  <div class="cards c3">
+    <div class="card"><h3>1 · What is a cause?</h3><p class="small">Potential outcomes, exchangeability, sufficient causes.</p><p class="small dim">Exercise 1: smoking and TB deaths in Tamil Nadu</p></div>
+    <div class="card"><h3>2 · Where does bias come from?</h3><p class="small">Causal diagrams: forks, chains, colliders.</p><p class="small dim">Exercises 2 and 3: hormone therapy; the birth weight paradox</p></div>
+    <div class="card"><h3>3 · What should I adjust for?</h3><p class="small">Back-door paths, what not to adjust for, one model per question.</p><p class="small dim">Group exercise: cooking fuel and childhood ARI, NFHS-4</p></div>
+  </div>
+  <p class="claim">By the end: given an observational study, you can draw its assumptions and say whether its adjustment could work.</p>
+  <aside class="notes">The three objectives, said plainly. Concepts first in each block, then an exercise on paper with a lab on the phone. Tea after block 2. Point out that the three blocks map to Rothman chapters 2-3, 12-14, and 12 again; the reading page has the details.</aside>
+</section>
+
+<!-- 5 -->
+<section>
+  <h2>A causal question is a question about a change</h2>
+  <div class="two">
+    <div>
+      <h3>Association</h3>
+      <p>Do smokers die of TB more often than non-smokers?</p>
+      <p class="small dim">Compares two different groups of people, as they are.</p>
+    </div>
+    <div>
+      <h3>Effect</h3>
+      <p>How many TB deaths would we prevent if these men had never smoked?</p>
+      <p class="small dim">Compares the same people under two different conditions.</p>
+    </div>
+  </div>
+  <p class="claim">If you cannot say what you would change, you do not yet have a causal question.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapters 2 and 3.</p>
+  <aside class="notes">Session 1 begins, about 25 minutes of concepts. The single most useful habit: phrase the causal question as an intervention. "Is X associated with Y" describes the data. "What would happen to Y if we changed X" is what a programme manager or clinician actually needs. Ask: for the hormone question, what is the change? Starting oestrogen plus progestin at menopause, versus not starting. Keep that in mind; it matters later.</aside>
+</section>
+
+<!-- 6 -->
+<section>
+  <h2>Every man has two possible futures</h2>
+  <table class="po">
+    <tr><th class="l" style="text-align:left">Man</th><th>Dies of TB<br>if he smokes</th><th>Dies of TB<br>if he never smokes</th><th>Effect of smoking<br>for him</th></tr>
+    <tr><td class="l">Murugan</td><td class="dead">Yes</td><td>No</td><td>Smoking kills him</td></tr>
+    <tr><td class="l">Selvam</td><td class="dead">Yes</td><td class="dead">Yes</td><td>None: dies either way</td></tr>
+    <tr><td class="l">Arul</td><td>No</td><td>No</td><td>None: survives either way</td></tr>
+  </table>
+  <p>We write them as <b>Y<sup>a=1</sup></b> and <b>Y<sup>a=0</sup></b>, the potential outcomes. The causal effect for one person is the difference between them.</p>
+  <p class="claim warn">We only ever see one of the two. The other is counterfactual: contrary to fact.</p>
+  <aside class="notes">Use the names to make it concrete; these men are illustrative. Each man carries two potential outcomes: what would happen if he smoked, what would happen if he did not. The individual causal effect is the comparison of the two. Selvam dies either way, so smoking has no effect on him even though he smoked and died. That is why "he smoked and died of TB" is not proof of anything. Then the catch, often called the fundamental problem of causal inference: for any real man we see only one column. Half of every row is missing.</aside>
+</section>
+
+<!-- 7 -->
+<section>
+  <h2>So we compare groups, and hope they are alike</h2>
+  <div class="eq sm"><span>Causal risk ratio</span><span class="op">=</span><span class="frac"><span class="n">risk if <b>everyone</b> smoked</span><span class="d">risk if <b>no one</b> smoked</span></span></div>
+  <div class="eq sm"><span>Associational risk ratio</span><span class="op">=</span><span class="frac"><span class="n">risk in those who <b>did</b> smoke</span><span class="d">risk in those who <b>did not</b></span></span></div>
+  <p class="claim">The two are equal when smokers and non-smokers are <b>exchangeable</b>: had they swapped, each group would have had the other's risk.</p>
+  <aside class="notes">Population level. The causal risk ratio compares the whole population with itself under two conditions. The associational ratio compares two different subsets. They coincide only under exchangeability. Ask: would non-smokers have had the smokers' risk if they had smoked? Probably not. Smokers in Tamil Nadu drink more, are poorer, perhaps more undernourished. That difference is what we call confounding. Randomisation gives exchangeability on average, by design. Observational studies have to argue for it, and that argument is the rest of today.</aside>
+</section>
+
+<!-- 8 -->
+<section>
+  <h2>Three conditions before an association can be read as an effect</h2>
+  <div class="cards c3">
+    <div class="card"><h3>Exchangeability</h3><p class="small">No unblocked common causes of exposure and outcome. Ideally, within levels of what you adjust for.</p></div>
+    <div class="card"><h3>Positivity</h3><p class="small">Everyone could have been exposed or unexposed. No group where nobody smokes, or everybody does.</p></div>
+    <div class="card"><h3>Consistency</h3><p class="small">The exposure is well defined. Bidi or cigarette? Ten a day or one? "Smoking" is many interventions.</p></div>
+  </div>
+  <p class="claim warn">"Obesity causes diabetes": by which change in weight, diet, genes, activity? A vague exposure gives a vague answer.</p>
+  <aside class="notes">Three identifiability conditions, in plain words. Exchangeability we just met. Positivity: if no one in some subgroup is ever exposed, the data cannot tell you what exposure would do there. Consistency: the exposure must correspond to a reasonably well-defined intervention. Gajalakshmi found TB death risk ratios of 6.3 for urban bidi-only smokers; cigarettes and bidis are different exposures. Obesity is the classic vague exposure: losing weight by exercise, by bariatric surgery or by tuberculosis are not the same intervention. Hernán's paper "Does obesity shorten life?" is a good read on this.</aside>
+</section>
+
+<!-- 9 -->
+<section>
+  <h2>Rothman's pies: a disease needs a complete set of causes</h2>
+  <div class="two">
+    <svg class="pie" viewBox="0 0 520 330" width="560" role="img" aria-label="Two sufficient causes of TB death, each a pie of component causes, both containing M. tuberculosis">
+      <g transform="translate(130,165)">
+        <path d="M0,0 L0,-120 A120,120 0 0,1 103.9,60 Z" fill="var(--band)"/><path d="M0,0 L103.9,60 A120,120 0 0,1 -103.9,60 Z" fill="var(--dim)"/><path d="M0,0 L-103.9,60 A120,120 0 0,1 0,-120 Z" fill="var(--warn)"/>
+        <text class="w" x="48" y="-12" text-anchor="middle">M. tb</text><text class="w" x="0" y="80" text-anchor="middle">Smoking</text><text class="w" x="-50" y="-12" text-anchor="middle">Under-</text><text class="w" x="-50" y="12" text-anchor="middle">nutrition</text>
+      </g>
+      <g transform="translate(390,165)">
+        <path d="M0,0 L0,-120 A120,120 0 0,1 103.9,60 Z" fill="var(--band)"/><path d="M0,0 L103.9,60 A120,120 0 0,1 -103.9,60 Z" fill="var(--bad)"/><path d="M0,0 L-103.9,60 A120,120 0 0,1 0,-120 Z" fill="var(--good)"/>
+        <text class="w" x="48" y="-12" text-anchor="middle">M. tb</text><text class="w" x="0" y="80" text-anchor="middle">HIV</text><text class="w" x="-50" y="0" text-anchor="middle">Diabetes</text>
+      </g>
+    </svg>
+    <div>
+      <p class="small">Each pie is one <b>sufficient cause</b>. Each slice is a <b>component cause</b>. <i>M. tuberculosis</i> is in every pie: a necessary cause.</p>
+      <p class="small">Remove any one slice and that pie cannot complete. That is prevention.</p>
+      <p class="small">Fractions of disease due to each component can add up to far more than 100%.</p>
+    </div>
+  </div>
+  <p class="claim">"Smoking causes half of male TB deaths in India" and "undernutrition causes half" can both be true.</p>
+  <p class="cite">Illustrative pies. Modern Epidemiology, 4th ed., chapter 3. Gajalakshmi V et al. Lancet 2003;362:507-15.</p>
+  <aside class="notes">The sufficient-component cause model is Rothman's own. A disease happens when one complete pie is assembled. Components act together; that is interaction in the biological sense. Two consequences students find surprising. First, blocking any one component prevents every case that needed that pie, so the attributable fractions overlap and can sum to well over 100 percent. Second, the strength of a cause depends on how common its partner components are: smoking looks more dangerous for TB in India than in Sweden because the other slices, infection and undernutrition, are common here. Link back: Murugan was a man whose pie needed smoking to complete.</aside>
+</section>
+
+<!-- 10 -->
+<section>
+  <h2>Exercise 1 · Smoking and TB deaths in Tamil Nadu<span class="timer">15 min</span></h2>
+  <div class="two wide-left">
+    <div>
+      <p class="small">43,000 men who died, 35,000 living men. Families reported each man's smoking. Ever smokers vs never smokers, urban, ages 25 to 69: <b>TB death risk ratio 4.5 (4.0 to 5.0)</b>. Standardised for age, education and tobacco chewing.</p>
+      <ol class="small steps">
+        <li>Write the causal question as a change: who, what change, what outcome.</li>
+        <li>Describe the trial you would run if you could.</li>
+        <li>Who should the never smokers resemble? What might differ?</li>
+        <li>Is "ever smoked" a well-defined exposure?</li>
+      </ol>
+    </div>
+    <div class="card"><h3>Workbook page 2</h3><p class="small">Then open <b>Lab 1</b>. Switch between both futures and what happened. Mark the drinkers.</p></div>
+  </div>
+  <p class="cite">Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</p>
+  <aside class="notes">15 minutes: 8 on paper in pairs, 7 on Lab 1. The lab shows a made-up group of 100 men where the true effect is set at a risk ratio of 3, and alcohol makes the observed ratio 4.45, close to the published 4.5. Make sure they understand the lab is illustrative: we do not know the true effect, the point is that unadjusted alcohol could produce a gap of that size. Circulate. Common weak answers: question 1 written as "Is smoking associated with TB?" Push for "If men aged 25 to 69 in Tamil Nadu had never smoked, how many fewer would die of TB?"</aside>
+</section>
+
+<!-- 11 -->
+<section>
+  <h2>Exercise 1 debrief · What the paper tells you, if you look</h2>
+  <div class="cards c2">
+    <div class="card"><h3>A clue in the paper itself</h3><p class="small">Smokers also had 3.3 times the death rate from alcoholism or cirrhosis. The authors put this down to heavy drinkers tending to smoke. Alcohol was not adjusted for.</p></div>
+    <div class="card"><h3>Who reported smoking?</h3><p class="small">For dead men, the family. For controls, the family too. Was reporting as accurate for a man who died coughing?</p></div>
+    <div class="card"><h3>Ever smokers</h3><p class="small">Ex-smokers were counted with smokers, so men who quit because they fell ill do not flip the result.</p></div>
+    <div class="card"><h3>Dose and type</h3><p class="small">Risk rose with amount smoked, and was high for bidis too (urban bidi-only 6.3).</p></div>
+  </div>
+  <p class="claim">An outcome smoking should barely cause, but alcohol does, came out raised. That is a warning about confounding, written in the paper's own table.</p>
+  <aside class="notes">Take two pairs' answers to question 1 and the target trial. Then show this. The cirrhosis ratio of 3.3 works as an informal negative control outcome: smoking itself is not a major cause of alcoholic cirrhosis, so a raised ratio there flags that smokers differ in drinking. That does not destroy the TB finding: dose-response, the bidi result, the self-reported TB survey (smokers three times as likely to report past TB) and biology all support a real effect. It does mean 4.5 may overstate it. This is Rothman's point: causal inference is judgement across evidence, not a single number. Lipsitch's paper on negative controls is on the reading list.</aside>
+</section>
+
+<!-- 12 -->
+<section>
+  <h2>A causal diagram is your assumptions, drawn</h2>
+  <div class="two">
+    <svg class="dag" data-dag="confound" style="width:520px" role="img" aria-label="Alcohol causes smoking and TB death; smoking causes TB death"></svg>
+    <div>
+      <ul class="small">
+        <li>An arrow means "directly causes", as far as this diagram goes.</li>
+        <li>No loops: nothing causes itself. Time runs one way.</li>
+        <li>Every common cause of two variables in the diagram must be in it, measured or not.</li>
+        <li><b>A missing arrow is the strongest claim</b>: it says there is no direct effect.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="claim">The diagram comes from subject knowledge, not from your data.</p>
+  <p class="cite">Greenland S, Pearl J, Robins JM. Epidemiology 1999;10:37-48. Modern Epidemiology, 4th ed., chapter 3.</p>
+  <aside class="notes">Session 2 begins, about 25 minutes of concepts. Directed acyclic graph: directed because arrows have direction, acyclic because no loops. Stress the last rule: drawing an arrow is cheap, leaving one out is a claim you must defend. Also: you cannot learn the diagram from the dataset you are analysing; it comes from biology, prior studies, how the data were collected. If two experts disagree, draw both diagrams and see whether they lead to different adjustments. Often they do not.</aside>
+</section>
+
+<!-- 13 -->
+<section>
+  <h2>Three building blocks explain almost all bias</h2>
+  <div class="cards c3">
+    <div class="card"><h3>Fork</h3><svg class="dag" data-dag="fork" data-fs="24" style="width:340px" role="img" aria-label="Fork"></svg><p class="small">A common cause. Path <b>open</b>. Adjusting <b>closes</b> it.</p></div>
+    <div class="card"><h3>Chain</h3><svg class="dag" data-dag="chain" data-fs="24" style="width:340px" role="img" aria-label="Chain"></svg><p class="small">A mediator. Path <b>open</b>. Adjusting <b>closes</b> it, and removes part of the effect.</p></div>
+    <div class="card bad"><h3>Collider</h3><svg class="dag" data-dag="collider" data-fs="24" style="width:340px" role="img" aria-label="Collider"></svg><p class="small">A common effect. Path <b>closed</b>. Adjusting <b>opens</b> it.</p></div>
+  </div>
+  <aside class="notes">The heart of the session. Go slowly. Fork: alcohol causes both smoking and TB death, so smoking and TB death are associated even with no arrow between them; condition on alcohol and the association from that source disappears. Chain: smoking lowers birth weight, low birth weight raises death; association flows along it; adjusting for birth weight blocks it, which is wrong if you want the total effect. Collider: smoking and birth defects both cause low birth weight; in the population they are unrelated; look only at small babies and they become associated, negatively. Students find the collider counter-intuitive; give the everyday version: among people admitted to a hospital ward, a disease and a risk factor can look linked simply because either gets you admitted.</aside>
+</section>
+
+<!-- 14 -->
+<section>
+  <h2>Reading a path: open or blocked?</h2>
+  <div class="two wide-left">
+    <div>
+      <p>A path is any route between exposure and outcome, ignoring arrow direction.</p>
+      <ul class="small">
+        <li>A path is <b>blocked</b> if it passes through a collider you have <b>not</b> adjusted for.</li>
+        <li>A path is <b>blocked</b> if it passes through a non-collider you <b>have</b> adjusted for.</li>
+        <li>Otherwise it is <b>open</b>, and association flows along it.</li>
+        <li>Adjusting for a descendant of a collider partly opens it too.</li>
+      </ul>
+    </div>
+    <div class="card"><h3>Goal for a total effect</h3><p class="small">Keep every causal path from exposure to outcome open.</p><p class="small">Block every other path.</p></div>
+  </div>
+  <p class="claim">Bias is association flowing through a non-causal path you left open.</p>
+  <aside class="notes">These are the d-separation rules in student language. Do not use the word d-separation unless they ask. Practise once aloud on the fork diagram, then on the collider. Mention that "adjusting" covers many things: putting a variable in a regression, stratifying, matching, restricting the sample, or selecting who enters the study. Selection is adjustment you did not choose.</aside>
+</section>
+
+<!-- 15 -->
+<section>
+  <h2>Confounding is an open back-door path</h2>
+  <div class="two">
+    <svg class="dag" data-dag="tb" style="width:470px" role="img" aria-label="Diagram for smoking and TB death"></svg>
+    <div>
+      <p class="small">A <b>back-door path</b> starts with an arrow <b>into</b> the exposure. Smoking ← Alcohol → TB death is one.</p>
+      <p class="small">A confounder is a variable that can block a back-door path.</p>
+      <p class="small">"Associated with exposure and outcome, not on the causal pathway" is the old rule. It wrongly admits colliders.</p>
+      <p class="small">"It changed the estimate by 10%" cannot tell a confounder from a collider or a mediator.</p>
+    </div>
+  </div>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 12. Hernán MA et al. Am J Epidemiol 2002;155:176-84.</p>
+  <aside class="notes">Show the Gajalakshmi diagram with three open back-door paths: through age, through peer group and alcohol, through alcohol and undernutrition. Education, which they did adjust for, blocks the others. Then hit the two traditional rules. The three-criteria rule can label a collider as a confounder, because a collider is associated with both. Change-in-estimate can't separate confounding from collider bias or mediator adjustment, because all of them change the estimate. Hernán 2002 showed real examples in birth defects epidemiology where the statistical rules led to the wrong adjustment.</aside>
+</section>
+
+<!-- 16 -->
+<section>
+  <h2>Selection bias is adjusting for a collider without meaning to</h2>
+  <div class="two">
+    <div><svg class="dag" data-dag="berkson" style="width:470px" role="img" aria-label="Smoking and TB both cause hospital admission"></svg></div>
+    <div>
+      <ul class="small">
+        <li><b>Hospital controls.</b> If both smoking and TB raise the chance of admission, studying admitted patients links them.</li>
+        <li><b>Loss to follow-up</b> that depends on exposure and on illness.</li>
+        <li><b>Volunteers</b> who join because they are worried and exposed.</li>
+        <li><b>Survivors.</b> Women still taking hormones years later are those who did not have an early heart attack on them.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="claim warn">You cannot see this bias in your data. You can only see it in the diagram of how people got into your data.</p>
+  <p class="cite">Hernán MA, Hernández-Díaz S, Robins JM. Epidemiology 2004;15:615-25. Modern Epidemiology, 4th ed., chapter 14.</p>
+  <aside class="notes">Hernán's structural view: selection bias is conditioning on a common effect, here admission. Berkson's original example was exactly hospital-based case-control studies. The survivor bullet sets up the hormone story: if you study women who are currently on hormones, you have selected those who survived the early months of use without an event. Keep it as a teaser.</aside>
+</section>
+
+<!-- 17 -->
+<section>
+  <h2>Measurement error has a structure too</h2>
+  <div class="two">
+    <div><svg class="dag" data-dag="measure" style="width:470px" role="img" aria-label="True smoking causes reported smoking; TB death affects reporting error"></svg></div>
+    <div>
+      <p class="small">We never analyse true smoking, only smoking <b>as reported</b>.</p>
+      <p class="small"><b>Non-differential</b>: errors unrelated to the outcome. Usually biases a binary exposure towards the null.</p>
+      <p class="small"><b>Differential</b>: the outcome changes the reporting. An arrow from TB death to reporting error. Bias in either direction.</p>
+    </div>
+  </div>
+  <p class="claim">Ask of every exposure: who reported it, when, and did they know the outcome?</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 13.</p>
+  <aside class="notes">Keep this to 3 minutes; information bias is not the focus today. The Tamil Nadu study relied on families reporting a dead man's habits. A widow might recall heavy smoking in a man who died of a lung disease. That is the arrow from outcome to error. The same structure is recall bias in case-control studies of birth defects. Chapter 13 and chapter 29 on bias analysis go further.</aside>
+</section>
+
+<!-- 18 -->
+<section>
+  <h2>Exercise 2 · Hormone therapy and heart disease<span class="timer">12 min</span></h2>
+  <div class="two wide-left">
+    <div>
+      <p class="small">The Nurses' Health Study adjusted for age, smoking, BMI, blood pressure, cholesterol and more, and still found a relative risk of 0.39.</p>
+      <ol class="small steps">
+        <li>Open <b>Lab 2</b>, diagram <b>HRT and heart disease</b>. List every back-door path.</li>
+        <li>Which of them can the cohort block with what it measured?</li>
+        <li>Should "lipids and blood pressure after starting" be adjusted for? Why not?</li>
+        <li>Tap <b>Show the sets that work</b>. What does it tell you?</li>
+      </ol>
+    </div>
+    <div class="card"><h3>Workbook page 3</h3><p class="small">Draw the diagram on paper first. Then check it against the lab.</p></div>
+  </div>
+  <p class="cite">Grodstein F et al. N Engl J Med 1996;335:453-61.</p>
+  <aside class="notes">12 minutes. Individual or pairs. The lab's diagram includes an unmeasured "health-seeking" node: women who choose hormones also see doctors, take preventive care, and that lowers CHD. The lab will say no measured set is enough. Question 3 is about a mediator measured after the exposure: hormones change lipids, and adjusting for them would block part of any effect. Some cohort analyses did adjust for such post-baseline factors. Collect answers on question 4 and move to exercise 3; we debrief both together.</aside>
+</section>
+
+<!-- 19 -->
+<section>
+  <h2>Exercise 3 · Is smoking good for small babies?<span class="timer">12 min</span></h2>
+  <div class="two wide-left">
+    <div>
+      <p class="small">US births, 1991. Infant deaths per 100,000: 1,235 for smokers' babies, 805 for non-smokers'. Rate ratio 1.55. Among low birth weight babies only: <b>0.79</b>.</p>
+      <ol class="small steps">
+        <li>Draw smoking, low birth weight, infant death and birth defects.</li>
+        <li>Name the role of low birth weight on each path.</li>
+        <li>In <b>Lab 3</b>, choose <b>Low birth weight only</b>. Then raise the direct harm of smoking. How far before the paradox disappears?</li>
+        <li>What would you tell a colleague who wants to "control for birth weight"?</li>
+      </ol>
+    </div>
+    <div class="card"><h3>Workbook page 4</h3><p class="small">Lab 3 is a model tuned to come close to the 1991 figures, not the original data.</p></div>
+  </div>
+  <p class="cite">Hernández-Díaz S, Schisterman EF, Hernán MA. Am J Epidemiol 2006;164:1115-20.</p>
+  <aside class="notes">12 minutes. The key discovery in the lab: smoking can raise every baby's death risk directly by up to about 50% (slider at 1.5) and restricting to low birth weight still gives a protective-looking ratio, because low birth weight babies of non-smokers more often have a serious other cause, such as a birth defect. Lab 3's table shows this share directly: around 7% vs 17% in the default setting. For question 4, expect "it is a confounder" from some. Correct it: it is caused by smoking, so it cannot be a confounder of smoking's effect.</aside>
+</section>
+
+<!-- 20 -->
+<section>
+  <h2>Debrief · The birth weight paradox is collider bias</h2>
+  <div class="two">
+    <svg class="dag" data-dag="bw" data-z="lbw" data-hl="smk,lbw,def,die" style="width:480px" role="img" aria-label="Restricting to low birth weight opens the path smoking, low birth weight, birth defects, infant death"></svg>
+    <div>
+      <p class="small">Low birth weight is a <b>mediator</b> on smoking → LBW → death, and a <b>collider</b> on smoking → LBW ← defects → death.</p>
+      <p class="small">Restrict to LBW and both go wrong: part of the effect is cut, and a non-causal path opens.</p>
+      <p class="small">For decades "adjust for birth weight" was standard practice in perinatal studies.</p>
+    </div>
+  </div>
+  <p class="claim">Do not adjust for a variable caused by the exposure when you want the total effect.</p>
+  <aside class="notes">The diagram on the slide has low birth weight adjusted for and the path through birth defects highlighted in red. Walk the path aloud. Then make the general rule. Mention that the same structure explains the "obesity paradox" in heart failure and diabetes, where conditioning on having the disease makes obesity look protective, and that Hernández-Díaz's later work drew birth weight specific mortality curves to show it.</aside>
+</section>
+
+<!-- 21 -->
+<section>
+  <h2>Debrief · Hormones: confounding, and something more</h2>
+  <div class="cards c2">
+    <div class="card"><h3>What the diagram shows</h3><p class="small">An open back-door path through health-seeking behaviour, which was not measured. No adjustment on measured variables can close it.</p></div>
+    <div class="card"><h3>What Hernán and colleagues did in 2008</h3><p class="small">Re-analysed the Nurses' Health Study as if it were a trial: eligible women, <b>starting</b> hormones vs not, from the start of use.</p></div>
+  </div>
+  <div class="stat" style="margin-top:18px"><span class="n">0.96</span><span class="l">hazard ratio, whole follow-up</span></div>
+  <div class="stat"><span class="n">1.42</span><span class="l">first 2 years after starting</span></div>
+  <p class="claim">Much of the gap came from comparing long-term current users with non-users, and from women's age at starting, not only from confounding.</p>
+  <p class="cite">Hernán MA et al. Epidemiology 2008;19:766-79.</p>
+  <aside class="notes">This is the twist. The usual textbook explanation is healthy-user confounding, and the diagram supports some of that. But when the cohort data were analysed like the trial, comparing new initiators with non-initiators from the time of starting, the estimates came out similar to the WHI: 0.96 overall, with a raised risk of 1.42 in the first two years. The authors concluded that the discrepancy could be largely explained by differences in time since menopause and length of follow-up. Prevalent users are survivors of the early high-risk period: the selection bias slide. Lesson: draw the diagram, and also define time zero like a trial would. That idea, target trial emulation, is the bridge to further learning.</aside>
+</section>
+
+<!-- 22 -->
+<section class="cover">
+  <p class="kicker">Tea · 15 minutes</p>
+  <h1>Break</h1>
+  <p class="lede dim">After tea: what to adjust for, and a group exercise on an Indian NFHS study.</p>
+  <aside class="notes">Tea. Groups for the capstone should be fixed before people leave: five or six per group, each with at least two working phones.</aside>
+</section>
+
+<!-- 23 -->
+<section>
+  <h2>The back-door rule, in two lines</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>1 · Block every back-door path</h3><p class="small">Every path that starts with an arrow into the exposure must be blocked by something in your adjustment set.</p></div>
+    <div class="card bad"><h3>2 · Touch nothing downstream</h3><p class="small">Adjust for nothing caused by the exposure: no mediators, no consequences, no colliders between them.</p></div>
+  </div>
+  <p class="claim">If both hold and the diagram is right, the adjusted estimate is the total causal effect.</p>
+  <p class="small dim">There is often more than one set that works. Prefer one that is measured well.</p>
+  <p class="cite">Pearl's back-door criterion. Modern Epidemiology, 4th ed., chapter 12.</p>
+  <aside class="notes">Session 3, about 15 minutes of concepts. This is Pearl's back-door criterion in plain language. Rule 1 deals with confounding. Rule 2 prevents overadjustment and collider bias through descendants. Emphasise "if the diagram is right": the rule moves the argument from statistics to subject knowledge, which is where it belongs. Multiple valid sets: choose the one with the best-measured variables, since a badly measured confounder only partly blocks its path.</aside>
+</section>
+
+<!-- 24 -->
+<section>
+  <h2>Four things not to adjust for</h2>
+  <div class="cards c4">
+    <div class="card bad"><h3>Mediators</h3><p class="small">You remove part of the effect you want. Birth weight for smoking.</p></div>
+    <div class="card bad"><h3>Colliders</h3><p class="small">You open a path that was closed. Hospital admission.</p></div>
+    <div class="card bad"><h3>Consequences of the outcome</h3><p class="small">Treatment received, symptoms after diagnosis.</p></div>
+    <div class="card"><h3>Pure causes of exposure</h3><p class="small">Not bias, but you lose precision and can amplify other bias.</p></div>
+  </div>
+  <p class="claim good">Causes of the outcome alone are safe and can improve precision. Child age for ARI.</p>
+  <aside class="notes">Quick round. Ask the room for an example of each from their own thesis area. The fourth card covers instrument-like variables: a factor that causes the exposure but not the outcome. Adjusting for it does not reduce bias and widens confidence intervals; with unmeasured confounding it can even increase bias. Variables that only cause the outcome are fine to include.</aside>
+</section>
+
+<!-- 25 -->
+<section>
+  <h2>Not sure of the full diagram? A practical rule</h2>
+  <ol class="steps">
+    <li>Adjust for each variable that causes the exposure, the outcome, or both.</li>
+    <li>Drop any that you believe causes the exposure only, unless it is needed to block a path.</li>
+    <li>Add a good proxy for an important unmeasured common cause.</li>
+    <li>Never include anything caused by the exposure.</li>
+  </ol>
+  <p class="claim">Then say clearly, in your methods, which confounders you could not measure.</p>
+  <p class="cite">VanderWeele TJ. Principles of confounder selection. Eur J Epidemiol 2019;34:211-9.</p>
+  <aside class="notes">This is VanderWeele's modified disjunctive cause criterion, simplified. It works well when people cannot agree on the full diagram, because you only need to know which variables are causes of exposure or outcome, not every arrow among them. Point out the last line: being explicit about unmeasured confounding is better science than pretending a long covariate list solves it.</aside>
+</section>
+
+<!-- 26 -->
+<section>
+  <h2>One model answers one causal question</h2>
+  <table>
+    <tr><th>Variable in the same model</th><th class="num">Adjusted OR</th><th>Can you read it as an effect?</th></tr>
+    <tr><td>Biomass fuel (the exposure)</td><td class="num">1.10</td><td>Yes, if the adjustment set is right for fuel</td></tr>
+    <tr><td>No separate kitchen</td><td class="num">1.22</td><td>Only if the same set also suits kitchen</td></tr>
+    <tr><td>Mother's education, primary vs none</td><td class="num">1.32</td><td>No: fuel and household smoking lie on its causal paths</td></tr>
+  </table>
+  <p class="claim warn">The "Table 2 fallacy": reading every coefficient in a multivariable table as an effect.</p>
+  <p class="cite">Westreich D, Greenland S. Am J Epidemiol 2013;177:292-8. Mondal D, Paul P. PLoS ONE 2020;15:e0237611.</p>
+  <aside class="notes">Set up the capstone. In a single model, the coefficient for a covariate is adjusted for the exposure and everything else. For mother's education, that means adjusting away its effects through cooking fuel, kitchen, smoking: mediators of education. What remains is not the effect of education. That is one reason an odds ratio above 1 for educated mothers can appear, which the authors found surprising. Another is reporting: educated mothers may notice and report fast breathing more. Do not give all of this away; let groups find it.</aside>
+</section>
+
+<!-- 27 -->
+<section>
+  <h2>Group exercise · Cooking fuel and childhood ARI, NFHS-4<span class="timer">30 min</span></h2>
+  <div class="two wide-left">
+    <div>
+      <p class="small">247,743 children under five. ARI: cough with fast or difficult breathing in the last two weeks, by mother's report. One model: fuel, kitchen, smoking, child age and sex, birth order, mother's age and education, caste, religion, wealth, TB in household, crowding.</p>
+      <ol class="small steps">
+        <li>Write your group's causal question for your exposure.</li>
+        <li>Draw your diagram in <b>Lab 4</b>. Argue about every arrow.</li>
+        <li>Load the paper's model. Is it enough under your diagram?</li>
+        <li>Prepare one minute: what should the authors have done?</li>
+      </ol>
+    </div>
+    <div class="card"><h3>Your exposure</h3><p class="small">Groups 1, 4: biomass fuel</p><p class="small">Groups 2, 5: separate kitchen</p><p class="small">Groups 3, 6: mother's education</p><p class="small dim">Workbook page 5</p></div>
+  </div>
+  <p class="cite">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
+  <aside class="notes">20 minutes in groups, 10 minutes report back, one minute per group. Both facilitators circulate, one per half of the room. Tell groups to start from blank in Lab 4 and add arrows they believe, and only then load the facilitators' diagram to compare. Things to listen for: someone noticing that rural or urban residence and state are not in the model; someone noticing that kitchen and fuel are adjusted for each other though they may modify each other; the education group realising they are adjusting for mediators; and anyone asking whether kerosene belongs with dung as "biomass".</aside>
+</section>
+
+<!-- 28 -->
+<section>
+  <h2>Group exercise debrief · What we would ask the authors</h2>
+  <div class="cards c2">
+    <div class="card"><h3>Missing common causes</h3><p class="small">Rural or urban residence and state shape both cooking fuel and ARI. Neither was in the model.</p></div>
+    <div class="card"><h3>One model, three exposures</h3><p class="small">Fuel, kitchen and smoking each need their own adjustment set, and their own model.</p></div>
+    <div class="card"><h3>Who reports the outcome?</h3><p class="small">Mothers report ARI. If education changes recognition, education affects measured ARI, not only true ARI.</p></div>
+    <div class="card"><h3>What is "biomass"?</h3><p class="small">Kerosene, coal, wood and dung were grouped. A cleaner-fuel programme changes one of these, not all.</p></div>
+  </div>
+  <p class="claim good">None of this needs new data to say. It needs a diagram drawn before the analysis.</p>
+  <aside class="notes">Collect the one-minute reports, then show this slide as a summary rather than a correction. Be fair to the authors: national survey analyses like this are common and useful for describing burden, and the cross-sectional design limits them too. The point is that the same data, with a diagram, would lead to a different and more defensible model. Ask: would your own thesis survive this review?</aside>
+</section>
+
+<!-- 29 -->
+<section>
+  <h2>Writing a causal question for your thesis</h2>
+  <table>
+    <tr><th>Element</th><th>Example: clean cooking fuel and ARI</th></tr>
+    <tr><td>Who</td><td>Children under five in rural households of one district</td></tr>
+    <tr><td>Change compared</td><td>Household switches to LPG for all cooking vs continues with wood or dung</td></tr>
+    <tr><td>Outcome and time</td><td>ARI episodes over the next 12 months</td></tr>
+    <tr><td>Time zero</td><td>The date the household switches, or would have</td></tr>
+    <tr><td>Diagram and adjustment set</td><td>Drawn and agreed before looking at the data</td></tr>
+  </table>
+  <p class="claim">Write the trial you wish you could run. Then let your observational study imitate it.</p>
+  <p class="cite">Hernán MA, Robins JM. Am J Epidemiol 2016;183:758-64. Hernán MA. Am J Public Health 2018;108:616-9.</p>
+  <aside class="notes">This is objective 3 made practical for their own work. The table is a target trial in miniature. Time zero is what went wrong in the hormone cohort. Say it plainly: if your question is causal, call it causal and use the word "effect", then defend it with a diagram, rather than hiding behind "association" while writing a causal discussion. That is Hernán's C-word paper.</aside>
+</section>
+
+<!-- 30 -->
+<section>
+  <h2>Back to the hormones: what you can now say</h2>
+  <ul>
+    <li>The cohort compared different women; the trial compared the same kind of women under two choices.</li>
+    <li>Some of the gap was confounding through health-seeking, which nobody measured.</li>
+    <li>Some came from studying long-term users, who had already survived the risky early years.</li>
+    <li>Analysed like a trial, the same cohort agreed with the trial.</li>
+  </ul>
+  <p class="claim good">Observational data did not fail. The question and the comparison were set up badly.</p>
+  <aside class="notes">Close the loop with the opening slide. Ask a student to explain the discrepancy to the room in one minute. Then this summary. The emotional point: observational epidemiology is not hopeless; the cohort could answer the question once it was asked the right way.</aside>
+</section>
+
+<!-- 31 -->
+<section>
+  <h2>Three things to carry out of this room</h2>
+  <p class="claim">A causal effect compares the same people under two conditions. Ask what you would change.</p>
+  <p class="claim">Draw the diagram before you analyse. Bias is an open non-causal path.</p>
+  <p class="claim good">Adjust to block back-door paths, and never for what the exposure causes.</p>
+  <aside class="notes">Read them slowly. Then move to the after quiz.</aside>
+</section>
+
+<!-- 32 -->
+<section>
+  <h2>After quiz, then keep going</h2>
+  <div class="two wide-left">
+    <div>
+      <p class="lede">Open <b>Quiz</b>, choose <b>After the workshop</b>.</p>
+      <p>Then open <b>Further Learning</b>: Rothman chapters by topic, the free Hernán and Robins book, the HarvardX course on causal diagrams, and DAGitty for drawing your own.</p>
+      <p class="url">sph-aiimsbhopal.github.io/causal-inference-workshop-basic</p>
+    </div>
+    <div><img class="qr" src="../assets/qr.svg" alt="QR code for the workshop site"></div>
+  </div>
+  <aside class="notes">Five minutes for the quiz. Ask for a show of hands on how many scored higher than before; it is a crude measure but it makes the point. Remind them the site stays online, so they can use the labs with their own thesis diagrams.</aside>
+</section>
+
+<!-- 33 -->
+<section>
+  <h2>Sources</h2>
+  <ol class="sources two">
+    <li>Lash TL, VanderWeele TJ, Haneuse S, Rothman KJ. Modern Epidemiology. 4th ed. Philadelphia: Wolters Kluwer; 2021. Chapters 2, 3, 12, 13, 14.</li>
+    <li>Grodstein F, Stampfer MJ, Manson JE, et al. Postmenopausal estrogen and progestin use and the risk of cardiovascular disease. N Engl J Med 1996;335:453-61.</li>
+    <li>Writing Group for the Women's Health Initiative Investigators. Risks and benefits of estrogen plus progestin in healthy postmenopausal women. JAMA 2002;288:321-33.</li>
+    <li>Hernán MA, Alonso A, Logan R, et al. Observational studies analyzed like randomized experiments. Epidemiology 2008;19:766-79.</li>
+    <li>Gajalakshmi V, Peto R, Kanaka TS, Jha P. Smoking and mortality from tuberculosis and other diseases in India. Lancet 2003;362:507-15.</li>
+    <li>Hernández-Díaz S, Schisterman EF, Hernán MA. The birth weight "paradox" uncovered? Am J Epidemiol 2006;164:1115-20.</li>
+    <li>Mondal D, Paul P. Effects of indoor pollution on acute respiratory infections among under-five children in India. PLoS ONE 2020;15(8):e0237611.</li>
+    <li>Greenland S, Pearl J, Robins JM. Causal diagrams for epidemiologic research. Epidemiology 1999;10:37-48.</li>
+    <li>Hernán MA, Hernández-Díaz S, Robins JM. A structural approach to selection bias. Epidemiology 2004;15:615-25.</li>
+    <li>Westreich D, Greenland S. The Table 2 fallacy. Am J Epidemiol 2013;177:292-8.</li>
+    <li>VanderWeele TJ. Principles of confounder selection. Eur J Epidemiol 2019;34:211-9.</li>
+    <li>Hernán MA, Robins JM. Using big data to emulate a target trial. Am J Epidemiol 2016;183:758-64.</li>
+  </ol>
+  <p class="small faint">Prepared at AIIMS Bhopal with Claude (Anthropic) as drafting and coding assistant. Names on slide 6 and the populations in Labs 1 and 3 are illustrative.</p>
+  <aside class="notes">Sources. The full reading list, organised by topic and by Rothman chapter, is on the Further Learning page.</aside>
+</section>
+
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script>
+  document.querySelectorAll('svg.dag[data-dag]').forEach((svg, i) => {
+    const d = window.DAGS[svg.dataset.dag], g = DAG.create(d);
+    const Z = new Set((svg.dataset.z || '').split(',').filter(Boolean));
+    let hl = null;
+    if (svg.dataset.hl) hl = g.pathInfo(svg.dataset.hl.split(','), Z);
+    DAG.render(svg, g, { x: d.x, y: d.y, Z, highlight: hl, width: 420, height: d.height, fontSize: +(svg.dataset.fs || 19), idp: 's' + i });
+  });
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', plugins: [RevealNotes]
+  });
+</script>
+</body>
+</html>

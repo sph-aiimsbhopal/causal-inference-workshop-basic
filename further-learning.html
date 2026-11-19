@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Further Learning: Causal Inference</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widgets/widget.css">
+<script src="widgets/theme.js"></script>
+<style>
+  ol.refs, ul.refs { max-width: 75ch; margin: 0; padding-left: 1.2em; }
+  .refs li { margin-bottom: 10px; }
+  .refs .why { display: block; color: var(--dim); font-size: 14px; }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="index.html">Causal inference workshop</a> · Reading</p>
+  <h1>Further Learning</h1>
+  <p>Where to go after the workshop, in the order we suggest.</p>
+</div></header>
+<main>
+  <section class="panel">
+    <h2>1. The anchor text: Modern Epidemiology, 4th edition</h2>
+    <p class="note">Lash TL, VanderWeele TJ, Haneuse S, Rothman KJ. Modern Epidemiology. 4th ed. Philadelphia: Wolters Kluwer; 2021.</p>
+    <div class="scroll"><table>
+      <tr><th>Chapter</th><th>Read it for</th><th>Workshop session</th></tr>
+      <tr><td>2. Causal Inference and Scientific Reasoning</td><td>What a cause is, and how epidemiologists argue about causes</td><td>Thinking causally</td></tr>
+      <tr><td>3. Formal Causal Models</td><td>Potential outcomes, sufficient-component causes, causal diagrams</td><td>Thinking causally; diagrams</td></tr>
+      <tr><td>5. Measures of Effect and Measures of Association</td><td>Why an association measure is not automatically an effect measure</td><td>Thinking causally</td></tr>
+      <tr><td>12. Confounding and Confounders</td><td>Confounding defined causally; choosing confounders</td><td>Diagrams; adjustment</td></tr>
+      <tr><td>13. Measurement and Measurement Error</td><td>Information bias</td><td>Structure of bias</td></tr>
+      <tr><td>14. Selection Bias and Generalizability</td><td>Collider stratification, Berkson's bias, loss to follow-up</td><td>Structure of bias</td></tr>
+      <tr><td>18. Stratification and Standardization</td><td>Carrying out the adjustment a diagram asks for</td><td>After the workshop</td></tr>
+      <tr><td>25. Causal Inference With Time-Varying Exposures</td><td>Why the hormone therapy story needed new methods</td><td>After the workshop</td></tr>
+      <tr><td>27. Mediation Analysis</td><td>Direct and indirect effects, done properly</td><td>After the workshop</td></tr>
+      <tr><td>28. Instrumental Variables and Quasi-Experimental Approaches</td><td>What to do when a confounder cannot be measured</td><td>After the workshop</td></tr>
+      <tr><td>29. Bias Analysis</td><td>How large could the unmeasured bias be?</td><td>After the workshop</td></tr>
+    </table></div>
+  </section>
+
+  <section class="panel">
+    <h2>2. Free, and the best next step</h2>
+    <ul class="refs">
+      <li>Hernán MA, Robins JM. Causal Inference: What If. Boca Raton: Chapman &amp; Hall/CRC; 2020. <span class="why">Free online from the authors. Part I needs no maths beyond proportions.</span></li>
+      <li>Hernán MA. Causal Diagrams: Draw Your Assumptions Before Your Conclusions. HarvardX online course (edX). <span class="why">Free, short videos, many examples. The natural follow-on to today.</span></li>
+      <li>DAGitty (dagitty.net). <span class="why">Draw diagrams in the browser and get adjustment sets. The R package of the same name does this inside your analysis.</span></li>
+      <li>Pearl J, Mackenzie D. The Book of Why. New York: Basic Books; 2018. <span class="why">A readable history of causal thinking, with the birth weight paradox and Simpson's paradox.</span></li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>3. Key papers, by topic</h2>
+    <h3>Diagrams and confounding</h3>
+    <ol class="refs">
+      <li>Greenland S, Pearl J, Robins JM. Causal diagrams for epidemiologic research. Epidemiology 1999;10:37-48.</li>
+      <li>Hernán MA, Hernández-Díaz S, Werler MM, Mitchell AA. Causal knowledge as a prerequisite for confounding evaluation. Am J Epidemiol 2002;155:176-84.</li>
+      <li>VanderWeele TJ. Principles of confounder selection. Eur J Epidemiol 2019;34:211-9.</li>
+      <li>Tennant PWG, Murray EJ, Arnold KF, et al. Use of directed acyclic graphs (DAGs) to identify confounders in applied health research: review and recommendations. Int J Epidemiol 2021;50:620-32.</li>
+      <li>Westreich D, Greenland S. The Table 2 fallacy: presenting and interpreting confounder and modifier coefficients. Am J Epidemiol 2013;177:292-8.</li>
+    </ol>
+    <h3>Selection bias and colliders</h3>
+    <ol class="refs">
+      <li>Hernán MA, Hernández-Díaz S, Robins JM. A structural approach to selection bias. Epidemiology 2004;15:615-25.</li>
+      <li>Hernández-Díaz S, Schisterman EF, Hernán MA. The birth weight "paradox" uncovered? Am J Epidemiol 2006;164:1115-20.</li>
+    </ol>
+    <h3>Asking a causal question well</h3>
+    <ol class="refs">
+      <li>Hernán MA. The C-word: scientific euphemisms do not improve causal inference from observational data. Am J Public Health 2018;108:616-9.</li>
+      <li>Hernán MA, Robins JM. Using big data to emulate a target trial when a randomized trial is not available. Am J Epidemiol 2016;183:758-64.</li>
+      <li>Lipsitch M, Tchetgen Tchetgen E, Cohen T. Negative controls: a tool for detecting confounding and bias in observational studies. Epidemiology 2010;21:383-8.</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>4. The studies used in the exercises</h2>
+    <ol class="refs">
+      <li>Grodstein F, Stampfer MJ, Manson JE, et al. Postmenopausal estrogen and progestin use and the risk of cardiovascular disease. N Engl J Med 1996;335:453-61.</li>
+      <li>Writing Group for the Women's Health Initiative Investigators. Risks and benefits of estrogen plus progestin in healthy postmenopausal women. JAMA 2002;288:321-33.</li>
+      <li>Hernán MA, Alonso A, Logan R, et al. Observational studies analyzed like randomized experiments: an application to postmenopausal hormone therapy and coronary heart disease. Epidemiology 2008;19:766-79.</li>
+      <li>Gajalakshmi V, Peto R, Kanaka TS, Jha P. Smoking and mortality from tuberculosis and other diseases in India: retrospective study of 43000 adult male deaths and 35000 controls. Lancet 2003;362:507-15.</li>
+      <li>Hernández-Díaz S, Schisterman EF, Hernán MA. The birth weight "paradox" uncovered? Am J Epidemiol 2006;164:1115-20.</li>
+      <li>Mondal D, Paul P. Effects of indoor pollution on acute respiratory infections among under-five children in India: evidence from a nationally representative population-based study. PLoS ONE 2020;15(8):e0237611.</li>
+    </ol>
+  </section>
+  <footer>Reading list compiled by the workshop faculty.</footer>
+</main>
+</body>
+</html>
