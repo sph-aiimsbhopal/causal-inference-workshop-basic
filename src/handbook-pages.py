@@ -182,7 +182,7 @@ FOOT = ('<div class="foot"><span>Causal Inference in Epidemiology &middot; 12th 
         '&middot; Gwalior, 26 November 2026</span><span>{}</span></div>')
 
 
-WORKBOOK = {"m00": "Modules 0 and 1", "m01": "Modules 0 and 1", "m02": "Module 2", "m03": "Modules 3 and 4", "m04": "Modules 3 and 4",
+WORKBOOK = {"m00": "Modules 0 and 1", "m01": "Modules 0 and 1", "m01a": "Modules 1a to 1c", "m01b": "Modules 1a to 1c", "m01c": "Modules 1a to 1c", "m02": "Module 2", "m03": "Modules 3 and 4", "m04": "Modules 3 and 4",
             "m05": "Module 5", "m06": "Module 6", "m07": "Modules 7 and 8", "m08": "Modules 7 and 8", "m09": "Module 9",
             "m10": "Module 10", "m11": "Modules 11 and 12", "m12": "Modules 11 and 12", "m13": "Module 13", "m14": "Module 14", "m15": "Module 15"}
 

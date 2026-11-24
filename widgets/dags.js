@@ -132,6 +132,15 @@ window.CAPSTONE = {
 
 // Extra diagrams used only on the slides.
 Object.assign(window.DAGS, {
+  milk: {
+    title: 'Milk and height', x: 'milk', y: 'height', height: 260,
+    nodes: [
+      { id: 'ses', label: 'Family wealth', x: 210, y: 55 },
+      { id: 'milk', label: 'Milk', x: 70, y: 200 },
+      { id: 'height', label: 'Height', x: 350, y: 200 }
+    ],
+    edges: [['ses', 'milk'], ['ses', 'height'], ['milk', 'height']]
+  },
   berkson: {
     title: 'Hospital controls', x: 'smk', y: 'tb', height: 250,
     nodes: [

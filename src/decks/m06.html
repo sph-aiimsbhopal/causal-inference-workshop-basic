@@ -115,6 +115,32 @@
   <aside class="notes">Invented practice numbers. Both strata have ratio 2.0, so the standardised ratio is 2.0 too.</aside>
 </section>
 
+<section data-core>
+  <h2>A real example: kidney stones</h2>
+  <p>Two operations for kidney stones, success rates. A: open surgery. B: percutaneous nephrolithotomy.</p>
+  <table class="calc">
+    <tr><th class="l">Stones</th><th>A</th><th>B</th><th>Better</th></tr>
+    <tr class="fragment"><td class="l">Small</td><td>81/87 = 93%</td><td>234/270 = 87%</td><td>A</td></tr>
+    <tr class="fragment"><td class="l">Large</td><td>192/263 = 73%</td><td>55/80 = 69%</td><td>A</td></tr>
+    <tr class="fragment tot"><td class="l">All patients</td><td>273/350 = 78%</td><td>289/350 = 83%</td><td>B</td></tr>
+  </table>
+  <p class="claim warn fragment">A wins with small stones and with large stones, yet loses overall. This reversal is called Simpson's paradox.</p>
+  <p class="cite">Charig CR et al. BMJ 1986;292:879-82.</p>
+  <aside class="notes">Adapted from Dr Ankur Joshi's lesson. Let students read the overall row first if you want the surprise.</aside>
+</section>
+
+<section data-core>
+  <h2>Why: A was given the hard cases</h2>
+  <ul>
+    <li class="fragment">263 of A's 350 patients had large stones (75%).</li>
+    <li class="fragment">270 of B's 350 patients had small stones (77%).</li>
+    <li class="fragment">Large stones are harder to treat, whatever the operation.</li>
+  </ul>
+  <p class="claim fragment">Stone size is a fork: it decided the operation and the outcome. The crude comparison mixes two different groups of patients.</p>
+  <p class="small dim fragment">Splitting by a variable is right only when the diagram says it is a common cause, as here. Splitting by a consequence of treatment can add bias.</p>
+  <aside class="notes">Same logic as the alcohol strata earlier in this module, with real data.</aside>
+</section>
+
 <section>
   <h2>Five ways to adjust, one idea</h2>
   <table>

@@ -14,7 +14,7 @@ import { join } from 'path';
 const [out, ...decks] = process.argv.slice(2);
 const RUN = process.env.HB_RUN || 'Causal Inference in Epidemiology &middot; a course for beginners &middot; AIIMS Bhopal';
 const course = JSON.parse(readFileSync('src/course.json', 'utf8'));
-const byN = Object.fromEntries(course.modules.map(m => [m.n, m]));
+const byN = Object.fromEntries(course.modules.map(m => [String(m.n), m]));
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const exe = ['/opt/pw-browsers/chromium-1243/chrome-linux64/chrome', process.env.CHROMIUM].find(p => p && existsSync(p));
 const work = mkdtempSync(join(tmpdir(), 'hb-'));
@@ -34,8 +34,8 @@ for (const deck of decks) {
     h2: (s.querySelector('h2') || {}).textContent || '' })));
   for (let i = 0; i < info.length; i++) {
     const s = info[i];
-    const mm = s.kicker.match(/^Module (\d+)/);
-    if (s.cover && mm) { const m = byN[+mm[1]]; label = `Module ${m.n}`; blocks.push({ kind: 'divider', m }); continue; }
+    const mm = s.kicker.match(/^Module (\w+)/);
+    if (s.cover && mm) { const m = byN[mm[1]]; label = `Module ${m.n}`; blocks.push({ kind: 'divider', m }); continue; }
     if (s.id === 'tea' || s.id === 'title' || s.h2.trim() === 'Check yourself') continue;
     if (s.id) label = 'Workshop';
     await p.evaluate(n => Reveal.slide(n), i);

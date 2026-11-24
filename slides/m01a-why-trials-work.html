@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 1a: Why a coin toss works</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 1a · Causal inference for beginners</p>
+  <h1>Why a coin toss works</h1>
+  <p class="lede dim">A trial recovers an average of futures nobody can see. How, and what it still cannot fix.</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 1a. A trial recovers an average of futures nobody can see. How, and what it still cannot fix.</aside>
+</section>
+
+<section data-core>
+  <h2>Everyone carries two hidden cards</h2>
+  <p>From Module 1: each person has two futures. Imagine them written on two cards nobody can read.</p>
+  <div class="cards c2">
+    <div class="card fragment"><h3>Card 1</h3><p>What happens if treated: Y(1)</p></div>
+    <div class="card fragment"><h3>Card 2</h3><p>What happens if not treated: Y(0)</p></div>
+  </div>
+  <p class="claim fragment">We can only ever turn over one card per person. A trial needs a way round that.</p>
+  <aside class="notes">Adapted from Dr Ankur Joshi's hidden-card analogy.</aside>
+</section>
+
+<section data-core>
+  <h2>The effect we want: everyone's cards, averaged</h2>
+  <p>1,000 people. Made-up numbers.</p>
+  <div class="stats">
+    <div class="stat fragment"><div class="n">10%</div><div class="l">would die if <b>all</b> were treated (100 of 1,000)</div></div>
+    <div class="stat fragment"><div class="n">20%</div><div class="l">would die if <b>none</b> were treated (200 of 1,000)</div></div>
+  </div>
+  <div class="work fragment"><p>Average effect = 10% − 20% = <b>−10 percentage points</b>: 10 fewer deaths per 100 people treated.</p></div>
+  <p class="small dim fragment">Its name is the average treatment effect, ATE. It is a property of the whole group, not of any one person.</p>
+  <aside class="notes">In notation: ATE = E[Y(1)] − E[Y(0)]. For a yes or no outcome, the average is the proportion.</aside>
+</section>
+
+<section data-core>
+  <h2>A coin toss lets one half stand in for everyone</h2>
+  <p>Toss a coin for each of the 1,000. Heads: treated. Tails: not.</p>
+  <ul>
+    <li class="fragment">The treated half is a random sample of everyone. Their "treated" cards average about 10%.</li>
+    <li class="fragment">The untreated half is a random sample too. Their "untreated" cards average about 20%.</li>
+  </ul>
+  <table class="calc fragment">
+    <tr><th class="l">Arm</th><th>Deaths</th><th>Risk</th></tr>
+    <tr><td class="l">Treated</td><td>50 / 500</td><td>10%</td></tr>
+    <tr><td class="l">Not treated</td><td>100 / 500</td><td>20%</td></tr>
+  </table>
+  <p class="claim fragment">Estimated effect: 10% − 20% = −10 points. The trial recovers the average of cards nobody could read.</p>
+  <aside class="notes">This is exchangeability, from Module 2, bought by the coin.</aside>
+</section>
+
+<section data-core>
+  <h2>What we want and what we calculate</h2>
+  <div class="cards c2">
+    <div class="card"><h3>What we want</h3><p>The average effect in everyone</p><p class="small dim">Unobservable: needs both cards</p></div>
+    <div class="card fragment"><h3>What we calculate</h3><p>Risk in treated arm minus risk in untreated arm</p><p class="small dim">Observable, from the trial</p></div>
+  </div>
+  <div class="you fragment" style="margin-top:16px">
+    <p>A trial finds 8% deaths with treatment and 12% without. State the effect in words.</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>−4 points: on average 4 fewer deaths per 100 treated. Not "every patient's risk falls by 4 points".</p></div>
+  <aside class="notes">The first box is the estimand, the second the estimate. Module 1b builds on this.</aside>
+</section>
+
+<section data-core>
+  <h2>What the coin balances</h2>
+  <p>On average, the two arms are alike in:</p>
+  <div class="cards c3">
+    <div class="card fragment"><p>Age, sex, blood pressure</p><p class="small dim">Things we measured</p></div>
+    <div class="card fragment"><p>Diet, stress, genes</p><p class="small dim">Things we did not measure</p></div>
+    <div class="card fragment"><p>The hidden cards themselves</p><p class="small dim">Each person's two futures</p></div>
+  </div>
+  <p class="claim warn fragment">"On average" matters. In a trial of 40 people, the arms can still differ by chance. Bigger trials make large imbalances rarer, not impossible.</p>
+  <aside class="notes">Balance is in expectation over repeated randomisations, not guaranteed in any single trial.</aside>
+</section>
+
+<section data-core>
+  <h2>A trap: does the coin make treatment unrelated to outcome?</h2>
+  <p>No. The coin makes treatment unrelated to the <b>hidden cards</b>, the futures each person would have.</p>
+  <p class="fragment">If the drug works, the treated arm has fewer deaths: 10% against 20%. Treatment and observed outcome <b>should</b> be associated. That association is the effect.</p>
+  <aside class="notes">A common misreading of "independence" in trials.</aside>
+</section>
+
+<section data-core>
+  <h2>What the coin does not fix</h2>
+  <div class="cards c3">
+    <div class="card fragment"><p>People lost to follow-up</p></div>
+    <div class="card fragment"><p>People who stop the drug</p></div>
+    <div class="card fragment"><p>Controls who start it</p></div>
+    <div class="card fragment"><p>Outcomes measured badly</p></div>
+    <div class="card fragment"><p>Too few people</p></div>
+    <div class="card fragment"><p>A vague intervention</p></div>
+  </div>
+  <p class="claim fragment">The coin protects who gets which arm. Everything after that needs its own care.</p>
+  <aside class="notes">Each links to a later module: selection (8), measurement (9), well-defined exposure (3).</aside>
+</section>
+
+<section data-core>
+  <h2>Analyse as randomised</h2>
+  <p>1,000 people randomised. Then real life happens:</p>
+  <ul>
+    <li class="fragment">100 of the 500 given the drug stop taking it.</li>
+    <li class="fragment">20 of the 500 controls get the drug elsewhere.</li>
+  </ul>
+  <p class="fragment">Compare all 500 against all 500, as the coin assigned them. This is <b>intention to treat</b>.</p>
+  <p class="claim warn fragment">Moving people between arms by what they did later breaks what the coin gave you. People who stop a drug are often sicker.</p>
+  <aside class="notes">Adapted from Dr Ankur Joshi's lesson.</aside>
+</section>
+
+<section data-core>
+  <h2>Three ways to analyse a trial</h2>
+  <table>
+    <tr><th>Analysis</th><th>Compares</th><th>Coin still protects?</th></tr>
+    <tr class="fragment"><td>Intention to treat</td><td>Arms as randomised</td><td>Yes</td></tr>
+    <tr class="fragment"><td>Per protocol</td><td>Only those who followed the plan</td><td>Not fully</td></tr>
+    <tr class="fragment"><td>As treated</td><td>What people actually took</td><td>Not fully</td></tr>
+  </table>
+  <p class="claim fragment">Intention to treat answers a real question: what happens if we offer this drug?</p>
+  <aside class="notes">The WHI result in Module 0, HR 1.29, was an intention-to-treat estimate. Per-protocol effects need the methods of Module 13.</aside>
+</section>
+
+<section data-core>
+  <h2>Stopping the drug dilutes the effect</h2>
+  <p>The drug lowers death from 20% to 10% <b>if taken</b>. Half the treated arm stops it and has the control risk. Made-up numbers.</p>
+  <div class="work">
+    <p class="fragment">Treated arm: 0.5 × 10% + 0.5 × 20% = <b>15%</b></p>
+    <p class="fragment">Control arm: <b>20%</b></p>
+    <p class="fragment">Intention to treat: 15% − 20% = <b>−5 points</b>. The effect of taking it: −10 points.</p>
+  </div>
+  <p class="small dim fragment">This assumes those who stop have the control risk.</p>
+  <aside class="notes">Intention to treat is not wrong; it answers "offer the drug", not "take the drug".</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>A drug lowers death from 30% to 15% if taken. 40% of the treated arm stop it and have the control risk.</p>
+    <p>What will the intention-to-treat difference be?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Treated arm: 0.6 × 15% + 0.4 × 30% = 21%. Control 30%. Difference <b>−9 points</b>, against −15 if everyone took it.</p></div>
+  <aside class="notes">Check: 9 + 12 = 21.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">The effect we want is an average of hidden futures: 10% against 20%.</p>
+  <p class="claim">A coin toss lets each arm stand in for everyone, for things measured and unmeasured, on average.</p>
+  <p class="claim warn">Analyse as randomised. Stopping the drug dilutes the effect: −10 became −5.</p>
+  <aside class="notes">Hernán and Robins, Causal Inference: What If, chapter 2. Modern Epidemiology, 4th ed., chapter 6.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m01a-why-trials-work.html#check">Open the self-check for Module 1a</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 6, Epidemiologic Study Design; Hernán and Robins, What If, chapter 2.</p>
+  <p>Next: <a href="m01b-estimands.html">Module 1b, Whose effect? The estimand</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

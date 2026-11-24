@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 1b: Whose effect? The estimand</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 1b · Causal inference for beginners</p>
+  <h1>Whose effect? The estimand</h1>
+  <p class="lede dim">One programme can have several correct effects, depending on whom you average over.</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 1b. One programme can have several correct effects, depending on whom you average over.</aside>
+</section>
+
+<section data-core>
+  <h2>One programme, two kinds of patient</h2>
+  <p>A diabetes self-management programme. HbA1c after six months. Made-up numbers.</p>
+  <table class="calc">
+    <tr><th class="l">Patients</th><th>Usual care</th><th>Programme</th><th>Effect</th></tr>
+    <tr class="fragment"><td class="l">Poor self-management at start</td><td>9.5%</td><td>8.0%</td><td><b>−1.5</b></td></tr>
+    <tr class="fragment"><td class="l">Good self-management at start</td><td>7.2%</td><td>7.0%</td><td><b>−0.2</b></td></tr>
+  </table>
+  <p class="claim fragment">So what is "the" effect of the programme? It depends on whom you average over.</p>
+  <aside class="notes">Adapted from Dr Ankur Joshi's lesson.</aside>
+</section>
+
+<section data-core>
+  <h2>Three groups, three averages</h2>
+  <table class="calc">
+    <tr><th class="l">Average over</th><th>Mix, poor : good</th><th>Effect</th></tr>
+    <tr class="fragment"><td class="l">Everyone (ATE)</td><td>60 : 40</td><td>0.6 × (−1.5) + 0.4 × (−0.2) = <b>−0.98</b></td></tr>
+    <tr class="fragment"><td class="l">Those who joined (ATT)</td><td>80 : 20</td><td>0.8 × (−1.5) + 0.2 × (−0.2) = <b>−1.24</b></td></tr>
+    <tr class="fragment"><td class="l">Those who did not (ATC)</td><td>40 : 60</td><td>0.4 × (−1.5) + 0.6 × (−0.2) = <b>−0.72</b></td></tr>
+  </table>
+  <p class="claim fragment">Same programme, three correct answers to three different questions.</p>
+  <aside class="notes">ATT: effect among the treated. ATC: effect among the controls, the untreated. Here those who joined were mostly poor self-managers, who benefit most.</aside>
+</section>
+
+<section data-core>
+  <h2>Which question does a programme officer ask?</h2>
+  <ul>
+    <li class="fragment">"Should we roll this out to everyone?" The <b>ATE</b>.</li>
+    <li class="fragment">"Was it worth it for those who came?" The <b>ATT</b>.</li>
+    <li class="fragment">"What if we enrolled those who stayed away?" The <b>ATC</b>.</li>
+  </ul>
+  <p class="small dim fragment">Matching on a propensity score usually estimates the ATT; weighting usually the ATE.</p>
+  <aside class="notes">The last line previews methods that are outside this course but students will meet in papers.</aside>
+</section>
+
+<section data-core>
+  <h2>A causal question has six parts</h2>
+  <div class="cards c3">
+    <div class="card fragment"><h3>Population</h3><p>In whom?</p></div>
+    <div class="card fragment"><h3>Intervention</h3><p>What change?</p></div>
+    <div class="card fragment"><h3>Comparator</h3><p>Against what?</p></div>
+    <div class="card fragment"><h3>Outcome</h3><p>Measured how?</p></div>
+    <div class="card fragment"><h3>Time</h3><p>When?</p></div>
+    <div class="card fragment"><h3>Measure</h3><p>Difference or ratio?</p></div>
+  </div>
+  <p class="claim fragment">Fix all six before choosing the analysis. Together they are called the <b>estimand</b>.</p>
+  <aside class="notes">Close to PICO with time and effect measure added.</aside>
+</section>
+
+<section data-core>
+  <h2>A precise question</h2>
+  <div class="work">
+    <p>Among <b>adults with insulin-treated type 2 diabetes in urban Bhopal</b>, what is the average effect of <b>a structured self-management programme</b> against <b>usual care</b> on <b>HbA1c</b> at <b>six months</b>, as a <b>mean difference</b>?</p>
+  </div>
+  <p class="fragment">A study in rural Sehore could find a different effect. Both can be right: different populations, different estimands.</p>
+  <aside class="notes">Adapted from Dr Ankur Joshi's lesson.</aside>
+</section>
+
+<section data-core>
+  <h2>The Tamil Nadu 4.5 has an estimand too</h2>
+  <p>Ever smokers against never smokers, TB death rate ratio <b>4.5</b>.</p>
+  <ul>
+    <li class="fragment">Population: urban men aged 25 to 69 in Tamil Nadu, 1990s.</li>
+    <li class="fragment">Exposure: ever smoking, any product. Comparator: never smoking.</li>
+    <li class="fragment">Measure: a rate ratio.</li>
+  </ul>
+  <p class="claim fragment">It need not apply to women, to rural men, or to a ban on bidis alone.</p>
+  <p class="cite">Gajalakshmi V et al. Lancet 2003;362:507-15.</p>
+  <aside class="notes">Connects to Module 3: the version of the exposure is part of the estimand.</aside>
+</section>
+
+<section data-core>
+  <h2>Spot the mismatch</h2>
+  <div class="you">
+    <p>"Among adults with type 2 diabetes, does a lifestyle programme against standard care reduce <b>new cases of diabetes</b> over six months?"</p>
+    <p>What is wrong with this question?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>People who already have diabetes cannot newly develop it. Either change the population (adults with prediabetes, outcome new diabetes) or the outcome (adults with diabetes, outcome HbA1c).</p></div>
+  <aside class="notes">Adapted from Dr Ankur Joshi's lesson.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>Write the six parts for: "Does LPG reduce ARI in children?"</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>One answer: children under five in households where LPG is available (population); LPG as main cooking fuel for a year (intervention) against biomass (comparator); ARI in the last two weeks, mother's report (outcome); at survey (time); odds ratio (measure).</p></div>
+  <aside class="notes">Module 15 builds a full analysis plan from this.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">"The" effect depends on whom you average over: −0.98, −1.24 or −0.72.</p>
+  <p class="claim">Write the six parts of the question before the analysis.</p>
+  <p class="claim warn">An estimate from one population answers that population's question.</p>
+  <aside class="notes">Hernán and Robins, What If, chapters 1 and 4. Modern Epidemiology, 4th ed., chapters 3 and 5.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m01b-estimands.html#check">Open the self-check for Module 1b</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 3, Formal Causal Models, and chapter 5; Hernán and Robins, What If, chapters 1 and 4.</p>
+  <p>Next: <a href="m01c-heterogeneity.html">Module 1c, Effects that differ</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

@@ -126,3 +126,7 @@ Ec=.95*a; Uc=c+.05*a; En=.8*b; Un=d+.2*b
 print(" RR", round((Ec/(Ec+En))/(Uc/(Uc+Un)),3))
 print("== M12 your turn: p1 .5 p0 .2 RRud 2")
 print(" bias", (0.5*1+1)/(0.2*1+1), " corrected", round(4.5/((0.5+1)/(0.2+1)),2))
+
+print("== M1a trial dilution: 0.5*10+0.5*20 =", 0.5*10+0.5*20, "; your turn 0.6*15+0.4*30 =", 0.6*15+0.4*30)
+print("== M1b ATE/ATT/ATC:", 0.6*-1.5+0.4*-0.2, 0.8*-1.5+0.2*-0.2, 0.4*-1.5+0.6*-0.2, "; treated share t from 0.8t+0.4(1-t)=0.6:", (0.6-0.4)/0.4)
+print("== M1c NNT 1/.01, 1/.10:", 1/.01, 1/.10, "; statin Ravi", 0.04*0.25, 1/(0.04*0.25), "Shanti", 0.24*0.25, round(1/(0.24*0.25),1))

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 1a: Why a coin toss works</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 1a</p>
+  <h1>Why a coin toss works</h1>
+  <p>A trial recovers an average of futures nobody can see. How, and what it still cannot fix.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>State the average treatment effect in words and numbers</li><li>Explain why randomisation makes the arms stand in for everyone</li><li>Explain intention to treat and why stopping a drug dilutes the effect</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m01a-why-trials-work.html"><span class="label">Slides</span><h2>Why a coin toss works</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 6, Epidemiologic Study Design; Hernán and Robins, What If, chapter 2.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m01-two-futures.html">← Module 1: Two possible futures</a><a class="act navbtn" href="m01b-estimands.html">Module 1b: Whose effect? The estimand →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "In a trial, 10% die with the drug and 20% without. The average treatment effect is:", "o": ["10 fewer deaths per 100 treated", "Every patient's risk falls by half", "The drug works in 10% of patients", "10% of deaths are due to no drug"], "a": 0, "e": "It is an average over the group: 10% minus 20% is minus 10 points, or 10 fewer deaths per 100. It says nothing about any one patient."}, {"q": "Randomisation makes the treatment arm independent of:", "o": ["The outcome that is later observed", "Each person's two potential outcomes", "Losses to follow-up after randomisation", "Whether people keep taking the drug"], "a": 1, "e": "The coin cannot know anyone's hidden futures. If the drug works, treatment and observed outcome should be associated."}, {"q": "The drug halves deaths from 20% to 10% if taken, but half the treated arm stops it. The intention-to-treat difference is about:", "o": ["−10 points", "0 points", "−5 points", "−15 points"], "a": 2, "e": "Treated arm: 0.5 × 10% + 0.5 × 20% = 15%, against 20%. The effect of offering the drug is diluted to −5 points."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

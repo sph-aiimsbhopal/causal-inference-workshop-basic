@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 1b: Whose effect? The estimand</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 1b</p>
+  <h1>Whose effect? The estimand</h1>
+  <p>One programme can have several correct effects, depending on whom you average over.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Tell apart the ATE, the ATT and the ATC</li><li>Write a causal question in six parts</li><li>Spot a mismatch between population and outcome</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m01b-estimands.html"><span class="label">Slides</span><h2>Whose effect? The estimand</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 3, Formal Causal Models, and chapter 5; Hernán and Robins, What If, chapters 1 and 4.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m01a-why-trials-work.html">← Module 1a: Why a coin toss works</a><a class="act navbtn" href="m01c-heterogeneity.html">Module 1c: Effects that differ →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Those who joined a programme were mostly people who benefit most. Compared with the ATE, the ATT will be:", "o": ["Smaller", "Exactly the same", "Larger", "Impossible to compare"], "a": 2, "e": "The ATT averages over those who joined. If they are mostly people with large effects, it is larger: −1.24 against −0.98 in the module."}, {"q": "Which is NOT one of the six parts of a causal question?", "o": ["The comparator", "The time of outcome", "The effect measure", "The p-value threshold"], "a": 3, "e": "Population, intervention, comparator, outcome, time and effect measure define the estimand. Significance thresholds belong to the analysis."}, {"q": "'Among adults with diabetes, does a lifestyle programme reduce new cases of diabetes?' The problem is:", "o": ["The comparator is missing", "Population and outcome do not match", "The time frame is too long", "It needs a ratio, not a difference"], "a": 1, "e": "People who already have diabetes cannot newly develop it. Change the population or the outcome."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

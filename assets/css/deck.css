@@ -53,3 +53,4 @@
 .reveal section.brandcover .sub { color: #d3d9ee; margin: 0; }
 .reveal section.brandcover .foot { padding: 26px 64px 0; }
 .reveal section.brandcover .foot p { margin: 0 0 8px; }
+.reveal .stat.bad .n { color: var(--bad); }

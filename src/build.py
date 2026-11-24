@@ -174,7 +174,7 @@ def module_page(m):
     if ready and m["checks"]:
         data = json.dumps(m["checks"], ensure_ascii=False).replace("</", "<\\/")
         scripts = f'<script type="application/json" id="checkdata">{data}</script>\n<script src="../widgets/check.js"></script>'
-    return PAGE.format(title=f"Module {m['n']}: {esc(m['title'])}", up="../", kicker=f"Module {m['n']} of {len(MODULES) - 1}",
+    return PAGE.format(title=f"Module {m['n']}: {esc(m['title'])}", up="../", kicker=f"Module {m['n']}",
                        h1=esc(m["title"]), lede=esc(m["lede"]), body="\n".join(parts), scripts=scripts)
 
 
