@@ -101,7 +101,12 @@ def qr_datauri(url):
 
 
 def logo(name):
-    return "data:image/png;base64," + base64.b64encode((HERE / name).read_bytes()).decode()
+    return "data:image/png;base64," + base64.b64encode((HERE.parent / "assets" / "img" / name).read_bytes()).decode()
+
+
+def brandrow(cls="brand"):
+    return (f'<div class="{cls}">' + "".join(f'<img src="{logo(n)}" alt="{a}">' for n, a in
+            [("iapsm.png", "IAPSM"), ("conf.png", "12th SCZ IAPSMCon 2026"), ("grmc.png", "Gajra Raja Medical College, Gwalior"), ("aiims.png", "AIIMS Bhopal")]) + '</div>')
 
 
 CSS = """
@@ -135,6 +140,15 @@ p { margin:0 0 .7em }
 .nameplate .f i { display:block; border-bottom:.6pt solid #9AA1B0; height:7mm }
 .logos { display:flex; gap:8mm; align-items:center; margin-bottom:8mm }
 .logos img { height:17mm }
+.brand { display:flex; justify-content:space-between; align-items:center; padding:7mm 18mm 6mm; background:#fff }
+.brand img { height:24mm }
+.brandsm { display:flex; gap:6mm; justify-content:center; align-items:center; margin:8mm 0 0 }
+.back .brandsm img, .brandsm img { height:16mm; width:auto; margin:0 }
+.orange { height:2.4mm; background:#F28C28 }
+.cband .theme { font-size:10pt; font-style:italic; color:#D6DEF2; margin:5mm 0 0 }
+.rp { display:flex; gap:8mm; margin:0 0 8mm }
+.rp div { flex:1 1 0; font-size:9.5pt; line-height:1.4; color:#5A6273; border-left:1.2pt solid #F28C28; padding-left:3.5mm }
+.rp b { color:#162a6c; font-size:10.5pt }
 table { width:100%; border-collapse:collapse; font-size:10pt }
 td, th { padding:2.4mm 3mm; border-bottom:.3pt solid #D8DCE6; vertical-align:top; text-align:left }
 th { background:#162a6c; color:#fff; font-size:9pt; letter-spacing:.04em }
@@ -154,8 +168,9 @@ tr.brk td { color:#9AA1B0; font-style:italic; background:#F5F7FB }
 .fb .q p { margin:0 0 2mm; font-size:10.5pt }
 .fb .scale { display:flex; gap:4mm; font-size:9pt; color:#5A6273 }
 .fb .scale span { border:.5pt solid #9AA1B0; padding:1.6mm 0; flex:1 1 0; text-align:center }
-.fb .lines { background:repeating-linear-gradient(to bottom, transparent 0 7mm, #D8DCE6 7mm 7.15mm); }
-.notesheet { flex:1 1 auto; background:repeating-linear-gradient(to bottom, transparent 0 7mm, #D8DCE6 7mm 7.15mm) }
+.fb .lines, .notesheet { overflow:hidden }
+.fb .lines i, .notesheet i { display:block; height:7.15mm; border-bottom:.15mm solid #D8DCE6 }
+.notesheet { flex:1 1 auto }
 .lic { font-size:9pt; line-height:1.4 }
 .lic div { margin-bottom:3mm; padding-left:5mm; text-indent:-5mm }
 .back { justify-content:center; align-items:center; text-align:center }
@@ -167,8 +182,9 @@ FOOT = ('<div class="foot"><span>Causal Inference in Epidemiology &middot; 12th 
         '&middot; Gwalior, 26 November 2026</span><span>{}</span></div>')
 
 
-WORKBOOK = {"m00": "Modules 0 and 1", "m01": "Modules 0 and 1", "m02": "Module 2", "m05": "Module 5", "m06": "Module 6",
-            "m07": "Modules 7 and 8", "m08": "Modules 7 and 8", "m10": "Module 10", "m14": "Module 14", "m15": "Module 15"}
+WORKBOOK = {"m00": "Modules 0 and 1", "m01": "Modules 0 and 1", "m02": "Module 2", "m03": "Modules 3 and 4", "m04": "Modules 3 and 4",
+            "m05": "Module 5", "m06": "Module 6", "m07": "Modules 7 and 8", "m08": "Modules 7 and 8", "m09": "Module 9",
+            "m10": "Module 10", "m11": "Modules 11 and 12", "m12": "Modules 11 and 12", "m13": "Module 13", "m14": "Module 14", "m15": "Module 15"}
 
 
 def module_rows(mods):
@@ -193,22 +209,25 @@ def front(variant="workshop"):
     mods = path if variant == "workshop" else [m["id"] for m in C["modules"]]
     rows = module_rows(mods)
     kitword = "Workshop handbook" if variant == "workshop" else "Course handbook"
-    meta = ("<b>Thursday 26 November 2026</b><br>Pre-conference workshop, 12th South Central Zone IAPSM Conference<br>Gajra Raja Medical College, Gwalior<br>"
-            "Resource faculty: Dr Abhijit Pakhare and Dr Ankur Joshi, AIIMS Bhopal") if variant == "workshop" else (
+    meta = ("<b>Thursday 26 November 2026, 2:00 to 5:00 pm</b><br>Pre-conference hands-on workshop, 12th South Central Zone IAPSM Conference<br>"
+            "Hosted by the Department of Community Medicine, Gajra Raja Medical College, Gwalior<br>"
+            "Organising Chairman Dr Manoj Bansal &middot; Organising Secretary Dr Avadhesh Diwakar") if variant == "workshop" else (
             "A self-paced course in sixteen short modules<br>Every slide, worked number and exercise from the course site<br>AIIMS Bhopal")
     gl = "".join(f"<div><b>{t}.</b> {d}</div>" for t, d in GLOSSARY)
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><title>Handbook front</title><style>{CSS}</style></head><body>
 
 <div class="page cover">
+  {brandrow() if variant == "workshop" else ""}
   <div class="cband">
     <p class="kick">{"12th South Central Zone IAPSM Conference &nbsp;&middot;&nbsp; Pre-conference workshop" if variant == "workshop" else "A self-paced course for beginners &nbsp;&middot;&nbsp; AIIMS Bhopal"}</p>
-    <h1>Causal Inference<br>in Epidemiology</h1>
-    <p class="sub">A three-hour workshop on counterfactuals, causal diagrams, bias, and choosing what to adjust for</p>
+    {'<h1>Beyond 2 &times; 2 Tables</h1><p class="sub">Understanding causal inference in epidemiology: counterfactuals, causal diagrams, bias, and choosing what to adjust for</p><p class="theme">&ldquo;Revolutionizing Public Health for Changing India: Integrating Policy, Practice &amp; People&rdquo;</p>' if variant == "workshop" else '<h1>Causal Inference<br>in Epidemiology</h1><p class="sub">A course for beginners on counterfactuals, causal diagrams, bias, and choosing what to adjust for</p>'}
   </div>
+  {'<div class="orange"></div>' if variant == "workshop" else ""}
   <div class="cbody">
-    <div class="logos"><img src="{logo('aiims.png')}"></div>
+    {"" if variant == "workshop" else f'<div class="logos"><img src="{logo("aiims.png")}"></div>'}
     <p class="kitword">{kitword}</p>
     <p class="meta">{meta}<br><span class="dim">For MD students in Community Medicine</span></p>
+    {'<div class="rp"><div><b>Dr Abhijit P. Pakhare</b><br>Professor, Department of Community &amp; Family Medicine, AIIMS Bhopal</div><div><b>Dr Ankur Joshi</b><br>Additional Professor, Department of Community &amp; Family Medicine, AIIMS Bhopal</div></div>' if variant == "workshop" else ""}
     <div class="nameplate">
       <p class="nt">This handbook belongs to</p>
       <div class="row"><div class="f"><span>Name</span><i></i></div><div class="f"><span>Institute</span><i></i></div></div>
@@ -296,7 +315,7 @@ def back(notes_pages, variant="workshop"):
             "I could check whether a published paper's adjustment set suits its causal question.",
             "The studies used in the exercises were the right level of difficulty.",
         ])
-    notes = "".join(f'<div class="page"><h2>Notes</h2><div class="rule"></div><div class="notesheet"></div>{FOOT.format("Notes")}</div>'
+    notes = "".join(f'<div class="page"><h2>Notes</h2><div class="rule"></div><div class="notesheet">{"<i></i>" * 40}</div>{FOOT.format("Notes")}</div>'
                     for _ in range(notes_pages))
     src = "".join(f"<div>{s}</div>" for s in SOURCES)
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><title>Handbook back</title><style>{CSS}</style></head><body>
@@ -316,11 +335,11 @@ def back(notes_pages, variant="workshop"):
   {fb}
   <div class="q" style="flex:1 1 auto; display:flex; flex-direction:column">
     <p><strong>One thing that should be cut, and one thing that needed more time.</strong></p>
-    <div class="lines" style="flex:1 1 auto; min-height:34mm"></div>
+    <div class="lines" style="flex:1 1 auto; min-height:34mm">{'<i></i>' * 20}</div>
   </div>
   <div class="q" style="margin-bottom:0">
     <p><strong>Which study in your own department would you now like to draw a diagram for?</strong></p>
-    <div class="lines" style="height:22mm"></div>
+    <div class="lines" style="height:22mm">{'<i></i>' * 4}</div>
   </div>
   {FOOT.format('Feedback')}
 </div>
@@ -348,6 +367,7 @@ def back(notes_pages, variant="workshop"):
   <p class="dim" style="max-width:120mm; margin-top:6mm">The slides, labs, workbook and reading list from today live here,
   and stay here. Free to reuse with your own students.</p>
   <p class="faint" style="margin-top:10mm; font-size:9pt">{"AIIMS Bhopal &middot; 12th South Central Zone IAPSM Conference, Gwalior" if variant == "workshop" else "AIIMS Bhopal"}</p>
+  {brandrow("brandsm") if variant == "workshop" else ""}
 </div>
 
 </body></html>"""

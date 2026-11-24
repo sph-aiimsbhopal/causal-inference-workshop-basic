@@ -308,4 +308,4 @@ MODULES = [
 
 # The workshop path: core slides from these modules, in this order. "x:" entries are
 # slides that exist only in the workshop deck (src/decks/workshop.html, by data-id).
-WORKSHOP = ["m00", "x:quiz-before", "m01", "m02", "m05", "m06", "m07", "m08", "x:tea", "m10", "m14", "x:close", "x:quiz-after", "x:sources"]
+WORKSHOP = ["x:title", "m00", "x:quiz-before", "m01", "m02", "m05", "m06", "m07", "m08", "x:tea", "m10", "m14", "x:close", "x:quiz-after", "x:sources"]

@@ -36,7 +36,7 @@ for (const deck of decks) {
     const s = info[i];
     const mm = s.kicker.match(/^Module (\d+)/);
     if (s.cover && mm) { const m = byN[+mm[1]]; label = `Module ${m.n}`; blocks.push({ kind: 'divider', m }); continue; }
-    if (s.id === 'tea' || s.h2.trim() === 'Check yourself') continue;
+    if (s.id === 'tea' || s.id === 'title' || s.h2.trim() === 'Check yourself') continue;
     if (s.id) label = 'Workshop';
     await p.evaluate(n => Reveal.slide(n), i);
     await p.waitForTimeout(200);
@@ -55,7 +55,7 @@ for f in sorted(pathlib.Path(sys.argv[1]).glob('*.png')):
 `, work], { stdio: 'inherit' });
 for (const s of blocks) if (s.kind === 'slide') s.src = 'data:image/png;base64,' + readFileSync(s.file).toString('base64');
 
-const slideBlock = s => `<div class="blk"><div class="cap">${esc(s.label)} &middot; ${esc(s.title)}</div><img src="${s.src}"><div class="lines"></div></div>`;
+const slideBlock = s => `<div class="blk"><div class="cap">${esc(s.label)} &middot; ${esc(s.title)}</div><img src="${s.src}"><div class="lines">${'<i></i>'.repeat(8)}</div></div>`;
 const dividerPage = d => `<div class="page div">
   <div class="dnum">${d.m.n}</div>
   <p class="dkick">Module ${d.m.n}</p>
@@ -82,7 +82,8 @@ const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Handbook sl
   .blk { flex:0 0 130mm; display:flex; flex-direction:column }
   .cap { font-size:7.5pt; letter-spacing:.08em; text-transform:uppercase; color:#7A8394; margin-bottom:1.2mm; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
   .blk img { width:186mm; height:104.6mm; display:block; border:.4pt solid #C9CEDA }
-  .lines { flex:1 1 auto; margin-top:2mm; background:repeating-linear-gradient(to bottom, transparent 0 5.6mm, #BFC6D4 5.6mm 5.75mm) }
+  .lines { flex:1 1 auto; margin-top:2mm; overflow:hidden }
+  .lines i { display:block; height:5.75mm; border-bottom:.15mm solid #BFC6D4 }
   .run { flex:0 0 auto; margin-top:auto; font-size:7.5pt; color:#9AA1B0; display:flex; justify-content:space-between; padding-top:2mm }
   .div { justify-content:center }
   .div .dnum { font-size:64pt; font-weight:700; color:#162a6c; line-height:1 }

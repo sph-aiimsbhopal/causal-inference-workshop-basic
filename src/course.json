@@ -813,6 +813,7 @@
   }
  ],
  "workshop": [
+  "x:title",
   "m00",
   "x:quiz-before",
   "m01",

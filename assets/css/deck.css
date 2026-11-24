@@ -42,3 +42,14 @@
   .reveal .fragment.highlight-cell.visible { background: var(--warn-wash); }
   .dagwrap { display: flex; justify-content: center; }
   .reveal sup, .reveal sub { font-size: 0.9em; }
+
+/* Branded title slide for the IAPSMCon pre-conference workshop */
+.reveal section.brandcover { padding: 0 !important; }
+.reveal section.brandcover .logos { display: flex; justify-content: space-around; align-items: center; height: 200px; padding: 0 120px; }
+.reveal section.brandcover .logos img { height: 150px; width: auto; margin: 0; }
+.reveal section.brandcover .band { background: var(--band); color: #fff; padding: 34px 64px 30px; border-bottom: 12px solid #F28C28; }
+.reveal section.brandcover .kicker { font-size: var(--fs-small); letter-spacing: 0.12em; text-transform: uppercase; color: #aeb9dd; margin: 0 0 12px; }
+.reveal section.brandcover h1 { font-family: var(--font-head); color: #fff; font-size: 64px; line-height: 1.1; margin: 0 0 10px; font-weight: 600; text-transform: none; text-align: left; }
+.reveal section.brandcover .sub { color: #d3d9ee; margin: 0; }
+.reveal section.brandcover .foot { padding: 26px 64px 0; }
+.reveal section.brandcover .foot p { margin: 0 0 8px; }
