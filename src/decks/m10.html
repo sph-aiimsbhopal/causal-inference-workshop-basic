@@ -1,0 +1,135 @@
+<section data-core>
+  <h2>A recipe in four steps</h2>
+  <ol class="steps">
+    <li class="fragment"><b>List</b> every path between exposure and outcome.</li>
+    <li class="fragment"><b>Keep</b> the causal paths open: adjust for nothing on them.</li>
+    <li class="fragment"><b>Block</b> each back-door path by adjusting for a variable on it that is not a collider.</li>
+    <li class="fragment"><b>Check</b> that you have not opened anything: no colliders, nothing caused by the exposure.</li>
+  </ol>
+  <p class="cite fragment">This is Pearl's back-door criterion, in steps. Modern Epidemiology, 4th ed., chapter 12.</p>
+  <aside class="notes">Students now have every piece: forks to block, chains to leave alone, colliders to leave alone. The recipe just applies the three rules path by path.</aside>
+</section>
+
+<section data-core>
+  <h2>The back-door rule, in two lines</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>1 · Block every back-door path</h3><p class="small">Every path that starts with an arrow into the exposure must pass through something you adjust for, and not only through colliders.</p></div>
+    <div class="card bad"><h3>2 · Touch nothing downstream</h3><p class="small">Adjust for nothing the exposure causes: no mediators, nothing that follows from them.</p></div>
+  </div>
+  <p class="claim fragment">If both hold, and the diagram is right, the adjusted estimate is the total effect.</p>
+  <aside class="notes">"If the diagram is right" carries the weight. The rule moves the argument from statistics to subject knowledge.</aside>
+</section>
+
+<section data-core>
+  <h2>Practice 1: tobacco chewing and oral cancer</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice1" style="width:470px" data-fs="18" data-steps='[{"add":["tob","ca","age","age>tob","age>ca"]},{"add":["leu","tob>leu","leu>ca"],"fi":1},{"add":["camp","tob>camp","ca>camp"],"fi":2}]' role="img" aria-label="Diagram for tobacco chewing and oral cancer"></svg></div>
+    <div>
+      <p class="small">Older men chew more and get more oral cancer.</p>
+      <p class="small fragment" data-fragment-index="1">Chewing causes leukoplakia, which can turn into cancer.</p>
+      <p class="small fragment" data-fragment-index="2">Chewers, and men with early symptoms, are more likely to attend a screening camp.</p>
+    </div>
+  </div>
+  <p class="cite">Practice diagram, drawn for teaching.</p>
+  <aside class="notes">Build the diagram with the room. Then apply the four steps on the next slide.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 1: list the paths</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice1" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"hl":"tob,leu,ca","fi":1},{"hl":"tob,age,ca","fi":2},{"hl":"tob,camp,ca","fi":3}]' role="img" aria-label="Three paths highlighted in turn"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1"><b>Chewing → Leukoplakia → Cancer.</b> Causal: keep open.</p>
+      <p class="small fragment" data-fragment-index="2"><b>Chewing ← Age → Cancer.</b> Back-door: open, must be blocked.</p>
+      <p class="small fragment" data-fragment-index="3"><b>Chewing → Camp ← Cancer.</b> Through a collider: already closed.</p>
+    </div>
+  </div>
+  <aside class="notes">Green is causal and open; red is non-causal and open; dark is closed. Three paths, three different decisions.</aside>
+</section>
+
+<section data-core>
+  <h2>Steps 2 to 4: decide</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice1" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"z":["age"],"fi":1}]' role="img" aria-label="Age adjusted for"></svg></div>
+    <div>
+      <p class="small">Leukoplakia: on the causal path. <b>Do not adjust.</b></p>
+      <p class="small">Camp attendance: a collider. <b>Do not adjust</b>, and do not study only camp attendees.</p>
+      <p class="small fragment" data-fragment-index="1">Age: blocks the only back-door path. <b>Adjust.</b></p>
+      <p class="claim good small fragment" data-fragment-index="1">Adjustment set: {Age}</p>
+    </div>
+  </div>
+  <aside class="notes">Point out the design lesson: if the data came only from screening camp attendees, the study has already conditioned on the collider, and no analysis can undo it.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn: Practice 2, diabetes and TB</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice2" style="width:470px" data-fs="18" data-steps='[{"add":"all"}]' role="img" aria-label="Diagram for diabetes and TB"></svg></div>
+    <div class="you">
+      <p class="small">Use the four steps. Which variables would you adjust for to estimate the total effect of diabetes on TB?</p>
+      <p class="small">Is there more than one answer?</p>
+    </div>
+  </div>
+  <aside class="notes">Give three minutes. Expect some to include HbA1c: it is caused by diabetes, so it fails rule 2.</aside>
+</section>
+
+<section data-core>
+  <h2>Practice 2: the answer</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice2" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"hl":"dm,age,tb","fi":1},{"hl":"dm,pov,nut,tb","fi":2},{"hl":"","z":["age","pov"],"fi":3}]' role="img" aria-label="Back-door paths and an adjustment set"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Back-door 1: Diabetes ← Age → TB. Block with age.</p>
+      <p class="small fragment" data-fragment-index="2">Back-door 2: Diabetes ← Poverty → Undernutrition → TB. Block with poverty <b>or</b> undernutrition.</p>
+      <p class="small fragment" data-fragment-index="3">Two sets work: <b>{Age, Poverty}</b> or <b>{Age, Undernutrition}</b>. Never HbA1c.</p>
+      <p class="small dim fragment" data-fragment-index="3">Choose the set you can measure best.</p>
+    </div>
+  </div>
+  <aside class="notes">Multiple valid sets is normal. Lab 2's "Show the sets that work" lists them for any diagram.</aside>
+</section>
+
+<section data-core>
+  <h2>Practice 3: Tamil Nadu, again</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":"all","z":["age","edu"]},{"hl":"smk,peer,alc,tb","fi":1}]' role="img" aria-label="An open path through unmeasured variables"></svg></div>
+    <div>
+      <p class="small">Every set that works needs alcohol or peer group. Neither was measured.</p>
+      <p class="small fragment" data-fragment-index="1">With the data available, no adjustment set is enough.</p>
+      <p class="claim warn small fragment" data-fragment-index="1">Say so plainly. More adjustment on what you have cannot fix it.</p>
+    </div>
+  </div>
+  <aside class="notes">Unmeasured confounding is the normal state of observational research. Module 12 shows what to do next: negative controls and a simple bias analysis.</aside>
+</section>
+
+<section data-core>
+  <h2>What never to adjust for, and what is safe</h2>
+  <table>
+    <tr><th>Variable</th><th>Adjust?</th><th>Why</th></tr>
+    <tr><td>Common cause of exposure and outcome</td><td><b>Yes</b></td><td>Blocks a back-door path</td></tr>
+    <tr class="fragment"><td>Mediator, or anything caused by the exposure</td><td><b>No</b></td><td>Removes part of the effect</td></tr>
+    <tr class="fragment"><td>Collider</td><td><b>No</b></td><td>Opens a closed path</td></tr>
+    <tr class="fragment"><td>Cause of the outcome only</td><td>Optional</td><td>No bias; can narrow the confidence interval</td></tr>
+    <tr class="fragment"><td>Cause of the exposure only</td><td>Better not</td><td>No bias removed; widens the interval</td></tr>
+  </table>
+  <aside class="notes">The last row is the least intuitive. A pure cause of the exposure lies on no back-door path, so adjusting buys nothing and costs precision.</aside>
+</section>
+
+<section>
+  <h2>Not sure about the whole diagram?</h2>
+  <p>VanderWeele's practical rule needs only causes, not every arrow:</p>
+  <ol class="steps">
+    <li class="fragment">Adjust for each variable that causes the exposure, the outcome, or both.</li>
+    <li class="fragment">Leave out any you believe causes the exposure only.</li>
+    <li class="fragment">Add a good proxy for an important unmeasured common cause.</li>
+    <li class="fragment">Never include anything caused by the exposure.</li>
+  </ol>
+  <p class="cite">VanderWeele TJ. Principles of confounder selection. Eur J Epidemiol 2019;34:211-9.</p>
+  <aside class="notes">Useful when a committee cannot agree on the full diagram. It avoids colliders and mediators as long as you know the time order.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">List the paths. Keep causal ones open. Block back-doors with non-colliders. Open nothing new.</p>
+  <p class="claim">There may be several sets that work; use the best measured.</p>
+  <p class="claim warn">Sometimes none works with the data you have. Say so.</p>
+  <aside class="notes">Lab 2: choose any diagram, adjust, then press "Show the sets that work" to check.</aside>
+</section>

@@ -1,0 +1,98 @@
+<section data-core>
+  <h2>One disease, many causes, working together</h2>
+  <p class="lede">TB needs <i>M. tuberculosis</i>. But most infected people never fall ill. Something else has to be present too.</p>
+  <p class="fragment">Rothman's idea: a disease happens when a complete set of causes comes together. He drew each set as a pie.</p>
+  <p class="cite">Rothman KJ. Causes. Am J Epidemiol 1976;104:587-92. Modern Epidemiology, 4th ed., chapter 3.</p>
+  <aside class="notes">The sufficient-component cause model is Rothman's own, and it complements the potential-outcome view of Module 1.</aside>
+</section>
+
+<section data-core>
+  <h2>A pie is a sufficient cause</h2>
+  <div class="two">
+    <svg class="pie" viewBox="0 0 300 300" width="380" role="img" aria-label="One sufficient cause: M. tuberculosis, smoking and undernutrition">
+      <g transform="translate(150,150)">
+        <path class="fragment" data-fragment-index="1" d="M0,0 L0,-130 A130,130 0 0,1 112.6,65 Z" fill="var(--band)"/>
+        <path class="fragment" data-fragment-index="2" d="M0,0 L112.6,65 A130,130 0 0,1 -112.6,65 Z" fill="var(--dim)"/>
+        <path class="fragment" data-fragment-index="3" d="M0,0 L-112.6,65 A130,130 0 0,1 0,-130 Z" fill="var(--warn)"/>
+        <text class="w fragment" data-fragment-index="1" x="52" y="-14" text-anchor="middle">M. tb</text>
+        <text class="w fragment" data-fragment-index="2" x="0" y="88" text-anchor="middle">Smoking</text>
+        <text class="w fragment" data-fragment-index="3" x="-56" y="-14" text-anchor="middle">Under-</text>
+        <text class="w fragment" data-fragment-index="3" x="-56" y="10" text-anchor="middle">nutrition</text>
+      </g>
+    </svg>
+    <div>
+      <p class="fragment" data-fragment-index="1">Each slice is a <b>component cause</b>.</p>
+      <p class="fragment" data-fragment-index="3">When every slice is present, the pie is complete and disease follows. The whole pie is a <b>sufficient cause</b>.</p>
+      <p class="fragment" data-fragment-index="4">Remove any one slice and this pie cannot complete. That is prevention.</p>
+    </div>
+  </div>
+  <aside class="notes">The pie is a teaching picture, not biology to the letter. Its slices are the factors that must all be present for this route to disease.</aside>
+</section>
+
+<section data-core>
+  <h2>Different people fall ill by different pies</h2>
+  <table class="calc">
+    <tr><th class="l">Pie</th><th>Components</th><th>TB deaths, out of 100</th></tr>
+    <tr class="fragment"><td class="l">A</td><td><i>M. tb</i> + smoking + undernutrition</td><td>50</td></tr>
+    <tr class="fragment"><td class="l">B</td><td><i>M. tb</i> + HIV + diabetes</td><td>30</td></tr>
+    <tr class="fragment"><td class="l">C</td><td><i>M. tb</i> + smoking + HIV</td><td>20</td></tr>
+  </table>
+  <p class="fragment"><i>M. tb</i> is in every pie: a <b>necessary cause</b>. No pie without it.</p>
+  <p class="small dim">Made-up shares, to show the arithmetic.</p>
+  <aside class="notes">Real TB has many more pies. Three are enough to make the next point.</aside>
+</section>
+
+<section data-core>
+  <h2>How many deaths could removing each cause prevent?</h2>
+  <table class="calc">
+    <tr><th class="l">Remove</th><th>Pies broken</th><th>Deaths prevented</th></tr>
+    <tr class="fragment"><td class="l">Smoking</td><td>A and C</td><td>50 + 20 = <b>70</b></td></tr>
+    <tr class="fragment"><td class="l">Undernutrition</td><td>A</td><td><b>50</b></td></tr>
+    <tr class="fragment"><td class="l">HIV</td><td>B and C</td><td>30 + 20 = <b>50</b></td></tr>
+    <tr class="fragment"><td class="l">Diabetes</td><td>B</td><td><b>30</b></td></tr>
+  </table>
+  <p class="claim fragment">70 + 50 + 50 + 30 = 200 deaths "caused", out of 100. Attributable fractions do not have to add up to 100%.</p>
+  <aside class="notes">Each death needed several causes, so each death is attributable to each of them. This is why "smoking causes half of TB deaths" and "undernutrition causes half" can both be true.</aside>
+</section>
+
+<section data-core>
+  <h2>A cause's strength depends on its partners</h2>
+  <p>Suppose smoking causes TB death only together with a partner cause U, say undernutrition. Background risk 1%; 10% of smokers with U die of TB.</p>
+  <table class="calc">
+    <tr><th class="l">Population</th><th>Share with U</th><th>Smokers' risk</th><th>Risk ratio</th></tr>
+    <tr class="fragment"><td class="l">Village A</td><td>40%</td><td>1% + 0.4 × 10% = 5.0%</td><td><b>5.0</b></td></tr>
+    <tr class="fragment"><td class="l">Village B</td><td>4%</td><td>1% + 0.04 × 10% = 1.4%</td><td><b>1.4</b></td></tr>
+  </table>
+  <p class="claim fragment">Same biology of smoking. The risk ratio is large where its partner is common.</p>
+  <p class="small dim">Made-up numbers.</p>
+  <aside class="notes">This explains why smoking can look more dangerous for TB in India than in a well-fed population: its partner slices are common here.</aside>
+</section>
+
+<section data-core>
+  <h2>Pies and the four kinds of men</h2>
+  <ul>
+    <li class="fragment"><b>Smoking-caused</b> men are those whose pie needed smoking to complete.</li>
+    <li class="fragment"><b>Doomed</b> men complete a pie without smoking, for example through HIV and diabetes.</li>
+    <li class="fragment"><b>Immune</b> men never complete any pie, smoking or not.</li>
+  </ul>
+  <p class="claim fragment">Two pictures of the same thing: Module 1 counts futures, this module explains them.</p>
+  <aside class="notes">Optional link back to Module 1's response types.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>Of 100 cases of low birth weight: 40 arose from pie (maternal anaemia + short birth interval), 35 from (anaemia + smoking), 25 from (hypertension + smoking).</p>
+    <p>How many cases could treating anaemia prevent? Stopping smoking? Do the shares add to 100?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Anaemia: 40 + 35 = <b>75</b>. Smoking: 35 + 25 = <b>60</b>. Hypertension 25, birth interval 40. Together 200: no, they need not add to 100.</p></div>
+  <aside class="notes">Invented shares for practice.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A disease follows a complete set of component causes. Removing any one prevents every case that needed it.</p>
+  <p class="claim">Attributable fractions overlap and can sum to far more than 100%.</p>
+  <p class="claim warn">A cause looks strong where its partner causes are common. Effects do not transfer automatically between populations.</p>
+  <aside class="notes">Module 5 starts drawing causes as diagrams; pies and diagrams answer different questions and both are useful.</aside>
+</section>

@@ -1,0 +1,110 @@
+<section data-core>
+  <h2>The HRT puzzle, once more</h2>
+  <div class="two">
+    <div class="card"><h3>Nurses' Health Study</h3><p>Women on oestrogen plus progestin: RR <b>0.39</b> for heart disease.</p></div>
+    <div class="card fragment"><h3>WHI trial</h3><p>Women randomised to the same hormones: HR <b>1.29</b>.</p></div>
+  </div>
+  <p class="fragment">In Module 6 we blamed confounding by health-seeking. That is part of the story. This module adds another part: <b>when</b> follow-up started.</p>
+  <aside class="notes">Grodstein et al. NEJM 1996; WHI JAMA 2002.</aside>
+</section>
+
+<section data-core>
+  <h2>Who was in the cohort's "users"?</h2>
+  <p>Most cohort users had been on hormones for years when follow-up began.</p>
+  <ul>
+    <li class="fragment">Women who had a heart attack soon after starting were already gone, or had stopped.</li>
+    <li class="fragment">The users left were the <b>survivors</b> of the early risk.</li>
+  </ul>
+  <p class="claim fragment">The trial counted the early years. The cohort mostly missed them.</p>
+  <aside class="notes">These are prevalent users. The bias is a form of selection, closer to Module 8 than Module 6.</aside>
+</section>
+
+<section data-core>
+  <h2>Ask: what trial would you have run?</h2>
+  <p class="lede">Before analysing observational data, write the protocol of the trial you wish you had. Then copy it with the data you have.</p>
+  <p class="fragment">This is called <b>emulating a target trial</b>.</p>
+  <p class="cite fragment">Hernán MA, Robins JM. Am J Epidemiol 2016;183:758-64.</p>
+  <aside class="notes">The method forces explicit choices on eligibility, time zero and comparison.</aside>
+</section>
+
+<section data-core>
+  <h2>The protocol, row by row</h2>
+  <table>
+    <tr><th>Part</th><th>For HRT and heart disease</th></tr>
+    <tr class="fragment"><td>Eligibility</td><td>Postmenopausal women not now on hormones</td></tr>
+    <tr class="fragment"><td>Strategies</td><td>Start hormones now, or do not start</td></tr>
+    <tr class="fragment"><td>Assignment</td><td>Compare starters and non-starters alike on measured confounders</td></tr>
+    <tr class="fragment"><td>Time zero</td><td>The moment of eligibility and choice</td></tr>
+    <tr class="fragment"><td>Outcome, follow-up</td><td>Heart disease, from time zero onwards</td></tr>
+  </table>
+  <aside class="notes">Rows: eligibility, treatment strategies, assignment, time zero and follow-up, outcome, causal contrast, analysis.</aside>
+</section>
+
+<section data-core>
+  <h2>The Nurses' data, re-analysed as a trial</h2>
+  <p>New users only, compared with non-users from the same start date.</p>
+  <table class="calc">
+    <tr><th class="l">Period</th><th>Hazard ratio</th><th>95% CI</th></tr>
+    <tr class="fragment"><td class="l">All follow-up</td><td><b>0.96</b></td><td>0.78 to 1.18</td></tr>
+    <tr class="fragment"><td class="l">First 2 years</td><td><b>1.42</b></td><td>0.92 to 2.20</td></tr>
+  </table>
+  <p class="claim fragment">The same cohort, analysed like the trial, gave answers close to the trial. The early harm was there all along.</p>
+  <p class="cite">Hernán MA et al. Epidemiology 2008;19:766-79.</p>
+  <aside class="notes">Intention-to-treat estimates. The authors concluded the gap with the WHI could be largely explained by differences in time since menopause and length of follow-up, once the cohort was analysed with new users and a common time zero.</aside>
+</section>
+
+<section data-core>
+  <h2>Time zero, in one picture</h2>
+  <p>In a trial, three things happen at the same moment:</p>
+  <ol class="steps">
+    <li class="fragment">The person becomes eligible.</li>
+    <li class="fragment">The treatment is assigned.</li>
+    <li class="fragment">Follow-up starts.</li>
+  </ol>
+  <p class="claim warn fragment">When an observational analysis lets these drift apart, bias creeps in.</p>
+  <aside class="notes">Prevalent users: follow-up starts long after treatment. Immortal time: treatment is assigned after follow-up starts.</aside>
+</section>
+
+<section data-core>
+  <h2>Immortal time, in numbers</h2>
+  <p>200 identical patients. A drug can only be started at month 6. It has <b>no effect</b>. Made-up numbers.</p>
+  <ul>
+    <li class="fragment">20 die before month 6. They never had the chance to start.</li>
+    <li class="fragment">Of the 180 alive, 90 start the drug and 90 do not. 9 die in each group.</li>
+  </ul>
+  <aside class="notes">Suissa S. Am J Epidemiol 2008;167:492-9.</aside>
+</section>
+
+<section data-core>
+  <h2>Two ways to count</h2>
+  <div class="two">
+    <div>
+      <h3>"Ever users" against "never users"</h3>
+      <div class="work"><p class="fragment" data-fragment-index="1">Users: 9 / 90 = 0.10</p><p class="fragment" data-fragment-index="2">Never users: (20 + 9) / 110 = 0.26</p><p class="fragment" data-fragment-index="3">RR = <b>0.38</b></p></div>
+    </div>
+    <div class="fragment" data-fragment-index="4">
+      <h3>Start the clock at month 6</h3>
+      <div class="work"><p>Users: 9 / 90 = 0.10</p><p>Non-users: 9 / 90 = 0.10</p><p>RR = <b>1.0</b></p></div>
+    </div>
+  </div>
+  <p class="claim warn fragment" data-fragment-index="5">Users had to survive six months to become users. That guaranteed survival is "immortal time".</p>
+  <aside class="notes">The naive count makes a useless drug look 60% protective.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>A study compares mortality in TB patients who completed 6 months of treatment with those who did not, counting from diagnosis.</p>
+    <p>Where is time zero? What bias could make completion look more protective than it is?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Completers had to survive 6 months to complete: immortal time. Fix it by assigning at a common time zero, for example at diagnosis with the strategy "complete treatment", and following everyone from there.</p></div>
+  <aside class="notes">Treatment completion itself is a mix of adherence and survival, also a well-defined exposure issue from Module 3.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">Write the trial you wish you had, then emulate it.</p>
+  <p class="claim">Line up eligibility, treatment and the start of follow-up at time zero.</p>
+  <p class="claim warn">Prevalent users and immortal time can make a drug look protective with no confounding at all: 0.38 against 1.0.</p>
+  <aside class="notes">Rothman chapter 25; Hernán and Robins, Causal Inference: What If, chapter 22.</aside>
+</section>

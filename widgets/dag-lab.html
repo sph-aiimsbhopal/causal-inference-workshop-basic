@@ -10,9 +10,9 @@
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 2</p>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Lab 2 · Modules 5 to 10</p>
   <h1>Causal Diagram Lab</h1>
-  <p>Pick a diagram. Tap a box to adjust for it. Watch which paths between exposure and outcome open and close.</p>
+  <p>Pick a diagram, read the task, tap boxes to adjust for them, then check.</p>
 </div></header>
 <main>
   <section class="panel">
@@ -21,6 +21,7 @@
   </section>
 
   <section class="panel story" id="story"></section>
+  <section class="gstep" id="task"></section>
 
   <section class="panel">
     <svg class="dag" id="dag" role="group" aria-label="Causal diagram"></svg>
@@ -32,14 +33,14 @@
   </section>
 
   <section class="panel">
-    <h2>Paths between <span id="xy"></span></h2>
-    <ul class="paths" id="paths" aria-live="polite"></ul>
-    <p class="note">Tap a path to highlight it. Green: a causal path left open. Red: a non-causal path left open, which biases the estimate.</p>
-  </section>
-
-  <section class="panel">
-    <p class="claim" id="verdict" aria-live="polite"></p>
-    <div class="row"><button class="act" id="show" type="button">Show the sets that work</button></div>
+    <div class="row"><button class="act" id="checkbtn" type="button">Check my adjustment</button><button class="act ghost" id="pathbtn" type="button">Show the paths</button></div>
+    <p class="claim" id="verdict" aria-live="polite" hidden></p>
+    <div id="pathbox" hidden>
+      <h2>Paths between <span id="xy"></span></h2>
+      <ul class="paths" id="paths" aria-live="polite"></ul>
+      <p class="note">Tap a path to highlight it. Green: a causal path left open. Red: a non-causal path left open, which biases the estimate. Dashed: blocked.</p>
+    </div>
+    <div class="row"><button class="act ghost" id="show" type="button">Show the sets that work</button></div>
     <div class="reveal-box" id="sets" hidden></div>
   </section>
 
@@ -49,7 +50,7 @@
 <script src="dags.js"></script>
 <script>
 const P = window.DAGS;
-const order = ['fork', 'chain', 'collider', 'hrt', 'tb', 'bw'];
+const order = ['fork', 'chain', 'collider', 'tb', 'hrt', 'bw', 'practice1', 'practice2'];
 let key = new URLSearchParams(location.search).get('d');
 if (!P[key]) key = 'fork';
 let g, Z = new Set(), hl = null;
@@ -58,6 +59,10 @@ function load(k) {
   key = k; const d = P[k];
   g = DAG.create(d); Z = new Set(); hl = null;
   document.getElementById('sets').hidden = true;
+  document.getElementById('verdict').hidden = true;
+  document.getElementById('pathbox').hidden = true;
+  document.getElementById('pathbtn').textContent = 'Show the paths';
+  document.getElementById('task').innerHTML = `<p class="label">Your task</p><p>${d.task || 'Find a set of boxes that gives the total effect of the exposure on the outcome.'}</p>`;
   document.getElementById('story').innerHTML = `<h2>${d.title}</h2>${d.story}<p class="src">${d.src}</p>`;
   history.replaceState(null, '', '?d=' + k);
   draw();
@@ -68,7 +73,7 @@ function draw() {
   document.getElementById('presets').innerHTML = order.map(k => `<button class="chip" type="button" data-k="${k}" aria-pressed="${k === key}">${P[k].title}</button>`).join('');
   document.querySelectorAll('#presets button').forEach(b => b.onclick = () => load(b.dataset.k));
   DAG.render(document.getElementById('dag'), g, { x: d.x, y: d.y, Z, highlight: hl, width: 420, height: d.height, fontSize: 16,
-    onTap: id => { Z.has(id) ? Z.delete(id) : Z.add(id); hl = null; draw(); } });
+    onTap: id => { Z.has(id) ? Z.delete(id) : Z.add(id); hl = null; document.getElementById('verdict').hidden = true; draw(); } });
   document.getElementById('xy').textContent = `${lab(d.x)} and ${lab(d.y)}`;
   document.getElementById('zlist').textContent = Z.size ? [...Z].map(lab).join(', ') : 'nothing yet';
   const c = g.check(d.x, d.y, Z);
@@ -111,7 +116,9 @@ function draw() {
     v.textContent = (noArrow ? `${lab(d.x)} and ${lab(d.y)} would look associated, though neither causes the other: ` : 'Biased for the total effect: ') + r.join('; ') + '.';
   }
 }
-document.getElementById('clear').onclick = () => { Z = new Set(); hl = null; draw(); };
+document.getElementById('clear').onclick = () => { Z = new Set(); hl = null; document.getElementById('verdict').hidden = true; draw(); };
+document.getElementById('checkbtn').onclick = () => { document.getElementById('verdict').hidden = false; };
+document.getElementById('pathbtn').onclick = () => { const b = document.getElementById('pathbox'); b.hidden = !b.hidden; document.getElementById('pathbtn').textContent = b.hidden ? 'Show the paths' : 'Hide the paths'; };
 document.getElementById('show').onclick = () => {
   const d = P[key], box = document.getElementById('sets');
   const sets = g.minimalSets(d.x, d.y);

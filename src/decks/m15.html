@@ -1,0 +1,93 @@
+<section data-core>
+  <h2>Now your own question</h2>
+  <p class="lede">You have the tools. This module turns them into a plan for your thesis or your next paper.</p>
+  <ol class="steps">
+    <li class="fragment">Ask a causal question, out loud.</li>
+    <li class="fragment">Define the exposure as an intervention.</li>
+    <li class="fragment">Draw the diagram.</li>
+    <li class="fragment">Choose the adjustment set.</li>
+    <li class="fragment">Plan the analysis and the bias checks.</li>
+  </ol>
+  <aside class="notes">Students should bring a real question. The workbook page for Module 15 follows these five steps.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 1: say "cause"</h2>
+  <p>Many papers say "associated with" but draw causal conclusions.</p>
+  <p class="fragment">If you want to know whether changing X would change Y, say so. Then the methods can be judged against that aim.</p>
+  <p class="cite fragment">Hernán MA. The C-word. Am J Public Health 2018;108:616-9.</p>
+  <aside class="notes">Hiding the aim does not make the analysis less causal; it makes it harder to check.</aside>
+</section>
+
+<section data-core>
+  <h2>A worked example: LPG and child ARI</h2>
+  <div class="work">
+    <p class="fragment"><b>Question.</b> Would giving a household an LPG connection reduce ARI in its children under five?</p>
+    <p class="fragment"><b>Exposure.</b> LPG as the main cooking fuel, against biomass, for at least a year. Module 3.</p>
+    <p class="fragment"><b>Who.</b> Households in which both are possible: LPG is available and could be afforded. Positivity.</p>
+    <p class="fragment"><b>Outcome.</b> ARI in the last two weeks, as reported by the mother. Note the measurement issue. Module 9.</p>
+  </div>
+  <aside class="notes">Each line cites the module it draws on.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 3: draw it, box by box</h2>
+  <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:460px" data-fs="18" data-steps='[{"add":["fuel","ari","fuel>ari"]},{"add":["wealth","wealth>fuel","wealth>ari"],"fi":1},{"add":["edu","res","state"],"fi":2},{"add":"all","fi":3}]' role="img" aria-label="Fuel and ARI diagram built one box at a time"></svg></div>
+  <p class="small dim">Add common causes first. Then things the exposure causes. Then how people got into the data.</p>
+  <aside class="notes">Same fuel8 diagram as Module 14. For their own question students draw on the workbook page.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 4: choose the set, and write why</h2>
+  <table>
+    <tr><th>Variable</th><th>Decision</th><th>Reason</th></tr>
+    <tr class="fragment"><td>Wealth, education, residence, state</td><td>Adjust</td><td>Common causes: back doors</td></tr>
+    <tr class="fragment"><td>Separate kitchen</td><td>Do not adjust</td><td>Effect of fuel choice: on the causal path</td></tr>
+    <tr class="fragment"><td>Child's age, sex</td><td>Optional</td><td>Cause ARI only; may sharpen precision</td></tr>
+  </table>
+  <aside class="notes">The written reason is the reviewer's checkpoint. If your diagram differs, your set will differ; that is fine if you show the diagram.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 5: the analysis plan, in five lines</h2>
+  <ol class="steps">
+    <li class="fragment">One model for the exposure, with the chosen set. Report its estimate only.</li>
+    <li class="fragment">State what population the estimate applies to.</li>
+    <li class="fragment">Name the main unmeasured confounder. Give the E-value.</li>
+    <li class="fragment">Say how the outcome was measured and which way the error may go.</li>
+    <li class="fragment">Attach the diagram as a figure.</li>
+  </ol>
+  <aside class="notes">Modules 11, 12 and 9, in order.</aside>
+</section>
+
+<section data-core>
+  <h2>Checklist before you submit</h2>
+  <ul>
+    <li class="fragment">Is the exposure something you could imagine assigning?</li>
+    <li class="fragment">Did you adjust for anything caused by the exposure?</li>
+    <li class="fragment">Did selection into the study depend on exposure and outcome?</li>
+    <li class="fragment">Does time zero line up eligibility, exposure and follow-up?</li>
+    <li class="fragment">Do the results tables avoid causal labels for covariates?</li>
+  </ul>
+  <aside class="notes">Modules 3, 7, 8, 13 and 11.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>On the Module 15 workbook page, write your own question in one sentence, using the word "cause" or "effect".</p>
+    <p>Then define the exposure as an intervention, and list three common causes you would draw first.</p>
+  </div>
+  <aside class="notes">Pair students to review each other's question. Ask: could you assign this exposure in a trial?</aside>
+</section>
+
+<section data-core>
+  <h2>Where to go next</h2>
+  <ul>
+    <li>Modern Epidemiology, 4th ed., chapters 3, 12, 13, 25 and 29.</li>
+    <li>Hernán MA, Robins JM. <i>Causal Inference: What If</i>. Free online.</li>
+    <li>DAGitty, to draw and check diagrams: dagitty.net.</li>
+    <li>The Further learning page of this course.</li>
+  </ul>
+  <aside class="notes">Point to further-learning.html.</aside>
+</section>

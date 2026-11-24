@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 10: Choosing what to adjust for</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 10 of 15</p>
+  <h1>Choosing what to adjust for</h1>
+  <p>Put the three building blocks together: a four-step recipe for picking an adjustment set from a diagram.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Apply the back-door rule in four steps</li><li>Find a minimal adjustment set for a diagram</li><li>Say which variables never to adjust for, and why</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m10-choosing-adjustment.html"><span class="label">Slides</span><h2>Choosing what to adjust for</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/dag-lab.html?d=tb"><span class="label">Lab</span><h2>Causal Diagram Lab: practice</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 12, Confounding and Confounders, the section on selecting confounders.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m09-measurement.html">← Module 9: Measurement error in a diagram</a><a class="act navbtn" href="m11-table-2.html">Module 11: One model, one question →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "The back-door rule asks you to block every back-door path and to:", "o": ["Adjust for every measured variable", "Adjust for nothing the exposure causes", "Keep variables with p below 0.05", "Include all variables in table 1"], "a": 1, "e": "Rule two: nothing downstream of the exposure, so no mediators and no descendants of it."}, {"q": "A variable causes the outcome but has nothing to do with the exposure. Adjusting for it will:", "o": ["Create collider bias", "Remove part of the effect", "Not add bias, and may add precision", "Be required for an unbiased estimate"], "a": 2, "e": "It lies on no path between exposure and outcome, so it cannot bias the estimate; it can narrow the confidence interval."}, {"q": "Alcohol, a confounder of smoking and TB death, was never measured. The best next step is:", "o": ["Adjust for everything else instead", "Drop alcohol from the diagram", "Say so, and look for a negative control", "Use a larger sample size"], "a": 2, "e": "No adjustment set from the data can close a path through an unmeasured variable. State it, and look for evidence of how big the bias could be."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

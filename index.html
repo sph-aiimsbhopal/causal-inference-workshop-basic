@@ -3,107 +3,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Causal Inference in Epidemiology: A Basic Workshop</title>
+<title>Causal Inference in Epidemiology: A Course for Beginners</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="widgets/widget.css">
 <script src="widgets/theme.js"></script>
-<style>
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-  a.card { display: grid; gap: 6px; align-content: start; background: var(--wash); border-top: 4px solid var(--band); padding: 18px; color: var(--ink); text-decoration: none; }
-  a.card:hover { background: var(--rule); }
-  a.card:focus-visible { outline: 3px solid var(--warn); outline-offset: 2px; }
-  a.card h2 { margin: 0; }
-  a.card p { margin: 0; color: var(--dim); font-size: 15px; }
-  a.card .go { color: var(--ink); font-weight: 600; font-size: 15px; margin-top: 4px; }
-  ol.steps { margin: 0; padding-left: 1.2em; max-width: 70ch; }
-  ol.steps li { margin-bottom: 4px; }
-</style>
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker">Pre-conference workshop for MD students</p>
-  <h1>Causal Inference in Epidemiology: A Basic Workshop</h1>
-  <p>Three hours on counterfactual thinking, causal diagrams, bias and choosing what to adjust for. Every exercise uses a published study.</p>
+  <p class="kicker">Self-paced course · AIIMS Bhopal</p>
+  <h1>Causal Inference in Epidemiology</h1>
+  <p>A self-paced course for beginners: counterfactuals, causal diagrams, bias, and choosing what to adjust for. Anchored to Rothman's Modern Epidemiology, 4th edition.</p>
 </div></header>
 <main>
-  <section class="panel">
-    <h2>By the end of the workshop you will be able to</h2>
-    <ol class="steps">
-      <li>Explain causal effects using the counterfactual framework, and draw causal diagrams (DAGs).</li>
-      <li>Identify and assess bias and confounding in observational studies using causal diagrams.</li>
-      <li>Choose an adjustment set from a diagram, and frame and interpret causal research questions in Community Medicine.</li>
-    </ol>
-  </section>
-
-  <section class="cards" aria-label="Workshop materials">
-    <a class="card" href="slides/causal-inference.html">
-      <span class="label">Slides</span>
-      <h2>Did the hormones protect the heart?</h2>
-      <p>The workshop deck. Arrow keys to move, F for full screen.</p>
-      <span class="go">Open the slides →</span>
-    </a>
-    <a class="card" href="widgets/quiz.html">
-      <span class="label">Quiz</span>
-      <h2>Before and After Quiz</h2>
-      <p>Eight questions, once at the start and once at the end.</p>
-      <span class="go">Open the quiz →</span>
-    </a>
-    <a class="card" href="widgets/potential-outcomes.html">
-      <span class="label">Lab 1</span>
-      <h2>Potential Outcomes Lab</h2>
-      <p>See both futures of 100 men, then only the one that happened. Smoking, alcohol and TB deaths.</p>
-      <span class="go">Open Lab 1 →</span>
-    </a>
-    <a class="card" href="widgets/dag-lab.html">
-      <span class="label">Lab 2</span>
-      <h2>Causal Diagram Lab</h2>
-      <p>Forks, chains and colliders, then hormone therapy, smoking and TB, and the birth weight paradox. Tap to adjust.</p>
-      <span class="go">Open Lab 2 →</span>
-    </a>
-    <a class="card" href="widgets/birthweight-lab.html">
-      <span class="label">Lab 3</span>
-      <h2>Birth Weight Paradox Lab</h2>
-      <p>Why smoking seems to protect small babies, and why it does not.</p>
-      <span class="go">Open Lab 3 →</span>
-    </a>
-    <a class="card" href="widgets/capstone-lab.html">
-      <span class="label">Lab 4</span>
-      <h2>Cooking Fuel and ARI</h2>
-      <p>Build your own diagram for an NFHS-4 analysis and test the authors' model.</p>
-      <span class="go">Open Lab 4 →</span>
-    </a>
-    <a class="card" href="Causal-Inference-Handbook.pdf">
-      <span class="label">Handbook</span>
-      <h2>Participant Handbook</h2>
-      <p>Everything in one A4 PDF: slides two to a page with room for notes, the workbook, glossary and reading list.</p>
-      <span class="go">Download the handbook →</span>
-    </a>
-    <a class="card" href="workbook.html">
-      <span class="label">Workbook</span>
-      <h2>Exercise Workbook</h2>
-      <p>The paper exercises, printable on A4.</p>
-      <span class="go">Open the workbook →</span>
-    </a>
-    <a class="card" href="further-learning.html">
-      <span class="label">Reading</span>
-      <h2>Further Learning</h2>
-      <p>Rothman's Modern Epidemiology chapter by chapter, free courses and books, and key papers.</p>
-      <span class="go">Open the reading list →</span>
-    </a>
-  </section>
-
-  <section class="panel">
-    <h2>How the three hours run</h2>
-    <ol class="steps">
-      <li>Opening: the hormone therapy puzzle, and the before quiz</li>
-      <li>Thinking causally: counterfactuals, exchangeability, sufficient causes. Exercise 1, smoking and TB deaths in Tamil Nadu</li>
-      <li>Causal diagrams and the structure of bias: forks, chains, colliders. Exercises 2 and 3, hormone therapy and the birth weight paradox</li>
-      <li>From diagram to adjustment: back-door paths, what not to adjust for, the Table 2 fallacy. Group exercise on cooking fuel and childhood ARI</li>
-      <li>Report back, the after quiz, and where to go next</li>
-    </ol>
-  </section>
-
-  <footer>AIIMS Bhopal. Slides, labs and workbook built with Claude (Anthropic) as drafting and coding assistant, reviewed by the faculty. Studies are cited where they are used; the teaching populations in Labs 1 and 3 are constructed for teaching and labelled as such.</footer>
+<section class="panel">
+  <h2>Who this is for</h2>
+  <p>Postgraduate students in Community Medicine who have met relative risks and 2 × 2 tables, and nothing more. Every idea is explained in plain words, worked with numbers, and practised on a published study. Go through it in order, at your own pace, or follow the workshop path.</p>
+</section>
+<section class="cards" aria-label="Start here">
+  <a class="card" href="modules/m00-why-causal.html"><span class="label">Start</span><h2>Module 0</h2><p>Why causal questions are hard. Ten minutes.</p><span class="go">Begin →</span></a>
+  <a class="card" href="slides/workshop.html"><span class="label">Workshop path</span><h2>The core slides in one deck</h2><p>Used at the pre-conference workshop, Gwalior, 26 November 2026.</p><span class="go">Open →</span></a>
+  <a class="card" href="widgets/quiz.html"><span class="label">Quiz</span><h2>Before and after</h2><p>Twelve questions. Take it before you start and again at the end.</p><span class="go">Open →</span></a>
+  <a class="card" href="handouts.html"><span class="label">Print</span><h2>Handbooks and workbook</h2><p>The workshop handbook, the full course handbook, and the workbook as PDFs.</p><span class="go">Open →</span></a>
+</section>
+<section class="panel">
+  <h2>The modules</h2>
+  <div class="modlist"><a class="mod " href="modules/m00-why-causal.html"><span class="mn">0</span><span class="mt"><b>Why causal questions are hard</b> <br><span class="dim">Two studies of the same hormones gave opposite answers about heart disease. What went wrong?</span></span></a><a class="mod " href="modules/m01-two-futures.html"><span class="mn">1</span><span class="mt"><b>Two possible futures</b> <br><span class="dim">What we mean when we say smoking causes TB death: a comparison of two futures for the same people.</span></span></a><a class="mod " href="modules/m02-exchangeability.html"><span class="mn">2</span><span class="mt"><b>Association is not causation</b> <br><span class="dim">What happens when we compare the men who did smoke with the men who did not, and why randomisation fixes it.</span></span></a><a class="mod " href="modules/m03-well-defined.html"><span class="mn">3</span><span class="mt"><b>A well-defined exposure</b> <br><span class="dim">Positivity and consistency in plain words: can everyone be exposed, and what exactly is &#x27;the exposure&#x27;?</span></span></a><a class="mod " href="modules/m04-causal-pies.html"><span class="mn">4</span><span class="mt"><b>Causes come in teams</b> <br><span class="dim">Rothman&#x27;s sufficient-component cause model: why one disease has many causes, and why their shares add up to more than 100%.</span></span></a><a class="mod " href="modules/m05-drawing-diagrams.html"><span class="mn">5</span><span class="mt"><b>Drawing a causal diagram</b> <br><span class="dim">A causal diagram is a picture of your assumptions. Learn the four rules and how to read paths.</span></span></a><a class="mod " href="modules/m06-fork-confounding.html"><span class="mn">6</span><span class="mt"><b>The fork: confounding</b> <br><span class="dim">A common cause can make two things look linked when neither causes the other. Learn to spot it and remove it.</span></span></a><a class="mod " href="modules/m07-chain-mediation.html"><span class="mn">7</span><span class="mt"><b>The chain: mediators</b> <br><span class="dim">When the exposure works through a middle variable, adjusting for that variable removes the effect you wanted.</span></span></a><a class="mod " href="modules/m08-collider-selection.html"><span class="mn">8</span><span class="mt"><b>The collider: selection bias</b> <br><span class="dim">Two causes of the same thing become linked when you look only at people who have that thing.</span></span></a><a class="mod " href="modules/m09-measurement.html"><span class="mn">9</span><span class="mt"><b>Measurement error in a diagram</b> <br><span class="dim">We analyse the exposure as recorded, not as it was. When does that bias the answer, and which way?</span></span></a><a class="mod " href="modules/m10-choosing-adjustment.html"><span class="mn">10</span><span class="mt"><b>Choosing what to adjust for</b> <br><span class="dim">Put the three building blocks together: a four-step recipe for picking an adjustment set from a diagram.</span></span></a><a class="mod " href="modules/m11-table-2.html"><span class="mn">11</span><span class="mt"><b>One model, one question</b> <br><span class="dim">Why the other coefficients in your regression table are not effects: the Table 2 fallacy.</span></span></a><a class="mod " href="modules/m12-unmeasured.html"><span class="mn">12</span><span class="mt"><b>When a confounder was never measured</b> <br><span class="dim">Negative controls and a first bias analysis: how strong would the missing confounder need to be?</span></span></a><a class="mod " href="modules/m13-target-trial.html"><span class="mn">13</span><span class="mt"><b>Ask it like a trial</b> <br><span class="dim">Target trial emulation and time zero: how the hormone therapy puzzle was finally solved.</span></span></a><a class="mod " href="modules/m14-capstone-fuel-ari.html"><span class="mn">14</span><span class="mt"><b>Capstone: cooking fuel and childhood ARI</b> <br><span class="dim">Use everything so far on a published NFHS-4 analysis: draw the diagram, find the adjustment set, test the authors&#x27; model.</span></span></a><a class="mod " href="modules/m15-your-question.html"><span class="mn">15</span><span class="mt"><b>Your own causal question</b> <br><span class="dim">Write the trial you wish you could run, draw its diagram, and choose the adjustment set before you see the data.</span></span></a></div>
+</section>
+<section class="panel">
+  <h2>Labs</h2>
+  <ul>
+    <li><a href="widgets/potential-outcomes.html">Potential Outcomes Lab</a>: both futures of 100 men, then only one</li>
+    <li><a href="widgets/dag-lab.html">Causal Diagram Lab</a>: tap to adjust, watch paths open and close</li>
+    <li><a href="widgets/birthweight-lab.html">Birth Weight Paradox Lab</a></li>
+    <li><a href="widgets/misclassification-lab.html">Misclassification Lab</a>: what recording errors do to a risk ratio</li>
+    <li><a href="widgets/bias-lab.html">Unmeasured Confounding Lab</a>: bias factors and E-values</li>
+    <li><a href="widgets/capstone-lab.html">Capstone Lab</a>: cooking fuel and ARI in NFHS-4</li>
+  </ul>
+  <p><a href="further-learning.html">Further learning</a>: Rothman chapter by chapter, free books and courses, key papers.</p>
+</section>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
 </main>
+
 </body>
 </html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 0: Why causal questions are hard</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 0 · Causal inference for beginners</p>
+  <h1>Why causal questions are hard</h1>
+  <p class="lede dim">Two studies of the same hormones gave opposite answers about heart disease. What went wrong?</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 0. Two studies of the same hormones gave opposite answers about heart disease. What went wrong?</aside>
+</section>
+
+<section data-core>
+  <h2>A cohort study of 59,337 nurses</h2>
+  <p class="lede">From 1976, US nurses reported every two years whether they took hormones after menopause. Researchers followed them for heart attacks.</p>
+  <p class="fragment">Women who took oestrogen plus progestin, compared with women who never took hormones:</p>
+  <div class="fragment center"><span class="big good">RR 0.39</span></div>
+  <p class="cite">Grodstein F et al. N Engl J Med 1996;335:453-61.</p>
+  <aside class="notes">Keep it concrete. A cohort: women chose for themselves whether to take hormones; the researchers only watched. Reveal the number last.</aside>
+</section>
+
+<section data-core>
+  <h2>What does RR 0.39 mean?</h2>
+  <p>RR, the relative risk, is the risk in one group divided by the risk in the other.</p>
+  <div class="work fragment">
+    <p>Suppose <b>10 in 1,000</b> non-users had a heart attack.</p>
+    <p class="fragment">Users then had 0.39 × 10 = <b>3.9 in 1,000</b>.</p>
+    <p class="fragment">That is 61% lower risk. Hormones looked strongly protective.</p>
+  </div>
+  <p class="small dim fragment">The 10 in 1,000 is only to make the arithmetic visible; the ratio is what the study reported.</p>
+  <aside class="notes">Most students know RR loosely. Make them say it as a sentence: users had 39 percent of the non-users' risk. The illustrative baseline is ours; say so.</aside>
+</section>
+
+<section data-core>
+  <h2>Doctors acted on it</h2>
+  <p class="lede">By the 1990s, hormone therapy was widely prescribed to prevent heart disease, partly on evidence like this.</p>
+  <p class="fragment">Then a randomised trial asked the same question.</p>
+  <aside class="notes">One beat of history. The point: an observational result changed practice for millions of women.</aside>
+</section>
+
+<section data-core>
+  <h2>A randomised trial of 16,608 women</h2>
+  <p class="lede">The Women's Health Initiative. A computer decided, like a coin toss, who got oestrogen plus progestin and who got a placebo.</p>
+  <p class="fragment">Women given hormones, compared with women given placebo:</p>
+  <div class="fragment center"><span class="big bad">HR 1.29</span></div>
+  <p class="fragment">HR, the hazard ratio, reads like a relative risk: 29% <b>more</b> heart disease, not less. The trial was stopped early, at 5.2 years.</p>
+  <p class="cite">Writing Group for the WHI Investigators. JAMA 2002;288:321-33. 95% CI 1.02 to 1.63.</p>
+  <aside class="notes">A hazard ratio is a ratio of rates over time; for this course, read it like a relative risk. Stress who decided: the computer, not the woman.</aside>
+</section>
+
+<section data-core>
+  <h2>Same hormones, opposite answers</h2>
+  <table class="calc">
+    <tr><th class="l">Study</th><th>Who decided who took hormones?</th><th>Result</th></tr>
+    <tr><td class="l">Nurses' cohort</td><td>Each woman, with her doctor</td><td><b>0.39</b>, protective</td></tr>
+    <tr class="fragment"><td class="l">WHI trial</td><td>A coin toss</td><td><b>1.29</b>, harmful</td></tr>
+  </table>
+  <p class="claim fragment">Which one do you believe? Write one sentence in your workbook saying why.</p>
+  <aside class="notes">Take three or four answers. Expect: the trial, because randomised; and "healthy women chose hormones". Do not resolve it yet. Module 13 tells the full story.</aside>
+</section>
+
+<section data-core>
+  <h2>The question this course answers</h2>
+  <p class="lede">When can a comparison of people who chose differently tell us what a treatment, a habit or an exposure <b>does</b>?</p>
+  <ul>
+    <li class="fragment">Modules 1 and 2: what "causes" means, with numbers</li>
+    <li class="fragment">Modules 5 to 8: drawing the problem as a diagram</li>
+    <li class="fragment">Module 10: deciding what to adjust for</li>
+    <li class="fragment">Module 14: trying it on an Indian study</li>
+  </ul>
+  <aside class="notes">Roadmap. On the workshop day you will not cover every module; the site holds all of them.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m00-why-causal.html#check">Open the self-check for Module 0</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 1 (The Scope of Epidemiology) and chapter 2, first section.</p>
+  <p>Next: <a href="m01-two-futures.html">Module 1, Two possible futures</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

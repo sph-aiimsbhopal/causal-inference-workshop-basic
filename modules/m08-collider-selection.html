@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 8: The collider: selection bias</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 8 of 15</p>
+  <h1>The collider: selection bias</h1>
+  <p>Two causes of the same thing become linked when you look only at people who have that thing.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Recognise a collider and say why the path through it is closed</li><li>Calculate how studying hospital patients creates an odds ratio out of nothing</li><li>Explain the birth weight paradox as collider bias</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m08-collider-selection.html"><span class="label">Slides</span><h2>The collider: selection bias</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/birthweight-lab.html"><span class="label">Lab</span><h2>Birth Weight Paradox Lab</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 14, Selection Bias and Generalizability.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m07-chain-mediation.html">← Module 7: The chain: mediators</a><a class="act navbtn" href="m09-measurement.html">Module 9: Measurement error in a diagram →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Smoking and TB are unrelated in the community (OR 1.0), but both lead to admission. Among admitted patients, the OR will be:", "o": ["Exactly 1.0", "Above 1.0", "Below 1.0", "Undefined"], "a": 2, "e": "Conditioning on a common effect links its causes, usually negatively: among the admitted, a man without TB is more likely to be there because he smokes."}, {"q": "Infants of smokers: RR 1.55 overall, 0.79 among low birth weight babies. The best explanation is:", "o": ["Smoking protects small babies", "Low birth weight is a collider", "Low birth weight confounds smoking", "Chance in the stratified data"], "a": 1, "e": "Restricting to low birth weight compares babies who are small for different reasons: smoking, or more serious causes such as birth defects."}, {"q": "Which of these is a collider on the path Smoking → ? ← Birth defects?", "o": ["Low birth weight", "Maternal age", "Infant death", "Antenatal care"], "a": 0, "e": "Both smoking and birth defects cause low birth weight; the arrows collide there."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

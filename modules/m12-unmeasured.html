@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 12: When a confounder was never measured</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 12 of 15</p>
+  <h1>When a confounder was never measured</h1>
+  <p>Negative controls and a first bias analysis: how strong would the missing confounder need to be?</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Use a negative control outcome as a warning sign</li><li>Calculate how much an unmeasured confounder could move a risk ratio</li><li>Write an honest limitations paragraph</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m12-unmeasured.html"><span class="label">Slides</span><h2>When a confounder was never measured</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/bias-lab.html"><span class="label">Lab</span><h2>Unmeasured Confounding Lab</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 29, Bias Analysis.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m11-table-2.html">← Module 11: One model, one question</a><a class="act navbtn" href="m13-target-trial.html">Module 13: Ask it like a trial →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Smokers also had 3.3 times the death rate from alcoholism or cirrhosis. This is useful because:", "o": ["Smoking clearly causes cirrhosis", "It hints at confounding by drinking", "It proves the TB result is biased", "Cirrhosis is a mediator of TB"], "a": 1, "e": "It is a negative control outcome. An association where little effect is expected points to something smokers share."}, {"q": "An unmeasured confounder is equally common in exposed and unexposed people. The bias factor is:", "o": ["Exactly 1", "Above 1", "Below 1", "The confounder's risk ratio"], "a": 0, "e": "With p1 equal to p0 the top and bottom of the formula are equal. A confounder must differ between groups to bias."}, {"q": "Observed RR 1.10 has an E-value of 1.43; RR 4.5 has an E-value of 8.47. This means:", "o": ["4.5 is proven to be causal", "Both are free of confounding", "1.10 is more easily explained away", "1.10 is the more precise estimate"], "a": 2, "e": "A modest confounder could explain 1.10. Neither E-value proves causation."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

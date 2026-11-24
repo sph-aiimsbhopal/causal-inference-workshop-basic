@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 15: Your own causal question</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 15 of 15</p>
+  <h1>Your own causal question</h1>
+  <p>Write the trial you wish you could run, draw its diagram, and choose the adjustment set before you see the data.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Frame a thesis question as a comparison of two strategies</li><li>Draw its diagram and pick an adjustment set</li><li>Write the causal claim honestly in your methods</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m15-your-question.html"><span class="label">Slides</span><h2>Your own causal question</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/capstone-lab.html"><span class="label">Lab</span><h2>Use the diagram tools on your own question</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Hernán MA, The C-word, Am J Public Health 2018.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m14-capstone-fuel-ari.html">← Module 14: Capstone: cooking fuel and childhood ARI</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Which question is written as a causal question?", "o": ["Is LPG use associated with less ARI?", "Would giving LPG reduce ARI in children?", "What predicts ARI in NFHS-4 children?", "How common is ARI among LPG users?"], "a": 1, "e": "It names an intervention and asks what it would change. Saying 'cause' lets readers judge the methods against the aim."}, {"q": "Your thesis has two exposures of interest. You should plan:", "o": ["One model holding both exposures", "Stepwise selection from all variables", "Crude estimates with no adjustment", "One model per exposure, own set each"], "a": 3, "e": "Each exposure has its own back-door paths, so each needs its own adjustment set."}, {"q": "A variable caused by the exposure, such as building a separate kitchen after switching fuel, should be:", "o": ["Added to the model as a confounder", "Used to match exposed and unexposed", "Left out of the adjustment set", "Used to restrict the study sample"], "a": 2, "e": "It is downstream of the exposure. Adjusting, matching or restricting on it removes part of the effect."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

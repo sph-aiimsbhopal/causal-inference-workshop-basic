@@ -165,9 +165,11 @@
     }
     const hlClass = hl ? (hl.kind === 'causal' ? (hl.open ? 'good' : 'on') : (hl.open ? 'bad' : 'on')) : '';
     const eg = el('g', {}, svg);
+    const vis = opts.show;
     for (const [a, b] of g.edges) {
       const A = box[a], B = box[b];
       if (!A || !B) continue;
+      if (vis && !(vis.edges.has(a + '>' + b))) continue;
       const [x1, y1] = clip(A, B.cx, B.cy), [x2, y2] = clip(B, A.cx, A.cy);
       const on = onEdge.has(a + '>' + b);
       const cls = 'edge' + (on ? ' ' + hlClass : '') + (on && hl && !hl.open ? ' blocked' : '');
@@ -175,6 +177,7 @@
     }
     const ng = el('g', {}, svg);
     for (const n of g.nodes) {
+      if (vis && !vis.nodes.has(n.id)) continue;
       const b = box[n.id];
       const role = n.id === opts.x ? 'expo' : n.id === opts.y ? 'outc' : '';
       const adj = opts.Z && opts.Z.has(n.id);

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 3: A well-defined exposure</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 3 of 15</p>
+  <h1>A well-defined exposure</h1>
+  <p>Positivity and consistency in plain words: can everyone be exposed, and what exactly is &#x27;the exposure&#x27;?</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Explain why &#x27;smoking&#x27; or &#x27;obesity&#x27; can mean many different interventions</li><li>Recognise a positivity problem: groups where nobody is exposed</li><li>Rewrite a vague exposure as a well-defined one</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m03-well-defined.html"><span class="label">Slides</span><h2>A well-defined exposure</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 3, the section on consistency and well-defined interventions.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m02-exchangeability.html">← Module 2: Association is not causation</a><a class="act navbtn" href="m04-causal-pies.html">Module 4: Causes come in teams →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "One study of 'smoking' had mostly bidi smokers, another mostly cigarette smokers. Their risk ratios differ. This is mainly a problem of:", "o": ["Positivity: nobody could be exposed", "Consistency: several versions of one exposure", "Exchangeability: groups differ at baseline", "Chance: the samples were too small"], "a": 1, "e": "Bidis and cigarettes are different versions of 'smoking'. A risk ratio for 'smoking' depends on the mix of versions in the study."}, {"q": "In villages with no LPG supply, no household cooks with LPG. Comparing LPG and biomass in those villages breaks:", "o": ["Consistency", "Exchangeability", "Positivity", "Transportability"], "a": 2, "e": "Positivity needs some chance of each exposure level in every group you compare. Where LPG is unavailable that chance is zero."}, {"q": "Which is the best-defined exposure?", "o": ["Being obese at the start of the study", "Not being physically active enough", "Poor lifestyle as rated by the doctor", "Walking 30 minutes, five days a week"], "a": 3, "e": "It names one intervention you could assign. The others could each be changed in many different ways, with different effects."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

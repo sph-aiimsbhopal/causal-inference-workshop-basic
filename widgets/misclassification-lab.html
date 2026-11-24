@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Misclassification Lab</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widget.css">
+<script src="theme.js"></script>
+<style>
+  .sl { display: grid; gap: 4px; max-width: 520px; margin-bottom: 10px; }
+  .sl input { width: 100%; accent-color: var(--band); }
+  .sl .v { font-weight: 600; }
+  .work p { margin: 4px 0; font-variant-numeric: tabular-nums; }
+  table.t td.num, table.t th.num { text-align: right; }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Lab 5 · Module 9</p>
+  <h1>Misclassification Lab</h1>
+  <p>The exposure is recorded with errors. See what the errors do to the risk ratio.</p>
+</div></header>
+<main>
+  <section class="panel story">
+    <h2>The true cohort</h2>
+    <p>1,000 truly exposed people, 100 fall ill (10%). 1,000 truly unexposed people, 50 fall ill (5%). The true risk ratio is 2.0. Made-up numbers.</p>
+  </section>
+
+  <section id="guide" aria-live="polite"></section>
+
+  <section class="panel">
+    <h2>What the records show</h2>
+    <div class="scroll"><table class="t" id="tab"></table></div>
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <p class="claim" id="msg" aria-live="polite"></p>
+  </section>
+
+  <section class="panel hide" id="sliders">
+    <h2>How good are the records?</h2>
+    <label class="row" id="linkrow"><input type="checkbox" id="link" checked> Same errors for people who fall ill and people who do not</label>
+    <h3 id="h1">People who fall ill</h3>
+    <div class="sl"><label for="sec">Sensitivity: <span class="v" id="vsec"></span></label><input type="range" id="sec" min="0.5" max="1" step="0.05" value="1"></div>
+    <div class="sl"><label for="spc">Specificity: <span class="v" id="vspc"></span></label><input type="range" id="spc" min="0.5" max="1" step="0.05" value="1"></div>
+    <div id="nonbox" class="hide">
+      <h3>People who stay well</h3>
+      <div class="sl"><label for="sen">Sensitivity: <span class="v" id="vsen"></span></label><input type="range" id="sen" min="0.5" max="1" step="0.05" value="1"></div>
+      <div class="sl"><label for="spn">Specificity: <span class="v" id="vspn"></span></label><input type="range" id="spn" min="0.5" max="1" step="0.05" value="1"></div>
+    </div>
+    <p class="note">Sensitivity: share of truly exposed people recorded as exposed. Specificity: share of truly unexposed people recorded as unexposed.</p>
+  </section>
+  <footer>Teaching model with made-up numbers. Modern Epidemiology, 4th ed., chapter 13.</footer>
+</main>
+<script src="guide.js"></script>
+<script>
+const el = id => document.getElementById(id);
+const A = 100, B = 900, C = 50, D = 950; // exposed cases, exposed well, unexposed cases, unexposed well
+function vals() {
+  const sec = +el('sec').value, spc = +el('spc').value;
+  const linked = el('link').checked;
+  const sen = linked ? sec : +el('sen').value, spn = linked ? spc : +el('spn').value;
+  return { sec, spc, sen, spn, linked };
+}
+function calc() {
+  const v = vals();
+  const ec = v.sec * A + (1 - v.spc) * C, uc = A + C - ec;
+  const en = v.sen * B + (1 - v.spn) * D, un = B + D - en;
+  const r1 = ec / (ec + en), r0 = uc / (uc + un);
+  return { ...v, ec, uc, en, un, r1, r0, rr: r1 / r0 };
+}
+const f0 = x => Math.round(x).toLocaleString('en-IN');
+function draw() {
+  const m = calc();
+  el('nonbox').classList.toggle('hide', m.linked);
+  el('h1').textContent = m.linked ? 'Everyone' : 'People who fall ill';
+  [['sec', m.sec], ['spc', m.spc], ['sen', m.sen], ['spn', m.spn]].forEach(([k, x]) => el('v' + k).textContent = Math.round(x * 100) + '%');
+  el('tab').innerHTML = `<tr><th>Recorded as</th><th class="num">Ill</th><th class="num">People</th><th class="num">Risk</th></tr>
+    <tr><td>Exposed</td><td class="num">${f0(m.ec)}</td><td class="num">${f0(m.ec + m.en)}</td><td class="num">${(100 * m.r1).toFixed(1)}%</td></tr>
+    <tr><td>Unexposed</td><td class="num">${f0(m.uc)}</td><td class="num">${f0(m.uc + m.un)}</td><td class="num">${(100 * m.r0).toFixed(1)}%</td></tr>`;
+  const cls = Math.abs(m.rr - 2) < 0.005 ? 'good' : (m.rr < 2 ? 'warn' : 'bad');
+  el('stats').innerHTML = `<div class="stat good"><div class="n">2.00</div><div class="l">true risk ratio</div></div>
+    <div class="stat ${cls}"><div class="n">${m.rr.toFixed(2)}</div><div class="l">recorded risk ratio</div></div>`;
+  const msg = el('msg');
+  if (Math.abs(m.rr - 2) < 0.005) { msg.className = 'claim good'; msg.textContent = 'The records match the truth.'; }
+  else if (m.rr < 2) { msg.className = 'claim warn'; msg.textContent = `The recorded ratio (${m.rr.toFixed(2)}) is closer to 1 than the truth.`; }
+  else { msg.className = 'claim'; msg.textContent = `The recorded ratio (${m.rr.toFixed(2)}) is further from 1 than the truth.`; }
+}
+function set(o) { for (const k in o) { if (k === 'link') el('link').checked = o[k]; else el(k).value = o[k]; } draw(); }
+['sec', 'spc', 'sen', 'spn', 'link'].forEach(id => el(id).oninput = draw);
+const show = (id, on) => el(id).classList.toggle('hide', !on);
+Guide.run(el('guide'), [
+  { title: 'Perfect records', enter: () => { show('sliders', false); set({ link: true, sec: 1, spc: 1, sen: 1, spn: 1 }); },
+    html: '<p>For now the records are perfect: every exposed person is recorded as exposed. Look at the table below.</p>',
+    ask: { type: 'number', prompt: 'What is the recorded risk ratio?', answer: 2, tol: 0.02, after: 'Right: 10% against 5%, a ratio of 2.0.' } },
+  { title: 'Errors for everyone', enter: () => { show('sliders', true); show('linkrow', false); set({ link: true, sec: 1, spc: 1 }); },
+    html: '<p>Now the records have errors, the same for everyone. Set <b>sensitivity to 80%</b> and <b>specificity to 90%</b>.</p>',
+    ask: { type: 'do', prompt: 'Set the two sliders, then press Check.', check: () => { const v = vals(); return Math.abs(v.sec - 0.8) < 0.01 && Math.abs(v.spc - 0.9) < 0.01; },
+      after: 'The recorded ratio is 1.60. Some exposed people were recorded as unexposed and the other way round, so the two groups look more alike.' } },
+  { title: 'Which way?', enter: () => { show('sliders', true); },
+    html: '<p>Try a few other values of the two sliders. Watch the recorded ratio.</p>',
+    ask: { type: 'choice', prompt: 'When the errors are the same for ill and well people, the recorded ratio is usually:', options: ['Closer to 1 than the truth', 'Further from 1 than the truth', 'Equal to the truth', 'Below 1, reversing the effect'], answer: 0,
+      after: 'Right. This is non-differential misclassification of a yes or no exposure. It usually weakens the estimate.' } },
+  { title: 'Errors that depend on illness', enter: () => { show('linkrow', true); set({ link: false, sec: 0.95, spc: 1, sen: 0.8, spn: 1 }); },
+    html: '<p>Now people who fell ill remember their exposure better: sensitivity 95% for them, 80% for people who stayed well. Specificity is perfect.</p>',
+    ask: { type: 'choice', prompt: 'The recorded risk ratio is now:', options: ['Further from 1 than the truth', 'Closer to 1 than the truth', 'Equal to the truth', 'Below 1, reversing the effect'], answer: 0,
+      after: 'Right: about 2.5 against a true 2.0. Differential errors can push the estimate either way. Here they exaggerate it.' } },
+  { title: 'Explore on your own', enter: () => { show('sliders', true); show('linkrow', true); },
+    html: '<p>Try giving well people the <b>better</b> memory. Which way does the ratio move now?</p>',
+    after: 'Take away: draw the recorded variable as its own box, and ask whether its errors depend on the outcome.' }
+]);
+draw();
+</script>
+</body>
+</html>

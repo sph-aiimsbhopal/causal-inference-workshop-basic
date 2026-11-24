@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 7: The chain: mediators</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 7 of 15</p>
+  <h1>The chain: mediators</h1>
+  <p>When the exposure works through a middle variable, adjusting for that variable removes the effect you wanted.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Recognise a chain and name the mediator</li><li>Calculate what adjusting for a mediator does to a risk ratio</li><li>Decide when not to adjust for a variable measured after the exposure</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m07-chain-mediation.html"><span class="label">Slides</span><h2>The chain: mediators</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/dag-lab.html?d=chain"><span class="label">Lab</span><h2>Causal Diagram Lab: the chain</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 12, the section on intermediate variables; chapter 27, Mediation Analysis, for later.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m06-fork-confounding.html">← Module 6: The fork: confounding</a><a class="act navbtn" href="m08-collider-selection.html">Module 8: The collider: selection bias →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Smoking lowers birth weight, and low birth weight raises infant deaths. For the total effect of smoking, you should:", "o": ["Adjust for birth weight", "Restrict to normal birth weight babies", "Not adjust for birth weight", "Match smokers on birth weight"], "a": 2, "e": "Birth weight is a mediator. Adjusting, restricting or matching on it all remove part of the effect you want."}, {"q": "Total RR 1.56. If all of the effect goes through low birth weight, the RR within each birth weight group is about:", "o": ["1.00", "1.56", "2.43", "0.64"], "a": 0, "e": "Once birth weight is held fixed, there is no other route for the effect, so smokers and non-smokers have the same risk within each group."}, {"q": "In a study of hormone therapy, which variable is most likely a mediator?", "o": ["Age at menopause", "Cholesterol after starting", "Years of education", "Smoking before menopause"], "a": 1, "e": "Hormones change cholesterol, which affects heart disease. A variable measured after the exposure starts is often a mediator."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

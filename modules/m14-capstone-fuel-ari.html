@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 14: Capstone: cooking fuel and childhood ARI</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 14 of 15</p>
+  <h1>Capstone: cooking fuel and childhood ARI</h1>
+  <p>Use everything so far on a published NFHS-4 analysis: draw the diagram, find the adjustment set, test the authors&#x27; model.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Write a causal question for a published study</li><li>Draw and defend a causal diagram in a group</li><li>Judge whether a paper&#x27;s adjustment set suits its question</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m14-capstone-fuel-ari.html"><span class="label">Slides</span><h2>Capstone: cooking fuel and childhood ARI</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/capstone-lab.html"><span class="label">Lab</span><h2>Capstone Lab: cooking fuel and ARI</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 12, applied; Mondal and Paul, PLoS ONE 2020.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m13-target-trial.html">← Module 13: Ask it like a trial</a><a class="act navbtn" href="m15-your-question.html">Module 15: Your own causal question →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Rural or urban residence affects both cooking fuel and childhood ARI. In the diagram it is:", "o": ["A mediator", "A collider", "A confounder", "An instrument"], "a": 2, "e": "A common cause of exposure and outcome; leaving it out leaves a back-door path open."}, {"q": "The model was built for cooking fuel. The odds ratio it reports for mother's education is:", "o": ["The total effect of mother's education", "Biased by adjusting for its mediators", "Free of confounding, being adjusted", "Smaller than the true effect always"], "a": 1, "e": "Fuel, kitchen and household smoking lie on education's causal paths; the model adjusts for them. This is the Table 2 fallacy."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

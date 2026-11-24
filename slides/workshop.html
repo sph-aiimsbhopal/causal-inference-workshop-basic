@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Causal inference in epidemiology: workshop path</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 0 · Causal inference for beginners</p>
+  <h1>Why causal questions are hard</h1>
+  <p class="lede dim">Two studies of the same hormones gave opposite answers about heart disease. What went wrong?</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 0. Two studies of the same hormones gave opposite answers about heart disease. What went wrong?</aside>
+</section>
+
+<section data-core>
+  <h2>A cohort study of 59,337 nurses</h2>
+  <p class="lede">From 1976, US nurses reported every two years whether they took hormones after menopause. Researchers followed them for heart attacks.</p>
+  <p class="fragment">Women who took oestrogen plus progestin, compared with women who never took hormones:</p>
+  <div class="fragment center"><span class="big good">RR 0.39</span></div>
+  <p class="cite">Grodstein F et al. N Engl J Med 1996;335:453-61.</p>
+  <aside class="notes">Keep it concrete. A cohort: women chose for themselves whether to take hormones; the researchers only watched. Reveal the number last.</aside>
+</section>
+
+<section data-core>
+  <h2>What does RR 0.39 mean?</h2>
+  <p>RR, the relative risk, is the risk in one group divided by the risk in the other.</p>
+  <div class="work fragment">
+    <p>Suppose <b>10 in 1,000</b> non-users had a heart attack.</p>
+    <p class="fragment">Users then had 0.39 × 10 = <b>3.9 in 1,000</b>.</p>
+    <p class="fragment">That is 61% lower risk. Hormones looked strongly protective.</p>
+  </div>
+  <p class="small dim fragment">The 10 in 1,000 is only to make the arithmetic visible; the ratio is what the study reported.</p>
+  <aside class="notes">Most students know RR loosely. Make them say it as a sentence: users had 39 percent of the non-users' risk. The illustrative baseline is ours; say so.</aside>
+</section>
+
+<section data-core>
+  <h2>Doctors acted on it</h2>
+  <p class="lede">By the 1990s, hormone therapy was widely prescribed to prevent heart disease, partly on evidence like this.</p>
+  <p class="fragment">Then a randomised trial asked the same question.</p>
+  <aside class="notes">One beat of history. The point: an observational result changed practice for millions of women.</aside>
+</section>
+
+<section data-core>
+  <h2>A randomised trial of 16,608 women</h2>
+  <p class="lede">The Women's Health Initiative. A computer decided, like a coin toss, who got oestrogen plus progestin and who got a placebo.</p>
+  <p class="fragment">Women given hormones, compared with women given placebo:</p>
+  <div class="fragment center"><span class="big bad">HR 1.29</span></div>
+  <p class="fragment">HR, the hazard ratio, reads like a relative risk: 29% <b>more</b> heart disease, not less. The trial was stopped early, at 5.2 years.</p>
+  <p class="cite">Writing Group for the WHI Investigators. JAMA 2002;288:321-33. 95% CI 1.02 to 1.63.</p>
+  <aside class="notes">A hazard ratio is a ratio of rates over time; for this course, read it like a relative risk. Stress who decided: the computer, not the woman.</aside>
+</section>
+
+<section data-core>
+  <h2>Same hormones, opposite answers</h2>
+  <table class="calc">
+    <tr><th class="l">Study</th><th>Who decided who took hormones?</th><th>Result</th></tr>
+    <tr><td class="l">Nurses' cohort</td><td>Each woman, with her doctor</td><td><b>0.39</b>, protective</td></tr>
+    <tr class="fragment"><td class="l">WHI trial</td><td>A coin toss</td><td><b>1.29</b>, harmful</td></tr>
+  </table>
+  <p class="claim fragment">Which one do you believe? Write one sentence in your workbook saying why.</p>
+  <aside class="notes">Take three or four answers. Expect: the trial, because randomised; and "healthy women chose hormones". Do not resolve it yet. Module 13 tells the full story.</aside>
+</section>
+
+<section data-core>
+  <h2>The question this course answers</h2>
+  <p class="lede">When can a comparison of people who chose differently tell us what a treatment, a habit or an exposure <b>does</b>?</p>
+  <ul>
+    <li class="fragment">Modules 1 and 2: what "causes" means, with numbers</li>
+    <li class="fragment">Modules 5 to 8: drawing the problem as a diagram</li>
+    <li class="fragment">Module 10: deciding what to adjust for</li>
+    <li class="fragment">Module 14: trying it on an Indian study</li>
+  </ul>
+  <aside class="notes">Roadmap. On the workshop day you will not cover every module; the site holds all of them.</aside>
+</section>
+
+<section data-id="quiz-before">
+  <h2>Before we start: twelve questions on your phone</h2>
+  <div class="two wide-left">
+    <div>
+      <p class="lede">Scan the code, open <b>Quiz</b>, choose <b>Before</b>.</p>
+      <p>Ten minutes. Only you see your score. You will take the same quiz at the end.</p>
+      <p>Keep the site open: every module, lab and slide is there, and stays there.</p>
+      <p class="url">sph-aiimsbhopal.github.io/causal-inference-workshop-basic</p>
+    </div>
+    <div><img class="qr" src="../assets/qr.svg" alt="QR code for the course site"></div>
+  </div>
+  <aside class="notes">The paper version of the quiz is in the handbook workbook. Walk around and help anyone whose phone will not open the site.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 1 · Causal inference for beginners</p>
+  <h1>Two possible futures</h1>
+  <p class="lede dim">What we mean when we say smoking causes TB death: a comparison of two futures for the same people.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 1. What we mean when we say smoking causes TB death: a comparison of two futures for the same people.</aside>
+</section>
+
+<section data-core>
+  <h2>"Smoking causes TB deaths." What does that claim?</h2>
+  <div class="cards c2">
+    <div class="card fragment"><h3>Reading 1</h3><p>Smokers die of TB more often than non-smokers.</p><p class="small dim">A statement about two different groups of men.</p></div>
+    <div class="card fragment"><h3>Reading 2</h3><p>If these same men had never smoked, fewer of them would have died of TB.</p><p class="small dim">A statement about the same men under two conditions.</p></div>
+  </div>
+  <p class="claim fragment">Reading 2 is the causal claim. This module makes it precise, then puts numbers on it.</p>
+  <aside class="notes">Ask the room which reading a TB programme officer needs. Reading 2: she wants to know what changes if smoking changes.</aside>
+</section>
+
+<section data-core>
+  <h2>One man, two possible futures</h2>
+  <p class="lede">Murugan is 30. Picture two versions of his life from today.</p>
+  <div class="cards c2">
+    <div class="card fragment"><h3>Future A: he smokes</h3><p>At 58 he dies of TB.</p></div>
+    <div class="card fragment"><h3>Future B: he never smokes</h3><p>At 58 he is alive.</p></div>
+  </div>
+  <p class="claim fragment">For Murugan, smoking caused his TB death: the two futures differ.</p>
+  <p class="small dim">Murugan and the other men in this module are illustrative.</p>
+  <aside class="notes">Go slowly; this is the foundation of everything else. The two futures are called potential outcomes. Both exist as possibilities before he makes the choice.</aside>
+</section>
+
+<section data-core>
+  <h2>Giving the two futures a name</h2>
+  <table class="calc">
+    <tr><th class="l">In words</th><th>Written as</th><th>For Murugan</th></tr>
+    <tr><td class="l">His outcome if he smokes</td><td>Y<sup>a=1</sup></td><td class="fragment">dies</td></tr>
+    <tr><td class="l">His outcome if he never smokes</td><td>Y<sup>a=0</sup></td><td class="fragment">lives</td></tr>
+  </table>
+  <p class="fragment">Y is the outcome, TB death. <i>a</i> is the exposure: 1 means smokes, 0 means never smokes.</p>
+  <p class="fragment">These are called <b>potential outcomes</b>. The causal effect for one man is the comparison of his two potential outcomes.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 3. Hernán and Robins, What If, chapter 1.</p>
+  <aside class="notes">Do not dwell on the notation. Students will meet it in Rothman and in Hernán's book; this slide just makes it familiar.</aside>
+</section>
+
+<section data-core>
+  <h2>Three men, three different effects</h2>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>If he smokes</th><th>If he never smokes</th><th>Effect of smoking for him</th></tr>
+    <tr><td class="l">Murugan</td><td>dies</td><td>lives</td><td class="fragment">Smoking kills him</td></tr>
+    <tr class="fragment"><td class="l">Selvam</td><td>dies</td><td>dies</td><td class="fragment">None: dies either way</td></tr>
+    <tr class="fragment"><td class="l">Bala</td><td>lives</td><td>lives</td><td class="fragment">None: lives either way</td></tr>
+  </table>
+  <p class="claim warn fragment">Selvam smoked and died of TB, yet smoking did not cause his death.</p>
+  <aside class="notes">Selvam is the key teaching case. "He smoked and died" is not evidence that smoking killed him, because he would have died anyway.</aside>
+</section>
+
+<section data-core>
+  <h2>The catch: we only ever see one future</h2>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>Did he smoke?</th><th>If he smokes</th><th>If he never smokes</th></tr>
+    <tr><td class="l">Murugan</td><td>yes</td><td>dies</td><td class="q">?</td></tr>
+    <tr><td class="l">Selvam</td><td>yes</td><td>dies</td><td class="q">?</td></tr>
+    <tr><td class="l">Bala</td><td>no</td><td class="q">?</td><td>lives</td></tr>
+  </table>
+  <p class="fragment">Each man lives only one of his two futures. The other one is <b>counterfactual</b>: contrary to fact.</p>
+  <p class="claim fragment">So we can never measure the effect for one person. This is the fundamental problem of causal inference.</p>
+  <aside class="notes">This is why individual effects are out of reach and why we turn to groups next. Ask: from the visible cells alone, can you tell Murugan from Selvam? No.</aside>
+</section>
+
+<section data-core>
+  <h2>From one man to a group of ten</h2>
+  <p>Suppose, in a thought experiment, we could see both futures for ten men.</p>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>If he smokes</th><th>If he never smokes</th></tr>
+    <tr><td class="l">Murugan</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Selvam</td><td class="dead">dies</td><td class="dead">dies</td></tr>
+    <tr><td class="l">Ravi</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Kannan</td><td class="dead">dies</td><td class="dead">dies</td></tr>
+    <tr><td class="l">Arul</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Suresh</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Bala, Mani, Raja, Siva</td><td>live</td><td>live</td></tr>
+  </table>
+  <aside class="notes">Ten men, both columns visible. This never happens in real data; it is a thought experiment that lets us define the effect we want to estimate.</aside>
+</section>
+
+<section data-core>
+  <h2>Count the deaths in each future</h2>
+  <div class="two">
+    <div class="card"><h3>If all ten smoked</h3><p class="fragment work">Murugan, Selvam, Ravi, Kannan, Arul, Suresh die.</p><p class="fragment big">6 of 10</p></div>
+    <div class="card"><h3>If none of them smoked</h3><p class="fragment work">Selvam and Kannan die.</p><p class="fragment big">2 of 10</p></div>
+  </div>
+  <aside class="notes">Have them count from the previous slide in the workbook before revealing.</aside>
+</section>
+
+<section data-core>
+  <h2>Turn the counts into a causal effect</h2>
+  <div class="work">
+    <p>Risk if all smoked = 6 / 10 = <b>0.6</b></p>
+    <p class="fragment">Risk if none smoked = 2 / 10 = <b>0.2</b></p>
+    <p class="fragment">Causal risk difference = 0.6 − 0.2 = <b>0.4</b>, that is 40 extra TB deaths per 100 men</p>
+    <p class="fragment">Causal risk ratio = 0.6 / 0.2 = <b>3.0</b>, three times the risk</p>
+  </div>
+  <p class="claim fragment">Both compare the <b>same ten men</b> under two conditions. That is what makes them causal.</p>
+  <aside class="notes">Risk difference and risk ratio should be familiar from 2 by 2 tables. The new idea is only what is being compared: the same group, twice.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In a group of 100 men, if all of them smoked, 25 would die of TB within 30 years. If none of them smoked, 5 would.</p>
+    <p>Calculate the causal risk difference and the causal risk ratio. Write them in your workbook.</p>
+  </div>
+  <div class="work fragment" style="margin-top:20px">
+    <p>Risk difference = 0.25 − 0.05 = <b>0.20</b>, 20 extra deaths per 100 men</p>
+    <p>Risk ratio = 0.25 / 0.05 = <b>5.0</b></p>
+  </div>
+  <aside class="notes">Give a minute. Reveal the answer only after most have written something. These numbers are invented for practice.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A causal effect compares the same people under two conditions.</p>
+  <p class="claim">For any one person we see only one of the two, so we work with groups.</p>
+  <p class="claim warn">Next problem: in real data, the men who smoked and the men who did not are different men.</p>
+  <aside class="notes">Bridge to Module 2.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 2 · Causal inference for beginners</p>
+  <h1>Association is not causation</h1>
+  <p class="lede dim">What happens when we compare the men who did smoke with the men who did not, and why randomisation fixes it.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 2. What happens when we compare the men who did smoke with the men who did not, and why randomisation fixes it.</aside>
+</section>
+
+<section data-core>
+  <h2>Back to real life: each man chose</h2>
+  <p>The same ten men. Now we know who drinks alcohol, who actually smoked, and only the future he lived.</p>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>Drinks?</th><th>Smoked?</th><th>What happened</th></tr>
+    <tr><td class="l">Murugan</td><td>yes</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Selvam</td><td>yes</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Ravi</td><td>yes</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Arul</td><td>no</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Kannan</td><td>yes</td><td>no</td><td class="dead">died</td></tr>
+    <tr><td class="l">Suresh, Bala, Mani, Raja, Siva</td><td>no</td><td>no</td><td>lived</td></tr>
+  </table>
+  <p class="small dim">Each "what happened" is the matching future from the Module 1 table.</p>
+  <aside class="notes">Point out that the outcome column is simply the potential outcome for the exposure each man actually had. That link, called consistency, is what lets us use real data at all.</aside>
+</section>
+
+<section data-core>
+  <h2>What a study would calculate</h2>
+  <div class="work">
+    <p>Smokers: 4 died out of 4. Risk = <b>1.0</b></p>
+    <p class="fragment">Non-smokers: 1 died (Kannan) out of 6. Risk = <b>0.17</b></p>
+    <p class="fragment">Observed risk ratio = 1.0 / 0.17 = <b>6.0</b></p>
+  </div>
+  <div class="cards c2 fragment" style="margin-top:12px">
+    <div class="card"><h3>The true causal effect</h3><p class="big good">3.0</p><p class="small dim">from both futures, Module 1</p></div>
+    <div class="card bad"><h3>What the study sees</h3><p class="big bad">6.0</p><p class="small dim">from the futures that happened</p></div>
+  </div>
+  <aside class="notes">Let them calculate in the workbook first. The observed ratio is double the true one. Same men, same biology; only the comparison changed.</aside>
+</section>
+
+<section data-core>
+  <h2>Why the study got it wrong</h2>
+  <div class="work">
+    <p>Among the 4 smokers, <b>3 drink</b>.</p>
+    <p class="fragment">Among the 6 non-smokers, <b>1 drinks</b>.</p>
+    <p class="fragment">Drinkers are more likely to die of TB whether or not they smoke.</p>
+  </div>
+  <p class="claim fragment">The smokers would have done worse than the non-smokers even without smoking. Some of the 6.0 is alcohol, not tobacco.</p>
+  <aside class="notes">In the Module 1 table, both doomed men, Selvam and Kannan, are drinkers. Drinkers carry more risk of their own.</aside>
+</section>
+
+<section data-core>
+  <h2>Check it with the hidden futures</h2>
+  <p>Ask: had the smokers <b>never</b> smoked, what would their risk have been?</p>
+  <table class="calc">
+    <tr><th class="l">Smoker</th><th>If he had never smoked</th></tr>
+    <tr><td class="l">Murugan</td><td>lives</td></tr>
+    <tr><td class="l">Selvam</td><td class="dead">dies</td></tr>
+    <tr><td class="l">Ravi</td><td>lives</td></tr>
+    <tr><td class="l">Arul</td><td>lives</td></tr>
+  </table>
+  <div class="work fragment"><p>Smokers' risk without smoking = 1 / 4 = <b>0.25</b>. Non-smokers' actual risk = 1 / 6 = <b>0.17</b>.</p></div>
+  <p class="claim warn fragment">These should be equal for a fair comparison. They are not.</p>
+  <aside class="notes">This is the exchangeability check, done with numbers we normally never have. In a real study we cannot do this calculation; we have to argue for it.</aside>
+</section>
+
+<section data-core>
+  <h2>Exchangeability, in one sentence</h2>
+  <p class="lede">Two groups are <b>exchangeable</b> if, had they swapped exposures, each would have had the other group's risk.</p>
+  <ul>
+    <li class="fragment">If exchangeable: observed risk ratio = causal risk ratio.</li>
+    <li class="fragment">If not: the observed ratio mixes the effect with how the groups differ.</li>
+    <li class="fragment">That mixing is what epidemiologists call <b>confounding</b>.</li>
+  </ul>
+  <p class="cite">Greenland S, Robins JM. Int J Epidemiol 1986;15:413-9. Modern Epidemiology, 4th ed., chapter 12.</p>
+  <aside class="notes">One sentence students should be able to say back. Confounding is named here and treated properly in Module 6.</aside>
+</section>
+
+<section data-core>
+  <h2>How a trial gets exchangeability: toss a coin</h2>
+  <p>If a coin decides who smokes, drinking cannot influence who ends up in which group.</p>
+  <div class="work fragment">
+    <p>On average, half of every kind of man lands in each group: half the drinkers, half the doomed, half the immune.</p>
+    <p class="fragment">With the 100 men in Lab 1, that gives risks of 0.39 and 0.13 on average: risk ratio <b>3.0</b>, the true effect.</p>
+  </div>
+  <p class="claim fragment">Any single toss can be off by chance. Bias goes away; chance does not.</p>
+  <aside class="notes">This is why the WHI trial is believed over the cohort. Randomisation breaks every link between the exposure and the man's other risks, measured or not.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn: a fairer split</h2>
+  <div class="you">
+    <p>Suppose Murugan, Kannan, Arul, Mani and Raja smoked, and the other five did not. Use the Module 1 table of both futures.</p>
+    <p>How many smokers die? How many non-smokers? What is the risk ratio?</p>
+  </div>
+  <div class="work fragment" style="margin-top:18px">
+    <p>Smokers: Murugan, Kannan, Arul die. 3 / 5 = 0.6. Non-smokers: Selvam dies. 1 / 5 = 0.2.</p>
+    <p>Risk ratio = <b>3.0</b>, the true effect. Each group has 2 drinkers.</p>
+  </div>
+  <aside class="notes">Here drinkers are split evenly, so the groups are exchangeable and the observed ratio equals the causal one.</aside>
+</section>
+
+<section data-core>
+  <h2>A bigger group shows the same thing</h2>
+  <p>Lab 1 has 100 made-up men. Smoking triples every man's risk, by construction. Drinkers smoke more.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>Died</th><th>Total</th><th>Risk</th></tr>
+    <tr><td class="l">Smokers</td><td>21</td><td>44</td><td>0.48</td></tr>
+    <tr><td class="l">Non-smokers</td><td>6</td><td>56</td><td>0.11</td></tr>
+  </table>
+  <div class="work fragment"><p>Observed risk ratio = 0.48 / 0.11 = <b>4.45</b>. True causal risk ratio = <b>3.0</b>.</p></div>
+  <p class="fragment">Open Lab 1 and work through steps 1 to 8. Switch between both futures and what happened, then let a coin decide.</p>
+  <aside class="notes">Lab 1 numbers. 21 of 44 smokers died and 6 of 56 non-smokers. Module 6 shows how to recover the 3.0 by splitting the table by alcohol.</aside>
+</section>
+
+<section data-core>
+  <h2>Now the real study</h2>
+  <p>Gajalakshmi and colleagues: 43,000 men who died in Tamil Nadu and 35,000 living men. Ever smokers had <b>4.5</b> times the TB death rate of never smokers (urban men, 25 to 69).</p>
+  <ul>
+    <li class="fragment">Who chose to smoke? Not a coin.</li>
+    <li class="fragment">Smokers in the same study also had 3.3 times the death rate from alcoholism or cirrhosis.</li>
+    <li class="fragment">The analysis allowed for age, education and tobacco chewing, but not alcohol.</li>
+  </ul>
+  <p class="claim fragment">Are smokers and never smokers exchangeable here? Write what might differ.</p>
+  <p class="cite">Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</p>
+  <aside class="notes">Real numbers. The cirrhosis finding is a clue that smokers drink more. This does not mean smoking has no effect on TB; dose-response and other evidence support a real effect. It means 4.5 may be an overestimate.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">An observed comparison is causal only if the groups are exchangeable.</p>
+  <p class="claim">Randomisation buys exchangeability on average. Observational studies have to argue for it.</p>
+  <p class="claim warn">Next: a way to draw what makes groups different, so we can see what to do about it.</p>
+  <aside class="notes">Bridge to Module 5, causal diagrams.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 5 · Causal inference for beginners</p>
+  <h1>Drawing a causal diagram</h1>
+  <p class="lede dim">A causal diagram is a picture of your assumptions. Learn the four rules and how to read paths.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 5. A causal diagram is a picture of your assumptions. Learn the four rules and how to read paths.</aside>
+</section>
+
+<section data-core>
+  <h2>Why draw a picture?</h2>
+  <p class="lede">In Module 2, alcohol made smokers and non-smokers non-exchangeable. Real studies have many such variables.</p>
+  <p class="fragment">A causal diagram puts your beliefs about what causes what on paper, so that you, and anyone reading your thesis, can see them and argue with them.</p>
+  <p class="cite fragment">Formally a directed acyclic graph (DAG). Greenland S, Pearl J, Robins JM. Epidemiology 1999;10:37-48.</p>
+  <aside class="notes">The diagram is not a statistical model. It is a statement of assumptions, drawn before the analysis.</aside>
+</section>
+
+<section data-core>
+  <h2>Boxes and an arrow</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:520px" data-steps='[{"add":["smk","tb"]},{"add":["smk>tb"],"fi":1}]' role="img" aria-label="Smoking and TB death"></svg></div>
+    <div>
+      <p>Each box is a <b>variable</b>: something that differs between people.</p>
+      <p class="fragment" data-fragment-index="1">An arrow means: <b>directly causes</b>. Smoking raises the risk of TB death.</p>
+      <p class="fragment small dim" data-fragment-index="1">Exposure and outcome are shown in dark boxes.</p>
+    </div>
+  </div>
+  <aside class="notes">First click adds the arrow and its explanation together. Keep this slide almost trivially simple.</aside>
+</section>
+
+<section data-core>
+  <h2>Add what you know about alcohol</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:520px" data-steps='[{"add":["smk","tb","smk>tb"]},{"add":["alc"],"fi":1},{"add":["alc>smk"],"fi":2},{"add":["alc>tb"],"fi":3}]' role="img" aria-label="Alcohol causes smoking and TB death"></svg></div>
+    <div>
+      <p class="fragment" data-fragment-index="1">Alcohol use is a variable too.</p>
+      <p class="fragment" data-fragment-index="2">Men who drink are more likely to smoke: an arrow into smoking.</p>
+      <p class="fragment" data-fragment-index="3">Alcohol raises the risk of TB death: an arrow into TB death.</p>
+    </div>
+  </div>
+  <aside class="notes">Each click adds one arrow with its sentence. Ask the room before each click: should there be an arrow here, and which way?</aside>
+</section>
+
+<section data-core>
+  <h2>Four rules for drawing</h2>
+  <ol class="steps">
+    <li class="fragment"><b>An arrow means a direct cause</b>, pointing from cause to effect.</li>
+    <li class="fragment"><b>No loops.</b> Nothing can cause itself. If smoking causes stress and stress causes more smoking, draw smoking at two times.</li>
+    <li class="fragment"><b>Every common cause goes in</b>, measured or not. Draw an unmeasured one with a dashed box.</li>
+    <li class="fragment"><b>A missing arrow is a claim.</b> It says there is no direct effect at all.</li>
+  </ol>
+  <aside class="notes">Rule 4 surprises people. Drawing an arrow is cautious; leaving one out is bold. When unsure, draw the arrow.</aside>
+</section>
+
+<section data-core>
+  <h2>Where do the arrows come from?</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>From</h3><p class="small">Biology, earlier studies, how the data were collected, and the order in which things happen.</p></div>
+    <div class="card bad"><h3>Not from</h3><p class="small">The dataset you are about to analyse: its correlations, p-values or stepwise regression.</p></div>
+  </div>
+  <p class="claim fragment">If two experts disagree, draw both diagrams. Often they lead to the same adjustment.</p>
+  <aside class="notes">Data cannot tell you which way an arrow points or whether a correlation is confounding. That is why the diagram comes first.</aside>
+</section>
+
+<section data-core>
+  <h2>A path is any route between two boxes</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:520px" data-steps='[{"add":"all"},{"hl":"smk,tb","fi":1},{"hl":"smk,alc,tb","fi":2}]' role="img" aria-label="Two paths between smoking and TB death"></svg></div>
+    <div>
+      <p>Follow the lines from smoking to TB death. You may go along an arrow or against it.</p>
+      <p class="fragment" data-fragment-index="1"><b>Path 1:</b> Smoking → TB death</p>
+      <p class="fragment" data-fragment-index="2"><b>Path 2:</b> Smoking ← Alcohol → TB death</p>
+    </div>
+  </div>
+  <aside class="notes">The highlighted path changes with each click. Students often think paths must follow the arrows; they need not.</aside>
+</section>
+
+<section data-core>
+  <h2>Causal paths and the other kind</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>Causal path</h3><p>Every arrow points away from the exposure, towards the outcome.</p><p class="small">Smoking → TB death</p><p class="small dim">This carries the effect we want.</p></div>
+    <div class="card bad fragment"><h3>Non-causal path</h3><p>At least one arrow points the other way.</p><p class="small">Smoking ← Alcohol → TB death</p><p class="small dim">This carries association that is not the effect of smoking.</p></div>
+  </div>
+  <p class="claim fragment">The observed 4.45 in Lab 1 is the sum of what flows along both paths. We want only the first.</p>
+  <aside class="notes">This links back to the numbers: 3.0 along the causal path, plus the extra from alcohol, gives the 4.45 seen.</aside>
+</section>
+
+<section data-core>
+  <h2>Build the Tamil Nadu diagram, one box at a time</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":["smk","tb","smk>tb"]},{"add":["age","age>smk","age>tb"],"fi":1},{"add":["edu","edu>smk"],"fi":2},{"add":["alc","alc>tb","edu>alc"],"fi":3},{"add":["peer","peer>smk","peer>alc"],"fi":4},{"add":["nut","alc>nut","edu>nut","nut>tb"],"fi":5}]' role="img" aria-label="Diagram for smoking and TB death built step by step"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Age: older men smoke more and die of TB more.</p>
+      <p class="small fragment" data-fragment-index="2">Education affects smoking.</p>
+      <p class="small fragment" data-fragment-index="3">Alcohol, also shaped by education, raises TB death. It was not adjusted for, so its box is dashed.</p>
+      <p class="small fragment" data-fragment-index="4">Peer group and personality push men towards both smoking and drinking. Never measured.</p>
+      <p class="small fragment" data-fragment-index="5">Undernutrition, from poverty and drinking, raises TB death.</p>
+    </div>
+  </div>
+  <p class="cite">Diagram drawn by the faculty for Gajalakshmi et al., Lancet 2003. Yours may differ.</p>
+  <aside class="notes">Five clicks, one idea each. Ask before each click whether the students agree with the arrows. Disagreement is the point.</aside>
+</section>
+
+<section data-core>
+  <h2>Find three paths in it</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"hl":"smk,age,tb","fi":1},{"hl":"smk,peer,alc,tb","fi":2},{"hl":"smk,edu,nut,tb","fi":3}]' role="img" aria-label="Three non-causal paths from smoking to TB death"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Smoking ← Age → TB death</p>
+      <p class="small fragment" data-fragment-index="2">Smoking ← Peer group → Alcohol → TB death</p>
+      <p class="small fragment" data-fragment-index="3">Smoking ← Education → Undernutrition → TB death</p>
+      <p class="small fragment" data-fragment-index="3">There are more. Lab 2 lists all of them.</p>
+    </div>
+  </div>
+  <aside class="notes">All three start with an arrow into smoking, so all are non-causal. Module 6 gives them a name, back-door paths, and shows how to close them.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>Diabetes raises the risk of active TB. Age raises the risk of both diabetes and TB.</p>
+    <p>Draw the diagram in your workbook. How many paths join diabetes and TB? Which are causal?</p>
+  </div>
+  <div class="work fragment" style="margin-top:16px">
+    <p>Two paths: Diabetes → TB (causal), and Diabetes ← Age → TB (non-causal).</p>
+  </div>
+  <aside class="notes">This is the first half of Practice 2 in Module 10, where poverty and undernutrition are added.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A causal diagram is your assumptions, drawn. Arrows are direct causes; a missing arrow is a claim.</p>
+  <p class="claim">A path is any route between exposure and outcome. Causal paths carry the effect; the others carry bias.</p>
+  <p class="claim warn">Next: three shapes that every path is built from, starting with the fork.</p>
+  <aside class="notes">Open Lab 2, choose "Smoking and TB deaths", and read the list of paths.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 6 · Causal inference for beginners</p>
+  <h1>The fork: confounding</h1>
+  <p class="lede dim">A common cause can make two things look linked when neither causes the other. Learn to spot it and remove it.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 6. A common cause can make two things look linked when neither causes the other. Learn to spot it and remove it.</aside>
+</section>
+
+<section data-core>
+  <h2>The fork: one cause, two arrows out</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="fork" style="width:520px" data-steps='[{"add":["smk","tb"]},{"add":["alc"],"fi":1},{"add":["alc>smk","alc>tb"],"fi":2}]' role="img" aria-label="Alcohol causes smoking and TB death; no arrow from smoking to TB death"></svg></div>
+    <div>
+      <p>Imagine smoking has <b>no</b> effect on TB death: no arrow between them.</p>
+      <p class="fragment" data-fragment-index="1">Alcohol use is a common cause.</p>
+      <p class="fragment" data-fragment-index="2">Drinkers smoke more, and drinkers die of TB more.</p>
+    </div>
+  </div>
+  <p class="claim fragment">Will smokers still die of TB more often? Guess before the next slide.</p>
+  <aside class="notes">The fork: a common cause with arrows to exposure and outcome. Deliberately no arrow from smoking to TB, so any association we find is pure confounding.</aside>
+</section>
+
+<section data-core>
+  <h2>A town of 1,000 men where smoking does nothing</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Men</th><th>Who smoke</th><th>TB death risk, smoker or not</th></tr>
+    <tr><td class="l">Drinkers</td><td>400</td><td>300 (75%)</td><td>10%</td></tr>
+    <tr><td class="l">Non-drinkers</td><td>600</td><td>150 (25%)</td><td>2%</td></tr>
+  </table>
+  <p class="small dim">Made-up numbers. Within each row, smokers and non-smokers have the same risk, so smoking has no effect.</p>
+  <aside class="notes">Make sure students see that the risk column does not depend on smoking. That is the "no effect" built in.</aside>
+</section>
+
+<section data-core>
+  <h2>Compare smokers with non-smokers, all together</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Men</th><th>TB deaths</th><th>Risk</th></tr>
+    <tr><td class="l">Smokers</td><td>300 + 150 = 450</td><td class="fragment">30 + 3 = 33</td><td class="fragment">7.3%</td></tr>
+    <tr><td class="l">Non-smokers</td><td>100 + 450 = 550</td><td class="fragment">10 + 9 = 19</td><td class="fragment">3.5%</td></tr>
+  </table>
+  <div class="work fragment"><p>Crude risk ratio = 7.3% / 3.5% = <b>2.1</b></p></div>
+  <p class="claim warn fragment">Smokers die twice as often, though smoking does nothing here.</p>
+  <aside class="notes">Deaths among smoking drinkers: 300 × 10% = 30; smoking non-drinkers 150 × 2% = 3. Non-smoking drinkers 100 × 10% = 10; non-smoking non-drinkers 450 × 2% = 9. Do this in the workbook table.</aside>
+</section>
+
+<section data-core>
+  <h2>Now split the table by alcohol</h2>
+  <div class="two">
+    <div class="card"><h3>Drinkers</h3>
+      <table class="calc"><tr><th class="l"></th><th>Deaths</th><th>Risk</th></tr>
+        <tr><td class="l">Smokers</td><td>30 / 300</td><td>10%</td></tr>
+        <tr><td class="l">Non-smokers</td><td>10 / 100</td><td>10%</td></tr></table>
+      <p class="fragment work">Risk ratio = <b>1.0</b></p></div>
+    <div class="card fragment"><h3>Non-drinkers</h3>
+      <table class="calc"><tr><th class="l"></th><th>Deaths</th><th>Risk</th></tr>
+        <tr><td class="l">Smokers</td><td>3 / 150</td><td>2%</td></tr>
+        <tr><td class="l">Non-smokers</td><td>9 / 450</td><td>2%</td></tr></table>
+      <p class="fragment work">Risk ratio = <b>1.0</b></p></div>
+  </div>
+  <p class="claim good fragment">Within each level of alcohol, no association. The 2.1 came entirely from alcohol.</p>
+  <aside class="notes">This is stratification. Comparing smokers with non-smokers who drink the same makes them exchangeable, as far as alcohol goes.</aside>
+</section>
+
+<section data-core>
+  <h2>What stratifying did, in the diagram</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="fork" style="width:520px" data-steps='[{"add":"all"},{"hl":"smk,alc,tb","fi":1},{"z":["alc"],"fi":2}]' role="img" aria-label="The path through alcohol, open then blocked"></svg></div>
+    <div>
+      <p class="fragment" data-fragment-index="1">The path Smoking ← Alcohol → TB death carries association: it is <b>open</b>.</p>
+      <p class="fragment" data-fragment-index="2">Comparing within levels of alcohol puts alcohol in a box: we <b>adjust</b> for it. The path is now <b>blocked</b> (dashed).</p>
+    </div>
+  </div>
+  <aside class="notes">Red means a non-causal path that is open and biasing the result. Dashed means blocked. These conventions are the same in Lab 2.</aside>
+</section>
+
+<section data-core>
+  <h2>Giving it names</h2>
+  <ul>
+    <li><b>Back-door path:</b> a path that starts with an arrow <b>into</b> the exposure. Smoking ← Alcohol → TB death.</li>
+    <li class="fragment"><b>Confounding:</b> association that flows through an open back-door path.</li>
+    <li class="fragment"><b>Confounder:</b> a variable that, adjusted for, blocks a back-door path. Here, alcohol.</li>
+  </ul>
+  <p class="claim fragment">Confounding is defined by the diagram, not by a statistical test.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 12. Greenland S, Pearl J, Robins JM. Epidemiology 1999;10:37-48.</p>
+  <aside class="notes">This is the structural definition. It agrees with the potential-outcome idea from Module 2: an open back-door path is what makes groups non-exchangeable.</aside>
+</section>
+
+<section data-core>
+  <h2>When smoking does have an effect: the 100 men of Lab 1</h2>
+  <p>Crude: smokers 21/44, non-smokers 6/56. Risk ratio <b>4.45</b>. Now split by alcohol.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>Smokers</th><th>Non-smokers</th><th>Risk ratio</th></tr>
+    <tr class="fragment"><td class="l">Drinkers</td><td>18 / 24 = 0.75</td><td>4 / 16 = 0.25</td><td><b>3.0</b></td></tr>
+    <tr class="fragment"><td class="l">Non-drinkers</td><td>3 / 20 = 0.15</td><td>2 / 40 = 0.05</td><td><b>3.0</b></td></tr>
+  </table>
+  <p class="claim good fragment">Each stratum recovers the true effect, 3.0, that we built into these men.</p>
+  <aside class="notes">Same men as Module 2. In this teaching example the stratum ratios are equal; in real data they differ somewhat, and we need one summary number.</aside>
+</section>
+
+<section data-core>
+  <h2>One number for everyone: standardise</h2>
+  <p>Ask: what would the risk be if <b>all 100</b> men smoked, keeping the real mix of 40 drinkers and 60 non-drinkers?</p>
+  <div class="work">
+    <p class="fragment">If all smoked: 0.4 × 0.75 + 0.6 × 0.15 = 0.30 + 0.09 = <b>0.39</b></p>
+    <p class="fragment">If none smoked: 0.4 × 0.25 + 0.6 × 0.05 = 0.10 + 0.03 = <b>0.13</b></p>
+    <p class="fragment">Standardised risk ratio = 0.39 / 0.13 = <b>3.0</b></p>
+  </div>
+  <p class="small dim fragment">These are exactly the two futures of Module 1, rebuilt from data we could actually observe, once alcohol is accounted for.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 18, Stratification and Standardization.</p>
+  <aside class="notes">Standardisation is a weighted average of the stratum risks, with the whole population's mix as weights. It answers the counterfactual question directly.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In another town, 30% of men drink. TB death risks:</p>
+    <table class="calc"><tr><th class="l"></th><th>Smokers</th><th>Non-smokers</th></tr>
+      <tr><td class="l">Drinkers</td><td>0.50</td><td>0.25</td></tr>
+      <tr><td class="l">Non-drinkers</td><td>0.10</td><td>0.05</td></tr></table>
+    <p>Calculate the standardised risk if all smoked, if none smoked, and the risk ratio.</p>
+  </div>
+  <div class="work fragment"><p>All smoked: 0.3 × 0.50 + 0.7 × 0.10 = <b>0.22</b>. None: 0.3 × 0.25 + 0.7 × 0.05 = <b>0.11</b>. Ratio <b>2.0</b>.</p></div>
+  <aside class="notes">Invented practice numbers. Both strata have ratio 2.0, so the standardised ratio is 2.0 too.</aside>
+</section>
+
+<section data-core>
+  <h2>A warning about the old rules</h2>
+  <div class="cards c2">
+    <div class="card"><h3>"Associated with both exposure and outcome"</h3><p class="small">A mediator and a collider (Modules 7 and 8) are associated with both too.</p></div>
+    <div class="card"><h3>"It changed the estimate by 10%"</h3><p class="small">Adjusting for a mediator or a collider changes the estimate too, in the wrong direction.</p></div>
+  </div>
+  <p class="claim warn fragment">Only the diagram can tell a confounder from the other two.</p>
+  <p class="cite">Hernán MA, Hernández-Díaz S, Werler MM, Mitchell AA. Am J Epidemiol 2002;155:176-84.</p>
+  <aside class="notes">Plant the doubt now; Modules 7 and 8 deliver the counter-examples with numbers.</aside>
+</section>
+
+<section data-core>
+  <h2>Back to Tamil Nadu</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"z":["age","edu"],"fi":1},{"hl":"smk,peer,alc,tb","fi":2}]' role="img" aria-label="Age and education adjusted; path through peer group and alcohol still open"></svg></div>
+    <div>
+      <p class="small">The study adjusted for age and education.</p>
+      <p class="small fragment" data-fragment-index="1">That blocks the back-door paths through age and education.</p>
+      <p class="small fragment" data-fragment-index="2">Smoking ← Peer group → Alcohol → TB death stays open. Neither peer group nor alcohol was measured.</p>
+      <p class="claim warn small fragment" data-fragment-index="2">Some confounding remains. The 4.5 is likely too high.</p>
+    </div>
+  </div>
+  <aside class="notes">Tobacco chewing is left off this diagram for simplicity. Module 12, for later, shows how to judge how much an unmeasured confounder could move the estimate.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A fork, a common cause, opens a back-door path and creates confounding.</p>
+  <p class="claim">Adjusting for the common cause, by any method, blocks the path. Stratum and standardised ratios show it in numbers.</p>
+  <p class="claim warn">Next: the chain, where adjusting does harm.</p>
+  <aside class="notes">Lab 2, diagram "Fork": tap Alcohol and watch the path close.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 7 · Causal inference for beginners</p>
+  <h1>The chain: mediators</h1>
+  <p class="lede dim">When the exposure works through a middle variable, adjusting for that variable removes the effect you wanted.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 7. When the exposure works through a middle variable, adjusting for that variable removes the effect you wanted.</aside>
+</section>
+
+<section data-core>
+  <h2>The chain: a cause that works through something</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="chain" style="width:520px" data-steps='[{"add":["smk","die"]},{"add":["lbw","smk>lbw"],"fi":1},{"add":["lbw>die"],"fi":2}]' role="img" aria-label="Maternal smoking causes low birth weight, which causes infant death"></svg></div>
+    <div>
+      <p>Mothers who smoke in pregnancy have more infant deaths. How?</p>
+      <p class="fragment" data-fragment-index="1">Smoking lowers birth weight.</p>
+      <p class="fragment" data-fragment-index="2">Low birth weight raises the risk of infant death.</p>
+      <p class="fragment small dim" data-fragment-index="2">Low birth weight is a <b>mediator</b>: it lies on the causal path.</p>
+    </div>
+  </div>
+  <aside class="notes">The chain: exposure, then mediator, then outcome. For now, suppose smoking acts only through birth weight.</aside>
+</section>
+
+<section data-core>
+  <h2>Births where smoking acts only through birth weight</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Low birth weight</th></tr>
+    <tr><td class="l">Mothers who smoke</td><td>14%</td></tr>
+    <tr><td class="l">Mothers who do not</td><td>5%</td></tr>
+  </table>
+  <table class="calc">
+    <tr><th class="l"></th><th>Infant death risk, whatever the mother did</th></tr>
+    <tr><td class="l">Low birth weight</td><td>4%</td></tr>
+    <tr><td class="l">Normal birth weight</td><td>0.4%</td></tr>
+  </table>
+  <p class="small dim">Made-up numbers, chosen to land near the real US figures you meet in Module 8.</p>
+  <aside class="notes">The death risk depends only on birth weight, not on smoking directly. So all of smoking's effect runs through low birth weight.</aside>
+</section>
+
+<section data-core>
+  <h2>The total effect of smoking</h2>
+  <div class="work">
+    <p>Smokers: 0.14 × 4% + 0.86 × 0.4% = 0.560% + 0.344% = <b>0.904%</b></p>
+    <p class="fragment">Non-smokers: 0.05 × 4% + 0.95 × 0.4% = 0.200% + 0.380% = <b>0.580%</b></p>
+    <p class="fragment">Risk ratio = 0.904 / 0.580 = <b>1.56</b></p>
+  </div>
+  <p class="claim fragment">Smoking raises infant deaths by 56%. That is the <b>total effect</b>, the one a mother or a programme cares about.</p>
+  <aside class="notes">904 against 580 per 100,000 births. Work it in the workbook first.</aside>
+</section>
+
+<section data-core>
+  <h2>Now "adjust for birth weight"</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Smokers</th><th>Non-smokers</th><th>Risk ratio</th></tr>
+    <tr class="fragment"><td class="l">Low birth weight babies</td><td>4%</td><td>4%</td><td><b>1.0</b></td></tr>
+    <tr class="fragment"><td class="l">Normal weight babies</td><td>0.4%</td><td>0.4%</td><td><b>1.0</b></td></tr>
+  </table>
+  <p class="claim warn fragment">Adjusted for birth weight, smoking looks harmless. Yet it raised deaths by 56%.</p>
+  <aside class="notes">Stratifying on the mediator removes the very route the effect travels by. This is over-adjustment.</aside>
+</section>
+
+<section data-core>
+  <h2>What happened, in the diagram</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="chain" style="width:520px" data-steps='[{"add":"all","hl":"smk,lbw,die"},{"z":["lbw"],"fi":1}]' role="img" aria-label="The causal path, open, then blocked by adjusting for low birth weight"></svg></div>
+    <div>
+      <p>Green: a causal path, open. This carries the effect.</p>
+      <p class="fragment" data-fragment-index="1">Adjusting for low birth weight blocks it (dashed). The effect is gone from the estimate, not from the babies.</p>
+    </div>
+  </div>
+  <aside class="notes">Same blocking rule as Module 6: adjusting for a middle variable blocks the path. With a fork that is what we want; with a chain it is not.</aside>
+</section>
+
+<section data-core>
+  <h2>How to spot a mediator</h2>
+  <ul>
+    <li class="fragment">It is <b>caused by the exposure</b>.</li>
+    <li class="fragment">It is usually <b>measured after</b> the exposure started.</li>
+    <li class="fragment">Examples: cholesterol after starting hormones; CD4 count after starting ART; weight after joining a diet programme.</li>
+  </ul>
+  <p class="claim fragment">For the total effect, do not adjust, restrict, match or stratify on a mediator.</p>
+  <aside class="notes">A rough but useful rule for beginners: be suspicious of any covariate measured after the exposure began.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>ASHA home visits in pregnancy increase institutional delivery. Partly, visits raise the mother's knowledge of danger signs, and that knowledge leads to institutional delivery.</p>
+    <p>You want the total effect of home visits. Should you adjust for the mother's knowledge? Draw it.</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>No. Visits → Knowledge → Delivery is a chain: knowledge is a mediator. Adjusting would hide part of what the visits achieve.</p></div>
+  <aside class="notes">A Community Medicine example to show the idea is not specific to birth weight.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A chain carries the effect. The middle variable is a mediator.</p>
+  <p class="claim warn">Adjusting for a mediator removes part of the effect you want. In our numbers, 1.56 became 1.0.</p>
+  <p class="claim">Next: the collider, where adjusting creates an association out of nothing.</p>
+  <aside class="notes">Lab 2, diagram "Chain": tap Low birth weight and watch the green path turn dashed.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 8 · Causal inference for beginners</p>
+  <h1>The collider: selection bias</h1>
+  <p class="lede dim">Two causes of the same thing become linked when you look only at people who have that thing.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 8. Two causes of the same thing become linked when you look only at people who have that thing.</aside>
+</section>
+
+<section data-core>
+  <h2>The collider: two arrows that meet</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="collider" style="width:520px" data-steps='[{"add":["smk","def"]},{"add":["lbw","smk>lbw"],"fi":1},{"add":["def>lbw"],"fi":2}]' role="img" aria-label="Maternal smoking and birth defects both cause low birth weight"></svg></div>
+    <div>
+      <p>Maternal smoking and birth defects: in the population, they are unrelated.</p>
+      <p class="fragment" data-fragment-index="1">Smoking causes low birth weight.</p>
+      <p class="fragment" data-fragment-index="2">Birth defects cause low birth weight too. The arrows <b>collide</b>.</p>
+    </div>
+  </div>
+  <aside class="notes">A collider is a common effect. It is a property of a variable on a particular path: low birth weight is a collider on Smoking → LBW ← Defect.</aside>
+</section>
+
+<section data-core>
+  <h2>The rule for colliders is the opposite</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>Left alone</h3><p>A path through a collider is <b>closed</b>. No association flows. Smoking and defects stay unrelated.</p></div>
+    <div class="card bad fragment"><h3>Adjusted for, or selected on</h3><p>The path <b>opens</b>. Smoking and defects become associated, though neither causes the other.</p></div>
+  </div>
+  <p class="fragment">Why: among small babies, if the mother did not smoke, something else made the baby small. A defect becomes more likely.</p>
+  <aside class="notes">This is the counter-intuitive one. Forks and chains are open until you adjust; colliders are closed until you adjust. Spend time on the intuition sentence.</aside>
+</section>
+
+<section data-core>
+  <h2>A town where smoking and TB are unrelated</h2>
+  <p>100,000 people. 30% smoke. 1% have TB. Smoking makes no difference to TB here.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>TB</th><th>No TB</th></tr>
+    <tr><td class="l">Smokers</td><td>300</td><td>29,700</td></tr>
+    <tr><td class="l">Non-smokers</td><td>700</td><td>69,300</td></tr>
+  </table>
+  <div class="work fragment"><p>Odds ratio = (300 × 69,300) / (29,700 × 700) = <b>1.0</b></p></div>
+  <p class="small dim">Made-up numbers. In reality smoking does raise TB risk; here we remove that to isolate the bias.</p>
+  <aside class="notes">Start from no association at all, so that anything we find later is created by selection.</aside>
+</section>
+
+<section data-core>
+  <h2>Who gets admitted to the chest ward?</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>TB</th><th>No TB</th></tr>
+    <tr><td class="l">Smokers</td><td>90% admitted</td><td>5% admitted</td></tr>
+    <tr><td class="l">Non-smokers</td><td>80% admitted</td><td>2% admitted</td></tr>
+  </table>
+  <p class="fragment">TB gets you admitted. Smoking does too, through other chest illness.</p>
+  <div class="dagwrap fragment"><svg class="dag" data-dag="berkson" style="width:420px" role="img" aria-label="Smoking and TB both cause admission"></svg></div>
+  <aside class="notes">Admission is a common effect of smoking and TB: a collider.</aside>
+</section>
+
+<section data-core>
+  <h2>Study only the admitted patients</h2>
+  <table class="calc">
+    <tr><th class="l">In the ward</th><th>TB</th><th>No TB</th></tr>
+    <tr class="fragment"><td class="l">Smokers</td><td>300 × 0.9 = 270</td><td>29,700 × 0.05 = 1,485</td></tr>
+    <tr class="fragment"><td class="l">Non-smokers</td><td>700 × 0.8 = 560</td><td>69,300 × 0.02 = 1,386</td></tr>
+  </table>
+  <div class="work fragment"><p>Odds ratio = (270 × 1,386) / (1,485 × 560) = <b>0.45</b></p></div>
+  <p class="claim warn fragment">In the ward, smoking seems to halve the odds of TB. In the town, it made no difference.</p>
+  <aside class="notes">This is Berkson's bias, described in 1946 for hospital-based studies. Nothing about smoking or TB changed; only who we looked at.</aside>
+</section>
+
+<section data-core>
+  <h2>Selection bias is adjusting for a collider</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="berkson" style="width:470px" data-steps='[{"add":"all"},{"z":["adm"],"hl":"smk,adm,tb","fi":1}]' role="img" aria-label="Selecting on admission opens the path between smoking and TB"></svg></div>
+    <div>
+      <p>The path Smoking → Admitted ← TB is closed in the town.</p>
+      <p class="fragment" data-fragment-index="1">Studying only admitted people <b>conditions on</b> admission: the path opens (red).</p>
+    </div>
+  </div>
+  <p class="claim fragment">Selection bias: who entered or stayed in your study depends on both the exposure and the outcome.</p>
+  <p class="cite">Hernán MA, Hernández-Díaz S, Robins JM. Epidemiology 2004;15:615-25.</p>
+  <aside class="notes">Same drawing convention as before: an adjusted box, here because of selection rather than analysis.</aside>
+</section>
+
+<section data-core>
+  <h2>A real puzzle: US births, 1991</h2>
+  <div class="cards c2">
+    <div class="card"><h3>All babies</h3><p class="work">Infant deaths per 100,000: <b>1,235</b> if the mother smoked, <b>805</b> if not.</p><p>Reported rate ratio <b>1.55</b></p></div>
+    <div class="card warn fragment"><h3>Low birth weight babies only</h3><p class="work">Babies of smokers died <b>less</b> often.</p><p>Reported rate ratio <b>0.79</b></p></div>
+  </div>
+  <p class="claim fragment">Is smoking good for small babies?</p>
+  <p class="cite">Hernández-Díaz S, Schisterman EF, Hernán MA. Am J Epidemiol 2006;164:1115-20.</p>
+  <aside class="notes">Real data. For decades this was called the birth weight paradox, and some argued smoking was protective for small babies. Let the room try to explain it before the next slide.</aside>
+</section>
+
+<section data-core>
+  <h2>The paradox, drawn</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="bw" style="width:480px" data-steps='[{"add":["smk","die","lbw","smk>lbw","lbw>die"]},{"add":["def","def>lbw","def>die"],"fi":1},{"add":["smk>die"],"fi":2},{"z":["lbw"],"hl":"smk,lbw,def,die","fi":3}]' role="img" aria-label="Restricting to low birth weight opens a path through birth defects"></svg></div>
+    <div>
+      <p class="small">Smoking lowers birth weight, which raises deaths.</p>
+      <p class="small fragment" data-fragment-index="1">Birth defects and other serious causes lower birth weight and raise deaths too. Not measured.</p>
+      <p class="small fragment" data-fragment-index="2">Smoking may also harm directly.</p>
+      <p class="small fragment" data-fragment-index="3">Restrict to low birth weight: a collider is adjusted for, and Smoking → LBW ← Defects → Death opens.</p>
+    </div>
+  </div>
+  <aside class="notes">Low birth weight is both a mediator (Module 7) and a collider here. Restricting to it does both kinds of damage.</aside>
+</section>
+
+<section data-core>
+  <h2>Why small babies of smokers do better, in numbers</h2>
+  <p>In the Lab 3 model, tuned to come close to the 1991 figures:</p>
+  <table class="calc">
+    <tr><th class="l">Among low birth weight babies</th><th>Mother smoked</th><th>Did not smoke</th></tr>
+    <tr class="fragment"><td class="l">Share with a birth defect or other serious cause</td><td>7%</td><td>17%</td></tr>
+  </table>
+  <p class="fragment">A small baby of a smoker is usually small because of the smoking, a milder cause. A small baby of a non-smoker is more often small for a serious reason.</p>
+  <p class="claim fragment">Open Lab 3. Raise the direct harm of smoking. How harmful can it be for every baby and still look protective in small babies?</p>
+  <aside class="notes">Answer from the lab: up to about 1.5 times the death risk, that is 50% more, and the low birth weight ratio still sits below 1.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In a COVID ward, smokers seemed to have less severe illness than non-smokers. Both smoking-related illness and severe COVID lead to admission.</p>
+    <p>Draw the diagram. Why might smoking look protective here?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Smoking → Admitted ← Severe COVID. Studying only admitted patients conditions on a collider. A non-smoker in the ward is more likely to be there because of severe COVID.</p></div>
+  <aside class="notes">The structure is identical to the chest ward. Accept any drawing that puts admission as a common effect.</aside>
+</section>
+
+<section data-core>
+  <h2>The three shapes, side by side</h2>
+  <table>
+    <tr><th>Shape</th><th>Middle variable</th><th>Path, left alone</th><th>Adjust for the middle</th></tr>
+    <tr><td>Fork ← →</td><td>Confounder</td><td>Open: bias</td><td>Closes it: good</td></tr>
+    <tr class="fragment"><td>Chain → →</td><td>Mediator</td><td>Open: the effect</td><td>Closes it: loses the effect</td></tr>
+    <tr class="fragment"><td>Collider → ←</td><td>Collider</td><td>Closed</td><td>Opens it: bias</td></tr>
+  </table>
+  <p class="claim fragment">Every path in any diagram is built from these three. Module 10 puts them together.</p>
+  <aside class="notes">This table is the single most important summary of the course. Ask students to copy it into the workbook.</aside>
+</section>
+
+<section data-id="tea" class="cover">
+  <p class="kicker">Tea</p>
+  <h1>Break</h1>
+  <p class="lede dim">After tea: choosing what to adjust for, then a group exercise on an Indian NFHS-4 study.</p>
+  <aside class="notes">Form capstone groups of five or six before people leave, each with at least two working phones.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 10 · Causal inference for beginners</p>
+  <h1>Choosing what to adjust for</h1>
+  <p class="lede dim">Put the three building blocks together: a four-step recipe for picking an adjustment set from a diagram.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 10. Put the three building blocks together: a four-step recipe for picking an adjustment set from a diagram.</aside>
+</section>
+
+<section data-core>
+  <h2>A recipe in four steps</h2>
+  <ol class="steps">
+    <li class="fragment"><b>List</b> every path between exposure and outcome.</li>
+    <li class="fragment"><b>Keep</b> the causal paths open: adjust for nothing on them.</li>
+    <li class="fragment"><b>Block</b> each back-door path by adjusting for a variable on it that is not a collider.</li>
+    <li class="fragment"><b>Check</b> that you have not opened anything: no colliders, nothing caused by the exposure.</li>
+  </ol>
+  <p class="cite fragment">This is Pearl's back-door criterion, in steps. Modern Epidemiology, 4th ed., chapter 12.</p>
+  <aside class="notes">Students now have every piece: forks to block, chains to leave alone, colliders to leave alone. The recipe just applies the three rules path by path.</aside>
+</section>
+
+<section data-core>
+  <h2>The back-door rule, in two lines</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>1 · Block every back-door path</h3><p class="small">Every path that starts with an arrow into the exposure must pass through something you adjust for, and not only through colliders.</p></div>
+    <div class="card bad"><h3>2 · Touch nothing downstream</h3><p class="small">Adjust for nothing the exposure causes: no mediators, nothing that follows from them.</p></div>
+  </div>
+  <p class="claim fragment">If both hold, and the diagram is right, the adjusted estimate is the total effect.</p>
+  <aside class="notes">"If the diagram is right" carries the weight. The rule moves the argument from statistics to subject knowledge.</aside>
+</section>
+
+<section data-core>
+  <h2>Practice 1: tobacco chewing and oral cancer</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice1" style="width:470px" data-fs="18" data-steps='[{"add":["tob","ca","age","age>tob","age>ca"]},{"add":["leu","tob>leu","leu>ca"],"fi":1},{"add":["camp","tob>camp","ca>camp"],"fi":2}]' role="img" aria-label="Diagram for tobacco chewing and oral cancer"></svg></div>
+    <div>
+      <p class="small">Older men chew more and get more oral cancer.</p>
+      <p class="small fragment" data-fragment-index="1">Chewing causes leukoplakia, which can turn into cancer.</p>
+      <p class="small fragment" data-fragment-index="2">Chewers, and men with early symptoms, are more likely to attend a screening camp.</p>
+    </div>
+  </div>
+  <p class="cite">Practice diagram, drawn for teaching.</p>
+  <aside class="notes">Build the diagram with the room. Then apply the four steps on the next slide.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 1: list the paths</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice1" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"hl":"tob,leu,ca","fi":1},{"hl":"tob,age,ca","fi":2},{"hl":"tob,camp,ca","fi":3}]' role="img" aria-label="Three paths highlighted in turn"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1"><b>Chewing → Leukoplakia → Cancer.</b> Causal: keep open.</p>
+      <p class="small fragment" data-fragment-index="2"><b>Chewing ← Age → Cancer.</b> Back-door: open, must be blocked.</p>
+      <p class="small fragment" data-fragment-index="3"><b>Chewing → Camp ← Cancer.</b> Through a collider: already closed.</p>
+    </div>
+  </div>
+  <aside class="notes">Green is causal and open; red is non-causal and open; dark is closed. Three paths, three different decisions.</aside>
+</section>
+
+<section data-core>
+  <h2>Steps 2 to 4: decide</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice1" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"z":["age"],"fi":1}]' role="img" aria-label="Age adjusted for"></svg></div>
+    <div>
+      <p class="small">Leukoplakia: on the causal path. <b>Do not adjust.</b></p>
+      <p class="small">Camp attendance: a collider. <b>Do not adjust</b>, and do not study only camp attendees.</p>
+      <p class="small fragment" data-fragment-index="1">Age: blocks the only back-door path. <b>Adjust.</b></p>
+      <p class="claim good small fragment" data-fragment-index="1">Adjustment set: {Age}</p>
+    </div>
+  </div>
+  <aside class="notes">Point out the design lesson: if the data came only from screening camp attendees, the study has already conditioned on the collider, and no analysis can undo it.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn: Practice 2, diabetes and TB</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice2" style="width:470px" data-fs="18" data-steps='[{"add":"all"}]' role="img" aria-label="Diagram for diabetes and TB"></svg></div>
+    <div class="you">
+      <p class="small">Use the four steps. Which variables would you adjust for to estimate the total effect of diabetes on TB?</p>
+      <p class="small">Is there more than one answer?</p>
+    </div>
+  </div>
+  <aside class="notes">Give three minutes. Expect some to include HbA1c: it is caused by diabetes, so it fails rule 2.</aside>
+</section>
+
+<section data-core>
+  <h2>Practice 2: the answer</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="practice2" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"hl":"dm,age,tb","fi":1},{"hl":"dm,pov,nut,tb","fi":2},{"hl":"","z":["age","pov"],"fi":3}]' role="img" aria-label="Back-door paths and an adjustment set"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Back-door 1: Diabetes ← Age → TB. Block with age.</p>
+      <p class="small fragment" data-fragment-index="2">Back-door 2: Diabetes ← Poverty → Undernutrition → TB. Block with poverty <b>or</b> undernutrition.</p>
+      <p class="small fragment" data-fragment-index="3">Two sets work: <b>{Age, Poverty}</b> or <b>{Age, Undernutrition}</b>. Never HbA1c.</p>
+      <p class="small dim fragment" data-fragment-index="3">Choose the set you can measure best.</p>
+    </div>
+  </div>
+  <aside class="notes">Multiple valid sets is normal. Lab 2's "Show the sets that work" lists them for any diagram.</aside>
+</section>
+
+<section data-core>
+  <h2>Practice 3: Tamil Nadu, again</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":"all","z":["age","edu"]},{"hl":"smk,peer,alc,tb","fi":1}]' role="img" aria-label="An open path through unmeasured variables"></svg></div>
+    <div>
+      <p class="small">Every set that works needs alcohol or peer group. Neither was measured.</p>
+      <p class="small fragment" data-fragment-index="1">With the data available, no adjustment set is enough.</p>
+      <p class="claim warn small fragment" data-fragment-index="1">Say so plainly. More adjustment on what you have cannot fix it.</p>
+    </div>
+  </div>
+  <aside class="notes">Unmeasured confounding is the normal state of observational research. Module 12 shows what to do next: negative controls and a simple bias analysis.</aside>
+</section>
+
+<section data-core>
+  <h2>What never to adjust for, and what is safe</h2>
+  <table>
+    <tr><th>Variable</th><th>Adjust?</th><th>Why</th></tr>
+    <tr><td>Common cause of exposure and outcome</td><td><b>Yes</b></td><td>Blocks a back-door path</td></tr>
+    <tr class="fragment"><td>Mediator, or anything caused by the exposure</td><td><b>No</b></td><td>Removes part of the effect</td></tr>
+    <tr class="fragment"><td>Collider</td><td><b>No</b></td><td>Opens a closed path</td></tr>
+    <tr class="fragment"><td>Cause of the outcome only</td><td>Optional</td><td>No bias; can narrow the confidence interval</td></tr>
+    <tr class="fragment"><td>Cause of the exposure only</td><td>Better not</td><td>No bias removed; widens the interval</td></tr>
+  </table>
+  <aside class="notes">The last row is the least intuitive. A pure cause of the exposure lies on no back-door path, so adjusting buys nothing and costs precision.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">List the paths. Keep causal ones open. Block back-doors with non-colliders. Open nothing new.</p>
+  <p class="claim">There may be several sets that work; use the best measured.</p>
+  <p class="claim warn">Sometimes none works with the data you have. Say so.</p>
+  <aside class="notes">Lab 2: choose any diagram, adjust, then press "Show the sets that work" to check.</aside>
+</section>
+
+<section class="cover" data-core>
+  <p class="kicker">Module 14 · Causal inference for beginners</p>
+  <h1>Capstone: cooking fuel and childhood ARI</h1>
+  <p class="lede dim">Use everything so far on a published NFHS-4 analysis: draw the diagram, find the adjustment set, test the authors&#x27; model.</p>
+  <p class="small faint"></p>
+  <aside class="notes">Module 14. Use everything so far on a published NFHS-4 analysis: draw the diagram, find the adjustment set, test the authors&#x27; model.</aside>
+</section>
+
+<section data-core>
+  <h2>The study</h2>
+  <p class="lede">Mondal and Paul used NFHS-4 (2015-16) to ask whether indoor air pollution raises acute respiratory infection (ARI) in children under five.</p>
+  <ul>
+    <li class="fragment">247,743 children across India.</li>
+    <li class="fragment">ARI: cough with short, rapid or difficult breathing in the last two weeks, as reported by the mother.</li>
+    <li class="fragment">Main exposure: cooking with biomass fuel. "Biomass" included kerosene, coal, wood, crop waste and dung.</li>
+    <li class="fragment">Result: adjusted odds ratio <b>1.10</b> (95% CI 1.01 to 1.20) for biomass fuel.</li>
+  </ul>
+  <p class="cite">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
+  <aside class="notes">A real, recent, open-access Indian study. The aim is not to attack it but to practise the four steps on it.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 1: write the causal question</h2>
+  <div class="cards c2">
+    <div class="card bad"><h3>Not this</h3><p>Is biomass fuel associated with ARI?</p></div>
+    <div class="card good fragment"><h3>This</h3><p>If households cooking with biomass switched to clean fuel, how much would ARI fall among their children under five?</p></div>
+  </div>
+  <p class="claim fragment">Who, what change, what outcome. Now draw what else differs between biomass and clean-fuel households.</p>
+  <aside class="notes">Module 1 again: a causal question names the change.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 2: start with eight boxes</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":["fuel","ari","fuel>ari"]},{"add":["state","res"],"fi":1},{"add":["wealth","edu"],"fi":2},{"add":["kitchen","child"],"fi":3}]' role="img" aria-label="Eight variables for the cooking fuel and ARI diagram"></svg></div>
+    <div>
+      <p class="small">Exposure and outcome first.</p>
+      <p class="small fragment" data-fragment-index="1">Where the household is: state, rural or urban.</p>
+      <p class="small fragment" data-fragment-index="2">Who the household is: wealth, mother's education.</p>
+      <p class="small fragment" data-fragment-index="3">The kitchen, and the child's age and sex.</p>
+    </div>
+  </div>
+  <aside class="notes">The full lab has fifteen boxes. Starting with eight keeps the first pass manageable; Lab 4 lets groups add the rest.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 2, continued: draw the arrows you believe</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":["fuel","ari","state","res","wealth","edu","kitchen","child","fuel>ari"]},{"add":["res>fuel","state>fuel","wealth>fuel","edu>fuel"],"fi":1},{"add":["res>ari","state>ari","edu>ari","kitchen>ari","child>ari"],"fi":2},{"add":["state>res","res>wealth","res>edu","wealth>kitchen"],"fi":3}]' role="img" aria-label="Arrows added in three groups"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1"><b>Into fuel:</b> LPG access depends on state and on rural or urban; richer and more educated households switch sooner.</p>
+      <p class="small fragment" data-fragment-index="2"><b>Into ARI:</b> place shapes outdoor air and care; educated mothers act on symptoms; the kitchen layout matters; young children get more ARI.</p>
+      <p class="small fragment" data-fragment-index="3"><b>Between the others:</b> state shapes urbanisation; place shapes wealth and schooling; wealth buys a separate kitchen.</p>
+    </div>
+  </div>
+  <p class="cite">Diagram drawn by the faculty for teaching; not the authors'. Yours may differ.</p>
+  <aside class="notes">Pause after each group of arrows and ask whether anyone would leave one out. Leaving one out is a claim.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 3: find the back-door paths</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":"all"},{"hl":"fuel,res,ari","fi":1},{"hl":"fuel,state,ari","fi":2},{"hl":"fuel,edu,ari","fi":3},{"hl":"fuel,wealth,kitchen,ari","fi":4}]' role="img" aria-label="Four back-door paths highlighted in turn"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Fuel ← Rural/urban → ARI</p>
+      <p class="small fragment" data-fragment-index="2">Fuel ← State → ARI</p>
+      <p class="small fragment" data-fragment-index="3">Fuel ← Education → ARI</p>
+      <p class="small fragment" data-fragment-index="4">Fuel ← Wealth → Kitchen → ARI</p>
+      <p class="small dim fragment" data-fragment-index="4">And several longer ones. Lab 4 lists them.</p>
+    </div>
+  </div>
+  <aside class="notes">Four short back-door paths. Child age and sex lie on no back-door path: they cause ARI only.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 4: choose a set that blocks them</h2>
+  <div class="work">
+    <p>Under this diagram, two minimal sets work:</p>
+    <p class="fragment"><b>{State, Rural/urban, Wealth, Mother's education}</b></p>
+    <p class="fragment"><b>{State, Rural/urban, Mother's education, Separate kitchen}</b></p>
+  </div>
+  <p class="fragment">Child age and sex are safe to add: they cause ARI only, so they can improve precision.</p>
+  <aside class="notes">The second set works because kitchen blocks the wealth path and rural/urban blocks the route from place to wealth. Check it in Lab 4.</aside>
+</section>
+
+<section data-core>
+  <h2>Now compare the paper's model</h2>
+  <div class="two">
+    <div class="card"><h3>In the model</h3><p class="small">Separate kitchen, household smoking, child's age and sex, birth order, mother's age and education, caste, religion, wealth, TB in the household, crowding</p></div>
+    <div class="card bad fragment"><h3>Not in the model</h3><p class="small"><b>Rural or urban residence. State.</b></p><p class="small">Both are common causes of fuel and ARI in our diagram, so back-door paths stay open.</p></div>
+  </div>
+  <p class="claim warn fragment">Under our diagram, the 1.10 is not protected from confounding by place.</p>
+  <aside class="notes">Be fair: the authors had these variables in NFHS-4; a diagram drawn first would have flagged them.</aside>
+</section>
+
+<section data-core>
+  <h2>One model, three odds ratios</h2>
+  <table>
+    <tr><th>Variable, same model</th><th class="num">Adjusted OR</th><th>Readable as its effect?</th></tr>
+    <tr><td>Biomass fuel</td><td class="num">1.10</td><td class="fragment">Only if the set suits fuel</td></tr>
+    <tr><td>No separate kitchen</td><td class="num">1.22</td><td class="fragment">Only if the same set suits kitchen</td></tr>
+    <tr><td>Mother's education, primary vs none</td><td class="num">1.32</td><td class="fragment">No: fuel, kitchen and smoking are on its causal paths</td></tr>
+  </table>
+  <p class="claim warn fragment">Reading every row of a regression table as an effect is the "Table 2 fallacy". One model answers one causal question.</p>
+  <p class="cite">Westreich D, Greenland S. Am J Epidemiol 2013;177:292-8.</p>
+  <aside class="notes">The authors called the education result surprising. Part of the answer: the model adjusted away education's effects through fuel and kitchen. Another part may be reporting: educated mothers may notice fast breathing more.</aside>
+</section>
+
+<section data-core>
+  <h2>Two more things to ask any such study</h2>
+  <div class="cards c2">
+    <div class="card"><h3>Who reports the outcome?</h3><p class="small">Mothers report ARI. If education changes what they notice, education affects <b>reported</b> ARI, not only true ARI.</p></div>
+    <div class="card"><h3>Is the exposure one thing?</h3><p class="small">Kerosene, coal, wood and dung were grouped as "biomass". A clean-fuel programme changes one of these, not all.</p></div>
+  </div>
+  <aside class="notes">Measurement (Module 9) and well-defined exposure (Module 3), both developed further on the site.</aside>
+</section>
+
+<section data-core>
+  <h2>Group exercise</h2>
+  <div class="two wide-left">
+    <div>
+      <ol class="small steps">
+        <li>Write your group's causal question for your exposure.</li>
+        <li>Open <b>Lab 4</b>. Start with eight boxes and decide each arrow.</li>
+        <li>Grow the diagram to fifteen boxes and decide again.</li>
+        <li>Load the paper's model. Is it enough under your diagram?</li>
+        <li>One minute for the room: what should the authors have done?</li>
+      </ol>
+    </div>
+    <div class="card"><h3>Your exposure</h3><p class="small">Groups 1 and 4: biomass fuel</p><p class="small">Groups 2 and 5: separate kitchen</p><p class="small">Groups 3 and 6: mother's education</p></div>
+  </div>
+  <aside class="notes">Twenty minutes in groups, ten for reports. Both facilitators circulate. Self-paced learners do all three exposures in turn.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">Causal question first, diagram second, adjustment set third, data last.</p>
+  <p class="claim">One model per causal question. Do not read the other coefficients as effects.</p>
+  <p class="claim good">None of this needed new data. It needed a diagram drawn before the analysis.</p>
+  <aside class="notes">Module 15 turns this into a template for their own thesis.</aside>
+</section>
+
+<section data-id="close">
+  <h2>Three things to carry out of this room</h2>
+  <p class="claim">A causal effect compares the same people under two conditions. Ask what you would change.</p>
+  <p class="claim">Draw the diagram before you analyse. Bias is a non-causal path left open.</p>
+  <p class="claim good">Adjust to block back-door paths, and never for what the exposure causes.</p>
+  <aside class="notes">Read them slowly. Then the after quiz. Mention that modules 3, 4, 9, 11, 12, 13 and 15 on the site go further, including how the hormone puzzle was finally resolved.</aside>
+</section>
+
+<section data-id="quiz-after">
+  <h2>After quiz, then keep going</h2>
+  <div class="two wide-left">
+    <div>
+      <p class="lede">Open <b>Quiz</b>, choose <b>After</b>. Your phone shows both scores.</p>
+      <p>Then work through the modules you did not see today, at your own pace. Each has slides, a lab and a self-check.</p>
+      <p class="url">sph-aiimsbhopal.github.io/causal-inference-workshop-basic</p>
+    </div>
+    <div><img class="qr" src="../assets/qr.svg" alt="QR code for the course site"></div>
+  </div>
+  <aside class="notes">Show of hands on who improved. Remind them the site stays online.</aside>
+</section>
+
+<section data-id="sources">
+  <h2>Sources</h2>
+  <ol class="sources two">
+    <li>Lash TL, VanderWeele TJ, Haneuse S, Rothman KJ. Modern Epidemiology. 4th ed. Philadelphia: Wolters Kluwer; 2021.</li>
+    <li>Grodstein F, Stampfer MJ, Manson JE, et al. N Engl J Med 1996;335:453-61.</li>
+    <li>Writing Group for the Women's Health Initiative Investigators. JAMA 2002;288:321-33.</li>
+    <li>Hernán MA, Alonso A, Logan R, et al. Epidemiology 2008;19:766-79.</li>
+    <li>Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</li>
+    <li>Hernández-Díaz S, Schisterman EF, Hernán MA. Am J Epidemiol 2006;164:1115-20.</li>
+    <li>Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</li>
+    <li>Greenland S, Robins JM. Int J Epidemiol 1986;15:413-9.</li>
+    <li>Greenland S, Pearl J, Robins JM. Epidemiology 1999;10:37-48.</li>
+    <li>Hernán MA, Hernández-Díaz S, Robins JM. Epidemiology 2004;15:615-25.</li>
+    <li>Westreich D, Greenland S. Am J Epidemiol 2013;177:292-8.</li>
+    <li>VanderWeele TJ. Eur J Epidemiol 2019;34:211-9.</li>
+  </ol>
+  <p class="small faint">Prepared at AIIMS Bhopal with Claude (Anthropic) as drafting and coding assistant. The men named in Modules 1 and 2 and the populations in Labs 1 and 3 are illustrative.</p>
+  <aside class="notes">Full reading list on the Further Learning page.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

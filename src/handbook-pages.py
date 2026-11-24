@@ -15,12 +15,12 @@ OUT.mkdir(exist_ok=True)
 SITE = "https://sph-aiimsbhopal.github.io/causal-inference-workshop-basic/"
 
 LABS = [
-    ("widgets/quiz.html", "Before and After Quiz", "Eight questions at the start, the same eight at the end. Your phone shows both scores."),
-    ("widgets/potential-outcomes.html", "Lab 1 · Potential outcomes", "Both futures of 100 men, then only the one that happened. Smoking, alcohol and TB deaths."),
-    ("widgets/dag-lab.html", "Lab 2 · Causal diagrams", "Tap a box to adjust for it and watch paths open and close. Six diagrams from real studies."),
-    ("widgets/birthweight-lab.html", "Lab 3 · Birth weight paradox", "Why smoking seems to protect small babies, and why it does not."),
-    ("widgets/capstone-lab.html", "Lab 4 · Cooking fuel and ARI", "Build your own diagram for an NFHS-4 analysis and test the authors' model."),
-    ("further-learning.html", "Further learning", "Rothman chapter by chapter, free books and courses, and the key papers."),
+    ("", "The course home page", "Every module, with its slides, lab and self-check. Start here after the workshop."),
+    ("widgets/quiz.html", "Before and After Quiz", "Twelve questions before you start, the same twelve at the end. Your phone shows both scores."),
+    ("widgets/potential-outcomes.html", "Lab 1 · Potential outcomes", "Both futures of 100 men, then only the one that happened. Eight guided steps."),
+    ("widgets/dag-lab.html", "Lab 2 · Causal diagrams", "Read the task, tap boxes to adjust, then check. Eight diagrams from shapes to real studies."),
+    ("widgets/birthweight-lab.html", "Lab 3 · Birth weight paradox", "Why smoking seems to protect small babies, and why it does not. Five guided steps."),
+    ("widgets/capstone-lab.html", "Lab 4 · Cooking fuel and ARI", "Draw your own diagram for an NFHS-4 analysis and test the authors' model. Seven steps."),
 ]
 
 GLOSSARY = [
@@ -167,31 +167,48 @@ FOOT = ('<div class="foot"><span>Causal Inference in Epidemiology &middot; 12th 
         '&middot; Gwalior, 26 November 2026</span><span>{}</span></div>')
 
 
-def front():
+WORKBOOK = {"m00": "Modules 0 and 1", "m01": "Modules 0 and 1", "m02": "Module 2", "m05": "Module 5", "m06": "Module 6",
+            "m07": "Modules 7 and 8", "m08": "Modules 7 and 8", "m10": "Module 10", "m14": "Module 14", "m15": "Module 15"}
+
+
+def module_rows(mods):
+    import json
+    C = json.loads((HERE / "course.json").read_text())
+    by = {m["id"]: m for m in C["modules"]}
+    out = []
+    for mid in mods:
+        m = by[mid]
+        lab = m["lab"][1].split(":")[0] if m["lab"] else ""
+        status = "" if m["status"] == "ready" else ' <span class="faint">(online after the workshop)</span>'
+        out.append(f'<tr><td class="n">{m["n"]}</td><td><strong>{m["title"]}</strong>{status}<br><span class="dim">{m["lede"]}</span></td><td class="dim">{lab}</td><td class="dim">{WORKBOOK.get(mid, "")}</td></tr>')
+    return "".join(out)
+
+
+def front(variant="workshop"):
     qcells = "".join(f'<div class="qcell"><img src="{qr_datauri(SITE + path)}"><div><h3>{name}</h3><p>{desc}</p></div></div>'
                      for path, name, desc in LABS)
-    rows = "".join(
-        f'<tr class="brk"><td class="t">{m} min</td><td class="n"></td><td colspan="2"><em>{s}</em></td></tr>' if not d else
-        f'<tr><td class="t">{m} min</td><td class="n">{n}</td><td><strong>{s}</strong></td><td class="dim">{d}</td></tr>'
-        for m, n, s, d in AGENDA)
+    import json
+    C = json.loads((HERE / "course.json").read_text())
+    path = [w for w in C["workshop"] if not w.startswith("x:")]
+    mods = path if variant == "workshop" else [m["id"] for m in C["modules"]]
+    rows = module_rows(mods)
+    kitword = "Workshop handbook" if variant == "workshop" else "Course handbook"
+    meta = ("<b>Thursday 26 November 2026</b><br>Pre-conference workshop, 12th South Central Zone IAPSM Conference<br>Gajra Raja Medical College, Gwalior<br>"
+            "Resource faculty: Dr Abhijit Pakhare and Dr Ankur Joshi, AIIMS Bhopal") if variant == "workshop" else (
+            "A self-paced course in sixteen short modules<br>Every slide, worked number and exercise from the course site<br>AIIMS Bhopal")
     gl = "".join(f"<div><b>{t}.</b> {d}</div>" for t, d in GLOSSARY)
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><title>Handbook front</title><style>{CSS}</style></head><body>
 
 <div class="page cover">
   <div class="cband">
-    <p class="kick">12th South Central Zone IAPSM Conference &nbsp;&middot;&nbsp; Pre-conference workshop</p>
+    <p class="kick">{"12th South Central Zone IAPSM Conference &nbsp;&middot;&nbsp; Pre-conference workshop" if variant == "workshop" else "A self-paced course for beginners &nbsp;&middot;&nbsp; AIIMS Bhopal"}</p>
     <h1>Causal Inference<br>in Epidemiology</h1>
     <p class="sub">A three-hour workshop on counterfactuals, causal diagrams, bias, and choosing what to adjust for</p>
   </div>
   <div class="cbody">
     <div class="logos"><img src="{logo('aiims.png')}"></div>
-    <p class="kitword">Participant handbook</p>
-    <p class="meta">
-      <b>Thursday 26 November 2026</b><br>
-      Department of Community Medicine, Gajra Raja Medical College, Gwalior<br>
-      Resource faculty: Dr Abhijit Pakhare and Dr Ankur Joshi, AIIMS Bhopal<br>
-      <span class="dim">For MD students in Community Medicine</span>
-    </p>
+    <p class="kitword">{kitword}</p>
+    <p class="meta">{meta}<br><span class="dim">For MD students in Community Medicine</span></p>
     <div class="nameplate">
       <p class="nt">This handbook belongs to</p>
       <div class="row"><div class="f"><span>Name</span><i></i></div><div class="f"><span>Institute</span><i></i></div></div>
@@ -201,7 +218,7 @@ def front():
 </div>
 
 <div class="page">
-  <h1>What these three hours are for</h1>
+  <h1>What this is for</h1>
   <div class="rule"></div>
   <p class="lede">By the end you should be able to pick up an observational study, draw the causal assumptions behind it,
   and say whether its adjustment could estimate the effect it claims. Not whether the regression ran, but whether the
@@ -212,43 +229,48 @@ def front():
     <li>Identify and assess bias and confounding in observational studies using causal diagrams.</li>
     <li>Choose an adjustment set from a diagram, and frame and interpret causal research questions in Community Medicine.</li>
   </ol>
-  <h2 style="margin-top:7mm">How the workshop runs</h2>
-  <p>Each block starts with the concepts on slides, then an exercise on a published study: on paper first, in this
-  handbook, then on your phone in one of the labs. The studies are hormone therapy and heart disease, smoking and TB
-  deaths in Tamil Nadu, the birth weight paradox, and cooking fuel and childhood ARI in NFHS-4.</p>
-  <p>In the last block your group gets one exposure from the NFHS-4 study, draws its diagram, and tests the
-  authors' model against it. Each group reports back in one minute.</p>
+  <h2 style="margin-top:7mm">How each module works</h2>
+  <p>One idea per slide. Every idea is followed by a worked number: you fill in the table in the workbook before the
+  slide shows the answer. Diagrams are built one box and one arrow at a time. Then a guided lab on your phone, and a
+  short self-check on the module page.</p>
+  <p>The studies are real: hormone therapy and heart disease, smoking and TB deaths in Tamil Nadu, the birth weight
+  paradox, and cooking fuel and childhood ARI in NFHS-4. The teaching populations of ten and a hundred men are
+  made up, and labelled as such.</p>
   <h2 style="margin-top:7mm">One house rule</h2>
   <p class="lede">A diagram is a set of claims, and you are allowed to disagree with anyone's, including ours. By the end you
   should be able to say exactly which arrow you disagree with, and what that changes.</p>
   <p class="dim" style="margin-top:6mm">Rothman's <em>Modern Epidemiology</em> (4th edition) is the anchor text. Each session
   divider in this handbook says which chapters to read next.</p>
-  {FOOT.format('What these three hours are for')}
+  {FOOT.format('What this is for')}
 </div>
 
 <div class="page">
-  <h1>The three hours</h1>
+  <h1>{"The workshop path" if variant == "workshop" else "The modules"}</h1>
   <div class="rule"></div>
   <table>
-    <tr><th style="text-align:right">Time</th><th>&nbsp;</th><th>Session</th><th>What it covers</th></tr>
+    <tr><th>&nbsp;</th><th>Module</th><th>Lab</th><th>Workbook</th></tr>
     {rows}
   </table>
-  <p class="dim" style="margin-top:5mm; font-size:9.5pt">Timings are the plan, not a promise. Slides and workbook pages are
-  numbered, so a block that runs long does not put anything in this handbook out of step.</p>
-  <h2 style="margin-top:6mm">What is in this handbook</h2>
+  <p class="dim" style="margin-top:4mm; font-size:9.5pt">{"The path holds more than three hours of material. On the day the faculty choose what to cover; everything is on the site, and the modules left out of this path are there too." if variant == "workshop" else "Modules marked as online after the workshop are being written; their pages list what to read meanwhile."}</p>
+  {FOOT.format('Contents')}
+</div>
+
+<div class="page">
+  <h1>What is in this handbook</h1>
+  <div class="rule"></div>
   <table>
-    <tr><td><strong>The slides</strong></td><td class="dim">Two to a page with room for notes, each session behind a divider that says what it adds and what to read next.</td></tr>
-    <tr><td><strong>The workbook</strong></td><td class="dim">Six pages: the before quiz on paper, the three exercises, the group exercise, and a page to frame your own causal question.</td></tr>
-    <tr><td><strong>At the back</strong></td><td class="dim">Further reading, a feedback page to hand in, notes pages, and the sources.</td></tr>
+    <tr><td><strong>The slides</strong></td><td class="dim">Two to a page with room for notes. Each module starts on a divider page: what you will be able to do, which lab, and what to read in Rothman.</td></tr>
+    <tr><td><strong>The workbook</strong></td><td class="dim">Fill-in tables and diagrams for each module, the before and after quiz on paper, and a page to frame your own causal question.</td></tr>
+    <tr><td><strong>At the back</strong></td><td class="dim">Further reading, {"a feedback page to hand in, " if variant == "workshop" else ""}notes pages and the sources.</td></tr>
   </table>
-  {FOOT.format('The three hours')}
+  {FOOT.format('Contents')}
 </div>
 
 <div class="page">
   <h1>On your phone</h1>
   <div class="rule"></div>
-  <p>The quiz and the four labs run in your phone's browser; nothing to install and nothing sent anywhere. Point your
-  camera at a code. They stay online after the workshop, so you can use the diagram labs on your own thesis question.</p>
+  <p>The course, the quiz and the four labs run in your phone's browser; nothing to install and nothing sent anywhere.
+  Point your camera at a code. Everything stays online, so you can use the diagram labs on your own thesis question.</p>
   <div class="qgrid">{qcells}</div>
   {FOOT.format('Interactive pages')}
 </div>
@@ -263,7 +285,7 @@ def front():
 </body></html>"""
 
 
-def back(notes_pages):
+def back(notes_pages, variant="workshop"):
     rd = "".join(f"<div><b>{t}</b> {d}</div>" for t, d in READING)
     fb = "".join(
         f'<div class="q"><p>{q}</p><div class="scale"><span>Not at all</span><span>A little</span><span>Fairly</span><span>Very</span><span>Completely</span></div></div>'
@@ -287,7 +309,7 @@ def back(notes_pages):
   {FOOT.format('Further learning')}
 </div>
 
-<div class="page fb">
+{'' if variant != "workshop" else ''}<div class="page fb" {'style="display:none"' if variant != "workshop" else ''}>
   <h1>Feedback</h1>
   <div class="rule"></div>
   <p class="dim">Please tear this page out and leave it with us before you go. It decides what the next one of these looks like.</p>
@@ -325,14 +347,17 @@ def back(notes_pages):
   <p class="u">sph-aiimsbhopal.github.io/<br>causal-inference-workshop-basic</p>
   <p class="dim" style="max-width:120mm; margin-top:6mm">The slides, labs, workbook and reading list from today live here,
   and stay here. Free to reuse with your own students.</p>
-  <p class="faint" style="margin-top:10mm; font-size:9pt">AIIMS Bhopal &middot; 12th South Central Zone IAPSM Conference, Gwalior</p>
+  <p class="faint" style="margin-top:10mm; font-size:9pt">{"AIIMS Bhopal &middot; 12th South Central Zone IAPSM Conference, Gwalior" if variant == "workshop" else "AIIMS Bhopal"}</p>
 </div>
 
 </body></html>"""
 
 
 if __name__ == "__main__":
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else 2
-    (OUT / "handbook-front.html").write_text(front())
-    (OUT / "handbook-back.html").write_text(back(n))
-    print(f"wrote handbook-front.html and handbook-back.html ({n} notes pages)")
+    variant = sys.argv[1] if len(sys.argv) > 1 else "workshop"
+    if variant != "workshop":
+        FOOT = '<div class="foot"><span>Causal Inference in Epidemiology &middot; a course for beginners &middot; AIIMS Bhopal</span><span>{}</span></div>'
+    n = int(sys.argv[2]) if len(sys.argv) > 2 else 2
+    (OUT / f"handbook-front-{variant}.html").write_text(front(variant))
+    (OUT / f"handbook-back-{variant}.html").write_text(back(n, variant))
+    print(f"wrote {variant} front and back ({n} notes pages)")

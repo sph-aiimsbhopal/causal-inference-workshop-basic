@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 12: When a confounder was never measured</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 12 · Causal inference for beginners</p>
+  <h1>When a confounder was never measured</h1>
+  <p class="lede dim">Negative controls and a first bias analysis: how strong would the missing confounder need to be?</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 12. Negative controls and a first bias analysis: how strong would the missing confounder need to be?</aside>
+</section>
+
+<section data-core>
+  <h2>Some confounders were never measured</h2>
+  <p class="lede">The Tamil Nadu study asked about smoking, age and education. It did not ask about alcohol.</p>
+  <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:500px" data-steps='[{"add":["smk","tb","smk>tb"]},{"add":["alc"],"fi":1},{"add":["alc>smk","alc>tb"],"fi":2}]' role="img" aria-label="Alcohol, not measured, causes smoking and TB death"></svg></div>
+  <p class="fragment" data-fragment-index="2">If alcohol opens a back door we cannot close, is the 4.5 worthless? Not quite. We can ask <b>how big</b> the bias could be.</p>
+  <aside class="notes">This is Module 2's cirrhosis clue, now made quantitative.</aside>
+</section>
+
+<section data-core>
+  <h2>A clue in the data: a negative control</h2>
+  <p>Smokers in the same study had <b>3.3</b> times the death rate from alcoholism or cirrhosis.</p>
+  <p class="fragment">Smoking has little direct effect on deaths from alcoholism. So a large ratio here points to something smokers share: drinking.</p>
+  <p class="claim fragment">A negative control is an outcome the exposure should not cause. If it is still associated, confounding is likely.</p>
+  <p class="cite">Lipsitch M, Tchetgen Tchetgen E, Cohen T. Epidemiology 2010;21:383-8.</p>
+  <aside class="notes">Negative controls detect bias; they do not tell you its size by themselves.</aside>
+</section>
+
+<section data-core>
+  <h2>Three numbers decide the bias</h2>
+  <div class="cards c2">
+    <div class="card"><h3>p<sub>1</sub></h3><p>Share of smokers who drink heavily.</p></div>
+    <div class="card fragment"><h3>p<sub>0</sub></h3><p>Share of non-smokers who drink heavily.</p></div>
+  </div>
+  <div class="card fragment" style="margin-top:14px"><h3>RR<sub>alcohol</sub></h3><p>How much heavy drinking raises the risk of TB death, at the same smoking status.</p></div>
+  <p class="fragment">If smokers and non-smokers drink alike, or alcohol does nothing to TB, there is no bias.</p>
+  <aside class="notes">Both arms of the fork must be present: alcohol linked to smoking (p1 differs from p0), and alcohol linked to the outcome (RR above 1).</aside>
+</section>
+
+<section data-core>
+  <h2>The bias factor</h2>
+  <div class="work">
+    <p>Bias factor = <b>[p<sub>1</sub>(RR<sub>alcohol</sub> − 1) + 1] ÷ [p<sub>0</sub>(RR<sub>alcohol</sub> − 1) + 1]</b></p>
+    <p class="fragment">Corrected RR = observed RR ÷ bias factor</p>
+  </div>
+  <p class="fragment">Read it as: how much more TB risk smokers carry from drinking alone.</p>
+  <p class="small dim fragment">This simple form assumes alcohol's effect is the same in smokers and non-smokers.</p>
+  <aside class="notes">Rothman chapter 29 gives this formula. It is the external adjustment method.</aside>
+</section>
+
+<section data-core>
+  <h2>Worked example: alcohol and the 4.5</h2>
+  <p>Suppose 60% of smokers and 25% of non-smokers drink heavily, and drinking triples the risk of TB death. Assumed numbers.</p>
+  <div class="work">
+    <p class="fragment">Top: 0.60 × (3 − 1) + 1 = <b>2.2</b></p>
+    <p class="fragment">Bottom: 0.25 × (3 − 1) + 1 = <b>1.5</b></p>
+    <p class="fragment">Bias factor: 2.2 ÷ 1.5 = <b>1.47</b></p>
+    <p class="fragment">Corrected: 4.5 ÷ 1.47 = <b>3.1</b></p>
+  </div>
+  <p class="claim fragment">A strong confounder shrinks the estimate, but smoking still roughly triples the risk.</p>
+  <aside class="notes">Students should do the arithmetic with you, line by line.</aside>
+</section>
+
+<section data-core>
+  <h2>Try several worlds, not one</h2>
+  <table class="calc">
+    <tr><th class="l">Heavy drinking: smokers</th><th>Non-smokers</th><th>RR<sub>alcohol</sub></th><th>Corrected RR</th></tr>
+    <tr class="fragment"><td class="l">60%</td><td>25%</td><td>2</td><td>3.5</td></tr>
+    <tr class="fragment"><td class="l">60%</td><td>25%</td><td>3</td><td>3.1</td></tr>
+    <tr class="fragment"><td class="l">60%</td><td>25%</td><td>5</td><td>2.6</td></tr>
+    <tr class="fragment"><td class="l">80%</td><td>20%</td><td>5</td><td>1.9</td></tr>
+  </table>
+  <p class="claim fragment">Even an extreme world leaves an effect near 2. That is a sensitivity analysis.</p>
+  <aside class="notes">The point is the range, not any single row. Lab: Unmeasured Confounding Lab.</aside>
+</section>
+
+<section data-core>
+  <h2>The E-value: one number for "how strong?"</h2>
+  <p>The E-value is the strength a confounder would need, linked to both exposure and outcome, to explain away the whole estimate.</p>
+  <div class="work fragment"><p>E-value = RR + √(RR × (RR − 1))</p></div>
+  <div class="two">
+    <div class="work fragment"><p>Smoking and TB death, RR 4.5:<br>4.5 + √(4.5 × 3.5) = <b>8.5</b></p></div>
+    <div class="work fragment"><p>Biomass fuel and ARI, OR 1.10:<br>1.1 + √(1.1 × 0.1) = <b>1.4</b></p></div>
+  </div>
+  <p class="cite">VanderWeele TJ, Ding P. Ann Intern Med 2017;167:268-74.</p>
+  <aside class="notes">For the fuel OR we treat the odds ratio as close to a risk ratio; ARI in two weeks is not rare, so this is rough.</aside>
+</section>
+
+<section data-core>
+  <h2>Reading E-values</h2>
+  <ul>
+    <li class="fragment">8.5: a confounder would need to raise both smoking and TB death about eightfold. Few plausible ones are that strong.</li>
+    <li class="fragment">1.4: a modest confounder, such as household wealth measured crudely, could explain the biomass finding.</li>
+    <li class="claim warn fragment">A large E-value does not prove causation. It only says how strong the hidden confounding would have to be.</li>
+  </ul>
+  <aside class="notes">E-values are easy to misuse as a pass mark. Pair them with a diagram and with what is known about the likely confounders.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>Half of smokers and 20% of non-smokers drink heavily. Drinking doubles the risk of TB death. The observed RR is 4.5.</p>
+    <p>Work out the bias factor and the corrected RR.</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Top 0.5 × 1 + 1 = 1.5. Bottom 0.2 × 1 + 1 = 1.2. Bias factor 1.25. Corrected 4.5 ÷ 1.25 = <b>3.6</b>.</p></div>
+  <aside class="notes">Check: 4.5/1.25 = 3.6.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">An unmeasured confounder is a question of size. Ask how strong it would need to be.</p>
+  <p class="claim">Bias factor from three numbers: p<sub>1</sub>, p<sub>0</sub> and its effect on the outcome. Here 4.5 stayed above 3 in most worlds.</p>
+  <p class="claim warn">Small estimates like 1.10 are fragile: an E-value of 1.4.</p>
+  <aside class="notes">Rothman chapter 29, Bias Analysis. Lab: Unmeasured Confounding Lab.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m12-unmeasured.html#check">Open the self-check for Module 12</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 29, Bias Analysis.</p>
+  <p>Next: <a href="m13-target-trial.html">Module 13, Ask it like a trial</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

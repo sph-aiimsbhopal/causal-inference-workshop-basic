@@ -3,41 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cooking Fuel and ARI: Build the Diagram</title>
+<title>Capstone Lab: Cooking Fuel and ARI</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="widget.css">
 <script src="theme.js"></script>
 <style>
-  .arrows { display: grid; gap: 14px; }
+  .arrows { display: grid; gap: 12px; }
   .arrows .row { gap: 8px; }
   .chip.arrow { font-size: 14px; }
   .chip.arrow[aria-pressed="true"]::before { content: "✓ "; }
   .chip.arrow.refused { outline: 2px solid var(--bad); }
-  details summary { cursor: pointer; font-weight: 600; }
 </style>
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 4</p>
-  <h1>Cooking Fuel and ARI: Build the Diagram</h1>
-  <p>Draw your own causal diagram for a published NFHS analysis. Then check whether the authors' model could estimate the effect they wanted.</p>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Lab 4 · Module 14</p>
+  <h1>Cooking Fuel and ARI</h1>
+  <p>Draw a causal diagram for a published NFHS-4 analysis, find an adjustment set, and test the authors' model. Seven steps.</p>
 </div></header>
 <main>
   <section class="panel story">
-    <h2>The study</h2>
-    <p>Mondal and Paul used NFHS-4 (2015-16) to study 247,743 children under five. ARI meant cough with short, rapid or difficult breathing in the last two weeks, as reported by the mother. One logistic model held all of these together: biomass fuel, separate kitchen, household smoking, child's age and sex, birth order, mother's age and education, caste, religion, wealth, TB in the household and crowding.</p>
-    <p>They reported adjusted odds ratios of 1.10 for biomass fuel, 1.22 for no separate kitchen, and 1.32 for mothers with primary education against none. The authors call the education result surprising.</p>
+    <p>Mondal and Paul studied 247,743 children under five in NFHS-4 (2015-16). ARI: cough with short, rapid or difficult breathing in the last two weeks, reported by the mother. Adjusted odds ratio for biomass cooking fuel: <b>1.10</b> (1.01 to 1.20).</p>
     <p class="src">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
   </section>
 
-  <section class="panel">
-    <h2>Step 1. Which effect do you want?</h2>
+  <section id="guide" aria-live="polite"></section>
+
+  <section class="panel hide" id="expobox">
+    <h2>Which effect?</h2>
     <div class="seg" id="expo" role="group" aria-label="Exposure"></div>
   </section>
 
-  <section class="panel">
-    <h2>Step 2. Draw the arrows you believe</h2>
-    <p class="note">Tap an arrow to switch it on or off. An arrow means "directly causes", with nothing else in between on this diagram. Leaving an arrow out is a strong claim: that there is no direct effect.</p>
+  <section class="panel hide" id="arrowbox">
+    <h2>Arrows</h2>
+    <p class="note">Tap to switch an arrow on or off. An arrow means "directly causes". Leaving one out claims there is no direct effect.</p>
     <div class="row">
       <button class="act ghost" type="button" id="blank">Start from blank</button>
       <button class="act ghost" type="button" id="ours">Load the facilitators' diagram</button>
@@ -47,102 +46,109 @@
   </section>
 
   <section class="panel">
-    <h2>Step 3. Adjust and check</h2>
     <svg class="dag" id="dag" role="group" aria-label="Causal diagram"></svg>
     <div class="legend"><span class="lx">exposure or outcome</span><span class="la">adjusted for</span></div>
-    <p class="note">Tap a box to adjust for it.</p>
-    <div class="row">
-      <button class="act" type="button" id="paper">Use the paper's model</button>
-      <button class="act ghost" type="button" id="clear">Clear</button>
+    <div class="hide" id="adjbox">
+      <p class="note">Tap a box to adjust for it.</p>
+      <div class="row">
+        <button class="act ghost" type="button" id="paper">Use the paper's model</button>
+        <button class="act ghost" type="button" id="clear">Clear</button>
+        <button class="act ghost" type="button" id="show">Show the sets that work</button>
+      </div>
+      <p class="note"><span class="label">Adjusted for</span> <span id="zlist"></span></p>
+      <p class="claim" id="verdict" aria-live="polite"></p>
+      <div id="detail"></div>
+      <div class="reveal-box" id="sets" hidden></div>
     </div>
-    <p class="note"><span class="label">Adjusted for</span> <span id="zlist"></span></p>
-    <p class="claim" id="verdict" aria-live="polite"></p>
-    <div id="detail"></div>
-  </section>
-
-  <section class="panel">
-    <div class="row"><button class="act" type="button" id="show">Show the minimal sets for my diagram</button></div>
-    <div class="reveal-box" id="sets" hidden></div>
-  </section>
-
-  <section class="panel">
-    <details>
-      <summary>Things your group should argue about</summary>
-      <ul>
-        <li>The model did not include rural or urban residence, or state. Does your diagram need them?</li>
-        <li>One model, many odds ratios. Can the same adjustment set be right for fuel, for kitchen and for education?</li>
-        <li>Educated mothers may recognise and report fast breathing more often. Where would that sit in a diagram?</li>
-        <li>"Biomass" here includes kerosene, coal and dung. Is that one well-defined exposure?</li>
-      </ul>
-    </details>
   </section>
   <footer>Diagram drawn by the workshop faculty for teaching; it is not the authors' diagram. A diagram is a set of assumptions; yours may differ.</footer>
 </main>
+<script src="guide.js"></script>
 <script src="dag.js"></script>
 <script src="dags.js"></script>
 <script>
-const C = window.CAPSTONE;
+const C = window.CAPSTONE, SMALL = window.DAGS.fuel8;
 const EXPO = { fuel: 'Biomass fuel', kitchen: 'Separate kitchen', edu: "Mother's education" };
-const GROUP = { fuel: 'What causes biomass fuel use?', ari: 'What causes ARI?', other: 'Other arrows' };
-let x = 'fuel';
-let on = new Set(['fuel>ari', 'kitchen>ari', 'edu>ari']);
-let Z = new Set();
+const GROUP = { fuel: 'Into biomass fuel', ari: 'Into ARI', other: 'Between the others' };
+const $ = id => document.getElementById(id);
+let stage = 'small', x = 'fuel', Z = new Set(), on = new Set();
 const k = e => e[0] + '>' + e[1];
+const nodesNow = () => stage === 'small' ? SMALL.nodes : C.nodes;
+const ids = () => new Set(nodesNow().map(n => n.id));
+const cands = () => C.candidates.filter(c => ids().has(c.e[0]) && ids().has(c.e[1]));
 const nodeLab = id => C.nodes.find(n => n.id === id).label.replace(/-\n/g, '').replace(/\n/g, ' ');
+const ours = () => stage === 'small' ? new Set(SMALL.edges.map(k)) : new Set(cands().filter(c => c.ours).map(c => k(c.e)));
+const graph = set => DAG.create({ nodes: nodesNow(), edges: cands().filter(c => (set || on).has(k(c.e))).map(c => c.e) });
+const paperSet = () => C.paperSet[x].filter(v => ids().has(v));
 
-function graph(set) {
-  return DAG.create({ nodes: C.nodes, edges: C.candidates.filter(c => (set || on).has(k(c.e))).map(c => c.e) });
-}
 function drawArrows() {
-  const box = document.getElementById('arrows');
-  box.innerHTML = Object.entries(GROUP).map(([gk, title]) => `<div><p class="label">${title}</p><div class="row">` +
-    C.candidates.filter(c => c.g === gk).map(c => `<button type="button" class="chip arrow" data-k="${k(c.e)}" aria-pressed="${on.has(k(c.e))}">${nodeLab(c.e[0])} → ${nodeLab(c.e[1])}</button>`).join('') + '</div></div>').join('');
+  const box = $('arrows');
+  box.innerHTML = Object.entries(GROUP).map(([g, title]) => {
+    const list = cands().filter(c => c.g === g);
+    return list.length ? `<div><p class="label">${title}</p><div class="row">` + list.map(c => `<button type="button" class="chip arrow" data-k="${k(c.e)}" aria-pressed="${on.has(k(c.e))}">${nodeLab(c.e[0])} → ${nodeLab(c.e[1])}</button>`).join('') + '</div></div>' : '';
+  }).join('');
   box.querySelectorAll('button').forEach(b => b.onclick = () => {
     const key = b.dataset.k, next = new Set(on);
     next.has(key) ? next.delete(key) : next.add(key);
-    if (!graph(next).isAcyclic()) { document.getElementById('cyc').textContent = 'That arrow would make a loop (a variable causing itself). A causal diagram cannot have loops; draw time-ordered copies instead.'; b.classList.add('refused'); return; }
-    document.getElementById('cyc').textContent = '';
-    on = next; draw();
+    if (!graph(next).isAcyclic()) { $('cyc').textContent = 'That arrow would make a loop. A causal diagram cannot have loops.'; b.classList.add('refused'); return; }
+    $('cyc').textContent = ''; on = next; draw();
   });
 }
 function draw() {
-  document.getElementById('expo').innerHTML = Object.entries(EXPO).map(([id, l]) => `<button type="button" data-x="${id}" aria-pressed="${id === x}">${l}</button>`).join('');
-  document.querySelectorAll('#expo button').forEach(b => b.onclick = () => { x = b.dataset.x; Z.delete(x); document.getElementById('sets').hidden = true; draw(); });
+  $('expo').innerHTML = Object.entries(EXPO).map(([id, l]) => `<button type="button" data-x="${id}" aria-pressed="${id === x}">${l}</button>`).join('');
+  document.querySelectorAll('#expo button').forEach(b => b.onclick = () => { x = b.dataset.x; Z.delete(x); $('sets').hidden = true; draw(); });
   drawArrows();
-  const g = graph();
-  Z.delete(x); Z.delete('ari');
-  DAG.render(document.getElementById('dag'), g, { x, y: 'ari', Z, width: 420, height: C.height, fontSize: 15, idp: 'c',
+  const g = graph(); Z.delete(x); Z.delete('ari');
+  [...Z].forEach(z => { if (!ids().has(z)) Z.delete(z); });
+  DAG.render($('dag'), g, { x, y: 'ari', Z, width: 420, height: stage === 'small' ? SMALL.height : C.height, fontSize: stage === 'small' ? 17 : 15, idp: 'c',
     onTap: id => { Z.has(id) ? Z.delete(id) : Z.add(id); draw(); } });
-  document.getElementById('zlist').textContent = Z.size ? [...Z].map(nodeLab).join(', ') : 'nothing yet';
-  const v = document.getElementById('verdict'), det = document.getElementById('detail');
-  const ok = g.validFast(x, 'ari', Z);
-  const dx = g.descendants(x), med = [...Z].filter(z => dx.has(z));
-  if (!g.paths(x, 'ari', 1).length) { v.className = 'claim warn'; v.textContent = `Your diagram has no path from ${nodeLab(x)} to ARI at all. Add some arrows.`; det.innerHTML = ''; return; }
-  if (ok) {
-    v.className = 'claim good';
-    v.textContent = `If your diagram is right, adjusting for this set estimates the total effect of ${nodeLab(x).toLowerCase()} on ARI.`;
-    det.innerHTML = '';
-  } else {
-    v.className = 'claim warn';
-    v.textContent = `With your diagram, this set does not estimate the total effect of ${nodeLab(x).toLowerCase()} on ARI.`;
-    const items = [];
-    if (med.length) items.push(`<li>You adjusted for ${med.map(nodeLab).join(', ')}, which your diagram says ${med.length > 1 ? 'are' : 'is'} caused by ${nodeLab(x).toLowerCase()}. That cuts part of the effect, or opens a collider path.</li>`);
-    const open = g.paths(x, 'ari', 3000).map(p => g.pathInfo(p, Z)).filter(i => i.kind !== 'causal' && i.open).slice(0, 4);
-    open.forEach(i => items.push(`<li>Still open: ${i.path.map(nodeLab).reduce((s, n, j) => j ? s + (i.arrows[j - 1] === '>' ? ' → ' : ' ← ') + n : n, '')}</li>`));
-    det.innerHTML = items.length ? `<ul class="note">${items.join('')}</ul>` : '';
-  }
+  $('zlist').textContent = Z.size ? [...Z].map(nodeLab).join(', ') : 'nothing yet';
+  const v = $('verdict'), det = $('detail');
+  if (!g.paths(x, 'ari', 1).length) { v.className = 'claim warn'; v.textContent = `No path from ${nodeLab(x).toLowerCase()} to ARI yet. Add arrows.`; det.innerHTML = ''; return; }
+  if (g.validFast(x, 'ari', Z)) { v.className = 'claim good'; v.textContent = `If your diagram is right, this set gives the total effect of ${nodeLab(x).toLowerCase()} on ARI.`; det.innerHTML = ''; return; }
+  v.className = 'claim warn'; v.textContent = `Under your diagram, this set does not give the total effect of ${nodeLab(x).toLowerCase()}.`;
+  const items = [], med = [...Z].filter(z => g.descendants(x).has(z));
+  if (med.length) items.push(`<li>You adjusted for ${med.map(nodeLab).join(', ')}, caused by ${nodeLab(x).toLowerCase()} in your diagram.</li>`);
+  g.paths(x, 'ari', 3000).map(p => g.pathInfo(p, Z)).filter(i => i.kind !== 'causal' && i.open).slice(0, 3)
+    .forEach(i => items.push(`<li>Still open: ${i.path.map(nodeLab).reduce((s, n, j) => j ? s + (i.arrows[j - 1] === '>' ? ' → ' : ' ← ') + n : n, '')}</li>`));
+  det.innerHTML = items.length ? `<ul class="note">${items.join('')}</ul>` : '';
 }
-document.getElementById('blank').onclick = () => { on = new Set(['fuel>ari', 'kitchen>ari', 'edu>ari']); draw(); };
-document.getElementById('ours').onclick = () => { on = new Set(C.candidates.filter(c => c.ours).map(c => k(c.e))); draw(); };
-document.getElementById('paper').onclick = () => { Z = new Set(C.paperSet[x]); draw(); };
-document.getElementById('clear').onclick = () => { Z = new Set(); draw(); };
-document.getElementById('show').onclick = () => {
-  const g = graph(), sets = g.minimalSets(x, 'ari', 7), box = document.getElementById('sets');
-  box.innerHTML = sets.length ? `<p><b>Minimal sets for the total effect of ${nodeLab(x).toLowerCase()}, under your diagram:</b></p><ul>` + sets.map(s => `<li>${s.length ? s.map(nodeLab).join(' + ') : 'Adjust for nothing'}</li>`).join('') + `</ul><p class="note">The paper reported an adjusted OR of ${C.paperOR[x]}. Compare its model with these sets.</p>`
-    : '<p>No set of these variables is enough under your diagram.</p>';
+const showBox = (id, onoff) => $(id).classList.toggle('hide', !onoff);
+$('blank').onclick = () => { on = new Set(['fuel>ari']); draw(); };
+$('ours').onclick = () => { on = ours(); draw(); };
+$('paper').onclick = () => { Z = new Set(paperSet()); draw(); };
+$('clear').onclick = () => { Z = new Set(); draw(); };
+$('show').onclick = () => {
+  const sets = graph().minimalSets(x, 'ari', 7), box = $('sets');
+  box.innerHTML = sets.length ? `<p><b>Minimal sets for ${nodeLab(x).toLowerCase()}, under your diagram:</b></p><ul>` + sets.map(s => `<li>${s.length ? s.map(nodeLab).join(' + ') : 'Adjust for nothing'}</li>`).join('') + `</ul><p class="note">The paper reported an adjusted OR of ${C.paperOR[x]}.</p>` : '<p>No set of these variables is enough under your diagram.</p>';
   box.hidden = false;
 };
-draw();
+
+Guide.run($('guide'), [
+  { title: 'Write the causal question', enter: () => { stage = 'small'; x = 'fuel'; on = new Set(['fuel>ari']); Z = new Set(); showBox('arrowbox', false); showBox('adjbox', false); showBox('expobox', false); draw(); },
+    ask: { type: 'choice', prompt: 'Which is a causal question?', options: ['If biomass households switched to clean fuel, how much would their children\'s ARI fall?', 'Is biomass fuel use associated with ARI in children under five in India?', 'What proportion of Indian households cook with biomass fuel in NFHS-4?', 'Which variables are significant predictors of ARI in a logistic model?'], answer: 0,
+      after: 'Right. It names who, what change, and what outcome.' } },
+  { title: 'Draw your arrows: eight boxes', enter: () => { stage = 'small'; showBox('arrowbox', true); draw(); },
+    html: '<p>Start with the arrow from fuel to ARI. Below the step card, switch on every other arrow you believe. Think about each one: does this directly cause that?</p>',
+    ask: { type: 'do', prompt: 'Switch on at least six arrows, then press Check.', check: () => on.size >= 7, hint: 'Add a few more arrows first. What decides which fuel a household uses?', after: 'Good. Now compare with ours.' } },
+  { title: 'Compare with the facilitators\' diagram', enter: () => { showBox('arrowbox', true); draw(); },
+    html: '<p>Press <b>Load the facilitators\' diagram</b>. Where does it differ from yours? Neither is "the answer"; both are claims.</p>',
+    ask: { type: 'do', prompt: 'Load it, look at the differences, then press Check.', check: () => [...ours()].every(e => on.has(e)), hint: 'Press "Load the facilitators\' diagram" first.', after: 'From here on, the steps use this diagram. You can switch arrows back later.' } },
+  { title: 'Find an adjustment set', enter: () => { showBox('arrowbox', false); showBox('adjbox', true); Z = new Set(); draw(); },
+    html: '<p>Tap boxes to adjust for them. Block every back-door path from fuel to ARI, and adjust for nothing fuel causes.</p>',
+    ask: { type: 'do', prompt: 'When the message under the diagram turns green, press Check.', check: () => graph().validFast(x, 'ari', Z), hint: 'Not yet. Look at the "Still open" paths under the diagram.', after: 'Right. Under this diagram, State, Rural or urban, Wealth and Mother\'s education work; so does swapping Wealth for Separate kitchen.' } },
+  { title: 'Test the paper\'s model', enter: () => { Z = new Set(); draw(); },
+    html: '<p>Press <b>Use the paper\'s model</b>. Among these eight boxes, it adjusted for wealth, mother\'s education, separate kitchen and child\'s age and sex.</p>',
+    ask: { type: 'choice', prompt: 'Under this diagram, what does the paper\'s model miss?', options: ['State and rural or urban residence', 'Mother\'s education and wealth', 'Child\'s age and sex', 'Nothing; the model is enough'], answer: 0,
+      after: 'Right. Both are common causes of fuel and ARI. Back-door paths through place stay open.' } },
+  { title: 'Same model, another variable', enter: () => { showBox('expobox', true); x = 'edu'; Z = new Set(paperSet()); draw(); },
+    html: '<p>The same model also gave an odds ratio of 1.32 for mothers with primary education. The diagram now treats education as the exposure, with the paper\'s covariates adjusted.</p>',
+    ask: { type: 'choice', prompt: 'Why is that 1.32 not the effect of education?', options: ['The model adjusts for fuel and kitchen, which education causes', 'Education was measured with too much error', 'The sample did not include enough educated mothers', 'Education has no effect on ARI at all'], answer: 0,
+      after: 'Right: the Table 2 fallacy. One model answers one causal question.' } },
+  { title: 'Grow the diagram, then explore', enter: () => { stage = 'full'; x = 'fuel'; on = ours(); Z = new Set(); showBox('arrowbox', true); showBox('expobox', true); draw(); },
+    html: '<p>Now all fifteen variables from the paper are on the diagram, with the facilitators\' arrows. Switch arrows, change the exposure, try the paper\'s model again.</p>',
+    after: 'Group task: one minute to the room on what the authors should have done.' }
+]);
 </script>
 </body>
 </html>

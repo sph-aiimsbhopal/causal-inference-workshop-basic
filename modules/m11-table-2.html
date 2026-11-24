@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 11: One model, one question</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 11 of 15</p>
+  <h1>One model, one question</h1>
+  <p>Why the other coefficients in your regression table are not effects: the Table 2 fallacy.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Explain why a covariate&#x27;s coefficient is not its causal effect</li><li>Read Mondal and Paul&#x27;s odds ratios one at a time</li><li>Plan one model per causal question</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m11-table-2.html"><span class="label">Slides</span><h2>One model, one question</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 12; Westreich and Greenland 2013.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m10-choosing-adjustment.html">← Module 10: Choosing what to adjust for</a><a class="act navbtn" href="m12-unmeasured.html">Module 12: When a confounder was never measured →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Education affects ARI only through cooking fuel. In a model adjusted for fuel, the odds ratio for education will be about:", "o": ["0.85", "1.0", "1.2", "1.32"], "a": 1, "e": "Adjusting for the mediator removes the only path. The total effect, 0.85, is lost."}, {"q": "The Table 2 fallacy is:", "o": ["Putting too many variables in table 2", "Leaving confounders out of table 2", "Reporting odds ratios, not risk ratios", "Reading every coefficient as a causal effect"], "a": 3, "e": "The adjustment set suits one exposure. For the other variables, the model may adjust for mediators and miss confounders."}, {"q": "You want the effects of both cooking fuel and mother's education on ARI. The best plan is:", "o": ["Two models, each with its own adjustment set", "One model with both, and read both", "One model, then drop the non-significant terms", "Report only the crude odds ratios"], "a": 0, "e": "One causal question, one diagram, one adjustment set, one model."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

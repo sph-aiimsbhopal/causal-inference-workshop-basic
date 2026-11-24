@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 9: Measurement error in a diagram</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 9 of 15</p>
+  <h1>Measurement error in a diagram</h1>
+  <p>We analyse the exposure as recorded, not as it was. When does that bias the answer, and which way?</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Draw measured and true exposure as separate nodes</li><li>Calculate how non-differential misclassification moves a risk ratio towards 1</li><li>Recognise differential misclassification, such as recall bias</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m09-measurement.html"><span class="label">Slides</span><h2>Measurement error in a diagram</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/misclassification-lab.html"><span class="label">Lab</span><h2>Misclassification Lab</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 13, Measurement and Measurement Error.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m08-collider-selection.html">← Module 8: The collider: selection bias</a><a class="act navbtn" href="m10-choosing-adjustment.html">Module 10: Choosing what to adjust for →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Exposure errors are the same for people who fall ill and people who do not. For a yes or no exposure, the risk ratio is usually:", "o": ["Pulled towards 1", "Pushed away from 1", "Reversed in direction", "Left unchanged"], "a": 0, "e": "Non-differential misclassification mixes the two groups, so they look more alike. In the module, 2.0 became 1.6."}, {"q": "Cases recall past exposure better than controls do. This is:", "o": ["Non-differential misclassification", "Confounding by recall", "Differential misclassification", "Selection bias"], "a": 2, "e": "The errors depend on the outcome. Differential errors can move the estimate either way; in the module, 3.0 became 3.6."}, {"q": "In a diagram, misclassification is differential when there is an arrow from:", "o": ["The true exposure to the recorded one", "The recorded exposure to the outcome", "A confounder to the true exposure", "The outcome to the reporting error"], "a": 3, "e": "If the outcome changes how the exposure is recorded, the errors differ between cases and non-cases."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<section data-core>
+  <h2>The study</h2>
+  <p class="lede">Mondal and Paul used NFHS-4 (2015-16) to ask whether indoor air pollution raises acute respiratory infection (ARI) in children under five.</p>
+  <ul>
+    <li class="fragment">247,743 children across India.</li>
+    <li class="fragment">ARI: cough with short, rapid or difficult breathing in the last two weeks, as reported by the mother.</li>
+    <li class="fragment">Main exposure: cooking with biomass fuel. "Biomass" included kerosene, coal, wood, crop waste and dung.</li>
+    <li class="fragment">Result: adjusted odds ratio <b>1.10</b> (95% CI 1.01 to 1.20) for biomass fuel.</li>
+  </ul>
+  <p class="cite">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
+  <aside class="notes">A real, recent, open-access Indian study. The aim is not to attack it but to practise the four steps on it.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 1: write the causal question</h2>
+  <div class="cards c2">
+    <div class="card bad"><h3>Not this</h3><p>Is biomass fuel associated with ARI?</p></div>
+    <div class="card good fragment"><h3>This</h3><p>If households cooking with biomass switched to clean fuel, how much would ARI fall among their children under five?</p></div>
+  </div>
+  <p class="claim fragment">Who, what change, what outcome. Now draw what else differs between biomass and clean-fuel households.</p>
+  <aside class="notes">Module 1 again: a causal question names the change.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 2: start with eight boxes</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":["fuel","ari","fuel>ari"]},{"add":["state","res"],"fi":1},{"add":["wealth","edu"],"fi":2},{"add":["kitchen","child"],"fi":3}]' role="img" aria-label="Eight variables for the cooking fuel and ARI diagram"></svg></div>
+    <div>
+      <p class="small">Exposure and outcome first.</p>
+      <p class="small fragment" data-fragment-index="1">Where the household is: state, rural or urban.</p>
+      <p class="small fragment" data-fragment-index="2">Who the household is: wealth, mother's education.</p>
+      <p class="small fragment" data-fragment-index="3">The kitchen, and the child's age and sex.</p>
+    </div>
+  </div>
+  <aside class="notes">The full lab has fifteen boxes. Starting with eight keeps the first pass manageable; Lab 4 lets groups add the rest.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 2, continued: draw the arrows you believe</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":["fuel","ari","state","res","wealth","edu","kitchen","child","fuel>ari"]},{"add":["res>fuel","state>fuel","wealth>fuel","edu>fuel"],"fi":1},{"add":["res>ari","state>ari","edu>ari","kitchen>ari","child>ari"],"fi":2},{"add":["state>res","res>wealth","res>edu","wealth>kitchen"],"fi":3}]' role="img" aria-label="Arrows added in three groups"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1"><b>Into fuel:</b> LPG access depends on state and on rural or urban; richer and more educated households switch sooner.</p>
+      <p class="small fragment" data-fragment-index="2"><b>Into ARI:</b> place shapes outdoor air and care; educated mothers act on symptoms; the kitchen layout matters; young children get more ARI.</p>
+      <p class="small fragment" data-fragment-index="3"><b>Between the others:</b> state shapes urbanisation; place shapes wealth and schooling; wealth buys a separate kitchen.</p>
+    </div>
+  </div>
+  <p class="cite">Diagram drawn by the faculty for teaching; not the authors'. Yours may differ.</p>
+  <aside class="notes">Pause after each group of arrows and ask whether anyone would leave one out. Leaving one out is a claim.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 3: find the back-door paths</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":"all"},{"hl":"fuel,res,ari","fi":1},{"hl":"fuel,state,ari","fi":2},{"hl":"fuel,edu,ari","fi":3},{"hl":"fuel,wealth,kitchen,ari","fi":4}]' role="img" aria-label="Four back-door paths highlighted in turn"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Fuel ← Rural/urban → ARI</p>
+      <p class="small fragment" data-fragment-index="2">Fuel ← State → ARI</p>
+      <p class="small fragment" data-fragment-index="3">Fuel ← Education → ARI</p>
+      <p class="small fragment" data-fragment-index="4">Fuel ← Wealth → Kitchen → ARI</p>
+      <p class="small dim fragment" data-fragment-index="4">And several longer ones. Lab 4 lists them.</p>
+    </div>
+  </div>
+  <aside class="notes">Four short back-door paths. Child age and sex lie on no back-door path: they cause ARI only.</aside>
+</section>
+
+<section data-core>
+  <h2>Step 4: choose a set that blocks them</h2>
+  <div class="work">
+    <p>Under this diagram, two minimal sets work:</p>
+    <p class="fragment"><b>{State, Rural/urban, Wealth, Mother's education}</b></p>
+    <p class="fragment"><b>{State, Rural/urban, Mother's education, Separate kitchen}</b></p>
+  </div>
+  <p class="fragment">Child age and sex are safe to add: they cause ARI only, so they can improve precision.</p>
+  <aside class="notes">The second set works because kitchen blocks the wealth path and rural/urban blocks the route from place to wealth. Check it in Lab 4.</aside>
+</section>
+
+<section data-core>
+  <h2>Now compare the paper's model</h2>
+  <div class="two">
+    <div class="card"><h3>In the model</h3><p class="small">Separate kitchen, household smoking, child's age and sex, birth order, mother's age and education, caste, religion, wealth, TB in the household, crowding</p></div>
+    <div class="card bad fragment"><h3>Not in the model</h3><p class="small"><b>Rural or urban residence. State.</b></p><p class="small">Both are common causes of fuel and ARI in our diagram, so back-door paths stay open.</p></div>
+  </div>
+  <p class="claim warn fragment">Under our diagram, the 1.10 is not protected from confounding by place.</p>
+  <aside class="notes">Be fair: the authors had these variables in NFHS-4; a diagram drawn first would have flagged them.</aside>
+</section>
+
+<section data-core>
+  <h2>One model, three odds ratios</h2>
+  <table>
+    <tr><th>Variable, same model</th><th class="num">Adjusted OR</th><th>Readable as its effect?</th></tr>
+    <tr><td>Biomass fuel</td><td class="num">1.10</td><td class="fragment">Only if the set suits fuel</td></tr>
+    <tr><td>No separate kitchen</td><td class="num">1.22</td><td class="fragment">Only if the same set suits kitchen</td></tr>
+    <tr><td>Mother's education, primary vs none</td><td class="num">1.32</td><td class="fragment">No: fuel, kitchen and smoking are on its causal paths</td></tr>
+  </table>
+  <p class="claim warn fragment">Reading every row of a regression table as an effect is the "Table 2 fallacy". One model answers one causal question.</p>
+  <p class="cite">Westreich D, Greenland S. Am J Epidemiol 2013;177:292-8.</p>
+  <aside class="notes">The authors called the education result surprising. Part of the answer: the model adjusted away education's effects through fuel and kitchen. Another part may be reporting: educated mothers may notice fast breathing more.</aside>
+</section>
+
+<section data-core>
+  <h2>Two more things to ask any such study</h2>
+  <div class="cards c2">
+    <div class="card"><h3>Who reports the outcome?</h3><p class="small">Mothers report ARI. If education changes what they notice, education affects <b>reported</b> ARI, not only true ARI.</p></div>
+    <div class="card"><h3>Is the exposure one thing?</h3><p class="small">Kerosene, coal, wood and dung were grouped as "biomass". A clean-fuel programme changes one of these, not all.</p></div>
+  </div>
+  <aside class="notes">Measurement (Module 9) and well-defined exposure (Module 3), both developed further on the site.</aside>
+</section>
+
+<section data-core>
+  <h2>Group exercise</h2>
+  <div class="two wide-left">
+    <div>
+      <ol class="small steps">
+        <li>Write your group's causal question for your exposure.</li>
+        <li>Open <b>Lab 4</b>. Start with eight boxes and decide each arrow.</li>
+        <li>Grow the diagram to fifteen boxes and decide again.</li>
+        <li>Load the paper's model. Is it enough under your diagram?</li>
+        <li>One minute for the room: what should the authors have done?</li>
+      </ol>
+    </div>
+    <div class="card"><h3>Your exposure</h3><p class="small">Groups 1 and 4: biomass fuel</p><p class="small">Groups 2 and 5: separate kitchen</p><p class="small">Groups 3 and 6: mother's education</p></div>
+  </div>
+  <aside class="notes">Twenty minutes in groups, ten for reports. Both facilitators circulate. Self-paced learners do all three exposures in turn.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">Causal question first, diagram second, adjustment set third, data last.</p>
+  <p class="claim">One model per causal question. Do not read the other coefficients as effects.</p>
+  <p class="claim good">None of this needed new data. It needed a diagram drawn before the analysis.</p>
+  <aside class="notes">Module 15 turns this into a template for their own thesis.</aside>
+</section>

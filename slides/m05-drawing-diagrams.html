@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 5: Drawing a causal diagram</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 5 · Causal inference for beginners</p>
+  <h1>Drawing a causal diagram</h1>
+  <p class="lede dim">A causal diagram is a picture of your assumptions. Learn the four rules and how to read paths.</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 5. A causal diagram is a picture of your assumptions. Learn the four rules and how to read paths.</aside>
+</section>
+
+<section data-core>
+  <h2>Why draw a picture?</h2>
+  <p class="lede">In Module 2, alcohol made smokers and non-smokers non-exchangeable. Real studies have many such variables.</p>
+  <p class="fragment">A causal diagram puts your beliefs about what causes what on paper, so that you, and anyone reading your thesis, can see them and argue with them.</p>
+  <p class="cite fragment">Formally a directed acyclic graph (DAG). Greenland S, Pearl J, Robins JM. Epidemiology 1999;10:37-48.</p>
+  <aside class="notes">The diagram is not a statistical model. It is a statement of assumptions, drawn before the analysis.</aside>
+</section>
+
+<section data-core>
+  <h2>Boxes and an arrow</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:520px" data-steps='[{"add":["smk","tb"]},{"add":["smk>tb"],"fi":1}]' role="img" aria-label="Smoking and TB death"></svg></div>
+    <div>
+      <p>Each box is a <b>variable</b>: something that differs between people.</p>
+      <p class="fragment" data-fragment-index="1">An arrow means: <b>directly causes</b>. Smoking raises the risk of TB death.</p>
+      <p class="fragment small dim" data-fragment-index="1">Exposure and outcome are shown in dark boxes.</p>
+    </div>
+  </div>
+  <aside class="notes">First click adds the arrow and its explanation together. Keep this slide almost trivially simple.</aside>
+</section>
+
+<section data-core>
+  <h2>Add what you know about alcohol</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:520px" data-steps='[{"add":["smk","tb","smk>tb"]},{"add":["alc"],"fi":1},{"add":["alc>smk"],"fi":2},{"add":["alc>tb"],"fi":3}]' role="img" aria-label="Alcohol causes smoking and TB death"></svg></div>
+    <div>
+      <p class="fragment" data-fragment-index="1">Alcohol use is a variable too.</p>
+      <p class="fragment" data-fragment-index="2">Men who drink are more likely to smoke: an arrow into smoking.</p>
+      <p class="fragment" data-fragment-index="3">Alcohol raises the risk of TB death: an arrow into TB death.</p>
+    </div>
+  </div>
+  <aside class="notes">Each click adds one arrow with its sentence. Ask the room before each click: should there be an arrow here, and which way?</aside>
+</section>
+
+<section data-core>
+  <h2>Four rules for drawing</h2>
+  <ol class="steps">
+    <li class="fragment"><b>An arrow means a direct cause</b>, pointing from cause to effect.</li>
+    <li class="fragment"><b>No loops.</b> Nothing can cause itself. If smoking causes stress and stress causes more smoking, draw smoking at two times.</li>
+    <li class="fragment"><b>Every common cause goes in</b>, measured or not. Draw an unmeasured one with a dashed box.</li>
+    <li class="fragment"><b>A missing arrow is a claim.</b> It says there is no direct effect at all.</li>
+  </ol>
+  <aside class="notes">Rule 4 surprises people. Drawing an arrow is cautious; leaving one out is bold. When unsure, draw the arrow.</aside>
+</section>
+
+<section data-core>
+  <h2>Where do the arrows come from?</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>From</h3><p class="small">Biology, earlier studies, how the data were collected, and the order in which things happen.</p></div>
+    <div class="card bad"><h3>Not from</h3><p class="small">The dataset you are about to analyse: its correlations, p-values or stepwise regression.</p></div>
+  </div>
+  <p class="claim fragment">If two experts disagree, draw both diagrams. Often they lead to the same adjustment.</p>
+  <aside class="notes">Data cannot tell you which way an arrow points or whether a correlation is confounding. That is why the diagram comes first.</aside>
+</section>
+
+<section data-core>
+  <h2>A path is any route between two boxes</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="confound" style="width:520px" data-steps='[{"add":"all"},{"hl":"smk,tb","fi":1},{"hl":"smk,alc,tb","fi":2}]' role="img" aria-label="Two paths between smoking and TB death"></svg></div>
+    <div>
+      <p>Follow the lines from smoking to TB death. You may go along an arrow or against it.</p>
+      <p class="fragment" data-fragment-index="1"><b>Path 1:</b> Smoking → TB death</p>
+      <p class="fragment" data-fragment-index="2"><b>Path 2:</b> Smoking ← Alcohol → TB death</p>
+    </div>
+  </div>
+  <aside class="notes">The highlighted path changes with each click. Students often think paths must follow the arrows; they need not.</aside>
+</section>
+
+<section data-core>
+  <h2>Causal paths and the other kind</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>Causal path</h3><p>Every arrow points away from the exposure, towards the outcome.</p><p class="small">Smoking → TB death</p><p class="small dim">This carries the effect we want.</p></div>
+    <div class="card bad fragment"><h3>Non-causal path</h3><p>At least one arrow points the other way.</p><p class="small">Smoking ← Alcohol → TB death</p><p class="small dim">This carries association that is not the effect of smoking.</p></div>
+  </div>
+  <p class="claim fragment">The observed 4.45 in Lab 1 is the sum of what flows along both paths. We want only the first.</p>
+  <aside class="notes">This links back to the numbers: 3.0 along the causal path, plus the extra from alcohol, gives the 4.45 seen.</aside>
+</section>
+
+<section data-core>
+  <h2>Build the Tamil Nadu diagram, one box at a time</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":["smk","tb","smk>tb"]},{"add":["age","age>smk","age>tb"],"fi":1},{"add":["edu","edu>smk"],"fi":2},{"add":["alc","alc>tb","edu>alc"],"fi":3},{"add":["peer","peer>smk","peer>alc"],"fi":4},{"add":["nut","alc>nut","edu>nut","nut>tb"],"fi":5}]' role="img" aria-label="Diagram for smoking and TB death built step by step"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Age: older men smoke more and die of TB more.</p>
+      <p class="small fragment" data-fragment-index="2">Education affects smoking.</p>
+      <p class="small fragment" data-fragment-index="3">Alcohol, also shaped by education, raises TB death. It was not adjusted for, so its box is dashed.</p>
+      <p class="small fragment" data-fragment-index="4">Peer group and personality push men towards both smoking and drinking. Never measured.</p>
+      <p class="small fragment" data-fragment-index="5">Undernutrition, from poverty and drinking, raises TB death.</p>
+    </div>
+  </div>
+  <p class="cite">Diagram drawn by the faculty for Gajalakshmi et al., Lancet 2003. Yours may differ.</p>
+  <aside class="notes">Five clicks, one idea each. Ask before each click whether the students agree with the arrows. Disagreement is the point.</aside>
+</section>
+
+<section data-core>
+  <h2>Find three paths in it</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"hl":"smk,age,tb","fi":1},{"hl":"smk,peer,alc,tb","fi":2},{"hl":"smk,edu,nut,tb","fi":3}]' role="img" aria-label="Three non-causal paths from smoking to TB death"></svg></div>
+    <div>
+      <p class="small fragment" data-fragment-index="1">Smoking ← Age → TB death</p>
+      <p class="small fragment" data-fragment-index="2">Smoking ← Peer group → Alcohol → TB death</p>
+      <p class="small fragment" data-fragment-index="3">Smoking ← Education → Undernutrition → TB death</p>
+      <p class="small fragment" data-fragment-index="3">There are more. Lab 2 lists all of them.</p>
+    </div>
+  </div>
+  <aside class="notes">All three start with an arrow into smoking, so all are non-causal. Module 6 gives them a name, back-door paths, and shows how to close them.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>Diabetes raises the risk of active TB. Age raises the risk of both diabetes and TB.</p>
+    <p>Draw the diagram in your workbook. How many paths join diabetes and TB? Which are causal?</p>
+  </div>
+  <div class="work fragment" style="margin-top:16px">
+    <p>Two paths: Diabetes → TB (causal), and Diabetes ← Age → TB (non-causal).</p>
+  </div>
+  <aside class="notes">This is the first half of Practice 2 in Module 10, where poverty and undernutrition are added.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A causal diagram is your assumptions, drawn. Arrows are direct causes; a missing arrow is a claim.</p>
+  <p class="claim">A path is any route between exposure and outcome. Causal paths carry the effect; the others carry bias.</p>
+  <p class="claim warn">Next: three shapes that every path is built from, starting with the fork.</p>
+  <aside class="notes">Open Lab 2, choose "Smoking and TB deaths", and read the list of paths.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m05-drawing-diagrams.html#check">Open the self-check for Module 5</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 3, the section on causal diagrams.</p>
+  <p>Next: <a href="m06-fork-confounding.html">Module 6, The fork: confounding</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

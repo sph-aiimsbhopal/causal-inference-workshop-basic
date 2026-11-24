@@ -99,3 +99,44 @@ button.act { font: 600 15px var(--font-body); background: var(--band); color: va
 button.act.ghost { background: var(--paper); color: var(--ink); border: 1px solid var(--rule); }
 .reveal-box { background: var(--wash); padding: 12px 14px; border-top: 3px solid var(--band); }
 @media (max-width: 520px) { body { font-size: 15px; } header.band h1 { font-size: 23px; } .seg button, .chip { padding: 7px 11px; font-size: 14px; } }
+
+/* ---- course pages ---- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+a.card { display: grid; gap: 6px; align-content: start; background: var(--wash); border-top: 4px solid var(--band); padding: 18px; color: var(--ink); text-decoration: none; }
+a.card:hover { background: var(--rule); }
+a.card:focus-visible { outline: 3px solid var(--warn); outline-offset: 2px; }
+a.card h2 { margin: 0; }
+a.card p { margin: 0; color: var(--dim); font-size: 15px; }
+a.card .go { color: var(--ink); font-weight: 600; font-size: 15px; margin-top: 4px; }
+ol.steps { margin: 0; padding-left: 1.2em; max-width: 70ch; }
+ol.steps li { margin-bottom: 4px; }
+.modlist { display: grid; gap: 8px; }
+a.mod { display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; background: var(--wash); color: var(--ink); text-decoration: none; border-left: 4px solid var(--band); }
+a.mod:hover { background: var(--rule); }
+a.mod.soon { border-left-color: var(--rule); }
+a.mod .mn { font: 700 22px var(--font-head); color: var(--band); min-width: 28px; text-align: right; }
+a.mod .mt { font-size: 15px; line-height: 1.4; }
+a.mod .dim { color: var(--dim); }
+nav.modnav { justify-content: space-between; }
+a.navbtn { text-decoration: none; display: inline-block; }
+fieldset.chk { border: 0; margin: 0 0 14px; padding: 14px; background: var(--wash); display: grid; gap: 8px; }
+fieldset.chk legend { font-weight: 600; padding: 0; margin-bottom: 6px; float: left; width: 100%; }
+fieldset.chk label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; cursor: pointer; }
+fieldset.chk label input { margin-top: 3px; accent-color: var(--band); }
+fieldset.chk label.right { border-color: var(--good); background: var(--good-wash); }
+fieldset.chk label.wrong { border-color: var(--bad); background: var(--bad-wash); }
+fieldset.chk .exp { margin: 0; font-size: 15px; border-left: 4px solid var(--band); padding: 6px 10px; background: var(--paper); }
+
+/* ---- guided steps ---- */
+.gstep { background: var(--wash); border-top: 4px solid var(--band); padding: 14px 16px; display: grid; gap: 8px; }
+.gstep h2 { margin: 0; }
+.gstep p { margin: 0; }
+.gstep .gq { font-weight: 600; }
+.gnum { font: 600 18px var(--font-body); width: 7em; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); }
+.gopts { display: grid; gap: 6px; }
+.gopts label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; cursor: pointer; }
+.gopts input { margin-top: 3px; accent-color: var(--band); }
+.gnav { justify-content: space-between; margin-top: 4px; }
+button.act:disabled { opacity: .45; cursor: not-allowed; }
+.hide { display: none !important; }
+.explore-note { font-size: 14px; color: var(--dim); }

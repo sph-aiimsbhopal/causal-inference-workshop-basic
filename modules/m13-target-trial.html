@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 13: Ask it like a trial</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 13 of 15</p>
+  <h1>Ask it like a trial</h1>
+  <p>Target trial emulation and time zero: how the hormone therapy puzzle was finally solved.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Write the target trial for an observational question</li><li>Explain time zero, prevalent-user bias and immortal time</li><li>Read the 2008 hormone therapy re-analysis</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m13-target-trial.html"><span class="label">Slides</span><h2>Ask it like a trial</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 25, Causal Inference With Time-Varying Exposures; Hernán and Robins 2016.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m12-unmeasured.html">← Module 12: When a confounder was never measured</a><a class="act navbtn" href="m14-capstone-fuel-ari.html">Module 14: Capstone: cooking fuel and childhood ARI →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "In a target trial, time zero is when:", "o": ["The person first notices any symptoms", "The last participant is recruited", "Treatment is stopped for any reason", "Eligibility, assignment and follow-up meet"], "a": 3, "e": "In a trial all three happen at randomisation. Observational analyses should line them up the same way."}, {"q": "Ever users of a drug with no effect, counted from diagnosis, show RR 0.38 against never users. The cause is:", "o": ["Immortal time", "Confounding by age", "Recall bias", "Chance"], "a": 0, "e": "Users had to survive until they started the drug. Starting the clock at the same time for both groups gives 1.0."}, {"q": "Re-analysed with new users and a common time zero, the Nurses' Health Study gave a hazard ratio for heart disease in the first 2 years of:", "o": ["0.39", "0.96", "1.42", "2.20"], "a": 2, "e": "1.42 (0.92 to 2.20), close to the trial. 0.39 was the original cohort estimate; 0.96 was for all follow-up."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

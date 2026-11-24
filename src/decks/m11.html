@@ -1,0 +1,87 @@
+<section data-core>
+  <h2>One regression, many odds ratios</h2>
+  <p>Mondal and Paul's model gave an odds ratio for every variable in it.</p>
+  <table>
+    <tr><th>Variable</th><th class="num">Adjusted OR</th></tr>
+    <tr><td>Biomass fuel</td><td class="num">1.10</td></tr>
+    <tr><td>No separate kitchen</td><td class="num">1.22</td></tr>
+    <tr><td>Household smoking</td><td class="num">1.06</td></tr>
+    <tr><td>Mother's education, primary vs none</td><td class="num">1.32</td></tr>
+  </table>
+  <p class="claim fragment">It is tempting to read each one as "the effect of" that variable. This module shows why only one of them can be.</p>
+  <p class="cite">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
+  <aside class="notes">Most published tables look like this. Ask the room: does education really raise ARI by a third?</aside>
+</section>
+
+<section data-core>
+  <h2>A model is built for one exposure</h2>
+  <p>The covariates were chosen to block the back-door paths from <b>fuel</b> to ARI.</p>
+  <div class="dagwrap"><svg class="dag" data-dag="fuel8" style="width:440px" data-fs="18" data-steps='[{"add":"all"},{"z":["edu","wealth","kitchen","child"],"fi":1},{"hl":"edu,fuel,ari","fi":2}]' role="img" aria-label="Adjusting for fuel blocks a causal path from education"></svg></div>
+  <p class="fragment" data-fragment-index="2">But from education's point of view, fuel lies on a <b>causal</b> path: Education → Fuel → ARI. Fuel is a mediator of education.</p>
+  <aside class="notes">The same model that is right, or nearly right, for fuel is wrong for education: it adjusts for education's mediators.</aside>
+</section>
+
+<section data-core>
+  <h2>A worked example: education acting only through fuel</h2>
+  <p>Suppose education's only effect on ARI is through fuel. Made-up numbers.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>Biomass users</th><th>ARI risk</th></tr>
+    <tr><td class="l">Mothers with no schooling</td><td>60%</td><td class="fragment">0.6 × 15% + 0.4 × 10% = <b>13%</b></td></tr>
+    <tr><td class="l">Mothers with schooling</td><td>20%</td><td class="fragment">0.2 × 15% + 0.8 × 10% = <b>11%</b></td></tr>
+  </table>
+  <p class="small dim">ARI risk: 15% in biomass homes, 10% in clean-fuel homes, whatever the mother's schooling.</p>
+  <div class="work fragment"><p>Total effect of schooling: 11 / 13 = <b>0.85</b>, protective.</p></div>
+  <div class="work fragment"><p>Adjusted for fuel: within each fuel group, 15% against 15% and 10% against 10%. Ratio <b>1.0</b>. The protection has vanished.</p></div>
+  <aside class="notes">Adjusting for fuel answers a different question: the effect of education not through fuel. Here that is zero by construction.</aside>
+</section>
+
+<section data-core>
+  <h2>Add one more real-world twist: reporting</h2>
+  <p>Now suppose educated mothers notice and report fast breathing 20% more often, for the same true illness.</p>
+  <div class="work">
+    <p class="fragment">Fuel-adjusted ratio: 1.0 × 1.2 = <b>1.2</b>. Education now looks <b>harmful</b>.</p>
+    <p class="fragment">Total effect: 0.85 × 1.2 = <b>1.02</b>. Nearly no effect.</p>
+  </div>
+  <p class="claim warn fragment">A protective cause, adjusted for its mediator and measured through mothers' reports, looks harmful. The paper's 1.32 may be built the same way.</p>
+  <aside class="notes">We cannot say this is what happened in NFHS-4; the point is that the coefficient has no single causal reading.</aside>
+</section>
+
+<section data-core>
+  <h2>The Table 2 fallacy</h2>
+  <p class="lede">Reading every coefficient in a multivariable table as a causal effect.</p>
+  <ul>
+    <li class="fragment">The adjustment set is right, at best, for one exposure.</li>
+    <li class="fragment">For each covariate, the same model may adjust for its mediators and miss its confounders.</li>
+    <li class="fragment">So covariate coefficients are usually neither total effects nor direct effects.</li>
+  </ul>
+  <p class="cite fragment">Westreich D, Greenland S. Am J Epidemiol 2013;177:292-8. The name comes from the second table of most papers.</p>
+  <aside class="notes">Many journals now ask authors not to present covariate coefficients, or to label them clearly as not interpretable.</aside>
+</section>
+
+<section data-core>
+  <h2>What to do instead</h2>
+  <ol class="steps">
+    <li class="fragment">One causal question at a time. One diagram, one adjustment set, one model.</li>
+    <li class="fragment">Report the exposure's estimate. Leave the covariates out of the results table, or say plainly they are not effects.</li>
+    <li class="fragment">If a second exposure matters, fit a second model with its own adjustment set.</li>
+  </ol>
+  <aside class="notes">For a thesis with several exposures, this means several models. That is normal, not excessive.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>A model for smoking and TB death adjusts for age, education and alcohol use. Alcohol use makes men more likely to smoke.</p>
+    <p>Is the alcohol odds ratio from this model the total effect of alcohol on TB death? Why?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>No. Alcohol → Smoking → TB death: smoking is a mediator of alcohol, and the model adjusts for it. Part of alcohol's effect is removed.</p></div>
+  <aside class="notes">Same structure as the education example, in a different study.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A model is built for one exposure. Its other coefficients are not effects.</p>
+  <p class="claim warn">A covariate adjusted for its own mediators can even flip direction: 0.85 became 1.2.</p>
+  <p class="claim">One causal question, one diagram, one adjustment set, one model.</p>
+  <aside class="notes">Lab 4, step 6, lets students see the education version on the diagram.</aside>
+</section>

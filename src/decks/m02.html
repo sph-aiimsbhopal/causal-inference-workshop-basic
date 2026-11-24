@@ -1,0 +1,125 @@
+<section data-core>
+  <h2>Back to real life: each man chose</h2>
+  <p>The same ten men. Now we know who drinks alcohol, who actually smoked, and only the future he lived.</p>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>Drinks?</th><th>Smoked?</th><th>What happened</th></tr>
+    <tr><td class="l">Murugan</td><td>yes</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Selvam</td><td>yes</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Ravi</td><td>yes</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Arul</td><td>no</td><td>yes</td><td class="dead">died</td></tr>
+    <tr><td class="l">Kannan</td><td>yes</td><td>no</td><td class="dead">died</td></tr>
+    <tr><td class="l">Suresh, Bala, Mani, Raja, Siva</td><td>no</td><td>no</td><td>lived</td></tr>
+  </table>
+  <p class="small dim">Each "what happened" is the matching future from the Module 1 table.</p>
+  <aside class="notes">Point out that the outcome column is simply the potential outcome for the exposure each man actually had. That link, called consistency, is what lets us use real data at all.</aside>
+</section>
+
+<section data-core>
+  <h2>What a study would calculate</h2>
+  <div class="work">
+    <p>Smokers: 4 died out of 4. Risk = <b>1.0</b></p>
+    <p class="fragment">Non-smokers: 1 died (Kannan) out of 6. Risk = <b>0.17</b></p>
+    <p class="fragment">Observed risk ratio = 1.0 / 0.17 = <b>6.0</b></p>
+  </div>
+  <div class="cards c2 fragment" style="margin-top:12px">
+    <div class="card"><h3>The true causal effect</h3><p class="big good">3.0</p><p class="small dim">from both futures, Module 1</p></div>
+    <div class="card bad"><h3>What the study sees</h3><p class="big bad">6.0</p><p class="small dim">from the futures that happened</p></div>
+  </div>
+  <aside class="notes">Let them calculate in the workbook first. The observed ratio is double the true one. Same men, same biology; only the comparison changed.</aside>
+</section>
+
+<section data-core>
+  <h2>Why the study got it wrong</h2>
+  <div class="work">
+    <p>Among the 4 smokers, <b>3 drink</b>.</p>
+    <p class="fragment">Among the 6 non-smokers, <b>1 drinks</b>.</p>
+    <p class="fragment">Drinkers are more likely to die of TB whether or not they smoke.</p>
+  </div>
+  <p class="claim fragment">The smokers would have done worse than the non-smokers even without smoking. Some of the 6.0 is alcohol, not tobacco.</p>
+  <aside class="notes">In the Module 1 table, both doomed men, Selvam and Kannan, are drinkers. Drinkers carry more risk of their own.</aside>
+</section>
+
+<section data-core>
+  <h2>Check it with the hidden futures</h2>
+  <p>Ask: had the smokers <b>never</b> smoked, what would their risk have been?</p>
+  <table class="calc">
+    <tr><th class="l">Smoker</th><th>If he had never smoked</th></tr>
+    <tr><td class="l">Murugan</td><td>lives</td></tr>
+    <tr><td class="l">Selvam</td><td class="dead">dies</td></tr>
+    <tr><td class="l">Ravi</td><td>lives</td></tr>
+    <tr><td class="l">Arul</td><td>lives</td></tr>
+  </table>
+  <div class="work fragment"><p>Smokers' risk without smoking = 1 / 4 = <b>0.25</b>. Non-smokers' actual risk = 1 / 6 = <b>0.17</b>.</p></div>
+  <p class="claim warn fragment">These should be equal for a fair comparison. They are not.</p>
+  <aside class="notes">This is the exchangeability check, done with numbers we normally never have. In a real study we cannot do this calculation; we have to argue for it.</aside>
+</section>
+
+<section data-core>
+  <h2>Exchangeability, in one sentence</h2>
+  <p class="lede">Two groups are <b>exchangeable</b> if, had they swapped exposures, each would have had the other group's risk.</p>
+  <ul>
+    <li class="fragment">If exchangeable: observed risk ratio = causal risk ratio.</li>
+    <li class="fragment">If not: the observed ratio mixes the effect with how the groups differ.</li>
+    <li class="fragment">That mixing is what epidemiologists call <b>confounding</b>.</li>
+  </ul>
+  <p class="cite">Greenland S, Robins JM. Int J Epidemiol 1986;15:413-9. Modern Epidemiology, 4th ed., chapter 12.</p>
+  <aside class="notes">One sentence students should be able to say back. Confounding is named here and treated properly in Module 6.</aside>
+</section>
+
+<section data-core>
+  <h2>How a trial gets exchangeability: toss a coin</h2>
+  <p>If a coin decides who smokes, drinking cannot influence who ends up in which group.</p>
+  <div class="work fragment">
+    <p>On average, half of every kind of man lands in each group: half the drinkers, half the doomed, half the immune.</p>
+    <p class="fragment">With the 100 men in Lab 1, that gives risks of 0.39 and 0.13 on average: risk ratio <b>3.0</b>, the true effect.</p>
+  </div>
+  <p class="claim fragment">Any single toss can be off by chance. Bias goes away; chance does not.</p>
+  <aside class="notes">This is why the WHI trial is believed over the cohort. Randomisation breaks every link between the exposure and the man's other risks, measured or not.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn: a fairer split</h2>
+  <div class="you">
+    <p>Suppose Murugan, Kannan, Arul, Mani and Raja smoked, and the other five did not. Use the Module 1 table of both futures.</p>
+    <p>How many smokers die? How many non-smokers? What is the risk ratio?</p>
+  </div>
+  <div class="work fragment" style="margin-top:18px">
+    <p>Smokers: Murugan, Kannan, Arul die. 3 / 5 = 0.6. Non-smokers: Selvam dies. 1 / 5 = 0.2.</p>
+    <p>Risk ratio = <b>3.0</b>, the true effect. Each group has 2 drinkers.</p>
+  </div>
+  <aside class="notes">Here drinkers are split evenly, so the groups are exchangeable and the observed ratio equals the causal one.</aside>
+</section>
+
+<section data-core>
+  <h2>A bigger group shows the same thing</h2>
+  <p>Lab 1 has 100 made-up men. Smoking triples every man's risk, by construction. Drinkers smoke more.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>Died</th><th>Total</th><th>Risk</th></tr>
+    <tr><td class="l">Smokers</td><td>21</td><td>44</td><td>0.48</td></tr>
+    <tr><td class="l">Non-smokers</td><td>6</td><td>56</td><td>0.11</td></tr>
+  </table>
+  <div class="work fragment"><p>Observed risk ratio = 0.48 / 0.11 = <b>4.45</b>. True causal risk ratio = <b>3.0</b>.</p></div>
+  <p class="fragment">Open Lab 1 and work through steps 1 to 8. Switch between both futures and what happened, then let a coin decide.</p>
+  <aside class="notes">Lab 1 numbers. 21 of 44 smokers died and 6 of 56 non-smokers. Module 6 shows how to recover the 3.0 by splitting the table by alcohol.</aside>
+</section>
+
+<section data-core>
+  <h2>Now the real study</h2>
+  <p>Gajalakshmi and colleagues: 43,000 men who died in Tamil Nadu and 35,000 living men. Ever smokers had <b>4.5</b> times the TB death rate of never smokers (urban men, 25 to 69).</p>
+  <ul>
+    <li class="fragment">Who chose to smoke? Not a coin.</li>
+    <li class="fragment">Smokers in the same study also had 3.3 times the death rate from alcoholism or cirrhosis.</li>
+    <li class="fragment">The analysis allowed for age, education and tobacco chewing, but not alcohol.</li>
+  </ul>
+  <p class="claim fragment">Are smokers and never smokers exchangeable here? Write what might differ.</p>
+  <p class="cite">Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</p>
+  <aside class="notes">Real numbers. The cirrhosis finding is a clue that smokers drink more. This does not mean smoking has no effect on TB; dose-response and other evidence support a real effect. It means 4.5 may be an overestimate.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">An observed comparison is causal only if the groups are exchangeable.</p>
+  <p class="claim">Randomisation buys exchangeability on average. Observational studies have to argue for it.</p>
+  <p class="claim warn">Next: a way to draw what makes groups different, so we can see what to do about it.</p>
+  <aside class="notes">Bridge to Module 5, causal diagrams.</aside>
+</section>

@@ -1,0 +1,84 @@
+<section data-core>
+  <h2>We never analyse the exposure itself</h2>
+  <p class="lede">In Tamil Nadu, smoking was not observed. It was reported, by a family member, often about a man who had died.</p>
+  <div class="dagwrap"><svg class="dag" data-dag="measure" style="width:520px" data-steps='[{"add":["smk","tb","smk>tb"]},{"add":["rep","smk>rep"],"fi":1}]' role="img" aria-label="True smoking causes reported smoking"></svg></div>
+  <p class="fragment" data-fragment-index="1">What enters the analysis is the box "smoking as reported", not true smoking.</p>
+  <aside class="notes">Measurement error drawn as a diagram: the recorded variable is a child of the true one.</aside>
+</section>
+
+<section data-core>
+  <h2>Two words to describe the errors</h2>
+  <div class="cards c2">
+    <div class="card"><h3>Sensitivity</h3><p>Of men who truly smoked, the share recorded as smokers.</p></div>
+    <div class="card fragment"><h3>Specificity</h3><p>Of men who truly never smoked, the share recorded as never smokers.</p></div>
+  </div>
+  <p class="fragment">You know these from screening tests. Here the "test" is the question about smoking.</p>
+  <aside class="notes">Students already know sensitivity and specificity from diagnostic tests; reuse that.</aside>
+</section>
+
+<section data-core>
+  <h2>Errors the same for everyone: non-differential</h2>
+  <p>A cohort: 1,000 truly exposed (10% fall ill), 1,000 truly unexposed (5% fall ill). True risk ratio <b>2.0</b>.</p>
+  <p>Sensitivity 80% and specificity 90%, the same whether or not a person falls ill.</p>
+  <table class="calc">
+    <tr><th class="l">Recorded as</th><th>Cases</th><th>People</th><th>Risk</th></tr>
+    <tr class="fragment"><td class="l">Exposed</td><td>80 + 5 = 85</td><td>800 + 100 = 900</td><td>9.4%</td></tr>
+    <tr class="fragment"><td class="l">Unexposed</td><td>20 + 45 = 65</td><td>200 + 900 = 1,100</td><td>5.9%</td></tr>
+  </table>
+  <div class="work fragment"><p>Recorded risk ratio = 9.4 / 5.9 = <b>1.6</b>, closer to 1 than the truth.</p></div>
+  <p class="small dim">Made-up numbers.</p>
+  <aside class="notes">Exposed recorded: 80% of the 1,000 exposed (800, with 80 cases) plus 10% of the unexposed wrongly recorded as exposed (100, with 5 cases). The two groups get mixed, so they look more alike.</aside>
+</section>
+
+<section data-core>
+  <h2>Non-differential error usually pulls towards 1</h2>
+  <p>With a yes or no exposure and errors that do not depend on the outcome, the recorded effect is usually weaker than the true one.</p>
+  <p class="claim warn fragment">"Usually", not always: chance, more than two exposure levels, or errors linked to other errors can break the rule.</p>
+  <p class="cite fragment">Modern Epidemiology, 4th ed., chapter 13.</p>
+  <aside class="notes">A common mistake is to say non-differential error "can only bias towards the null" and so a positive finding is safe. Expected direction, not guaranteed direction.</aside>
+</section>
+
+<section data-core>
+  <h2>Errors that depend on the outcome: differential</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="measure" style="width:470px" data-steps='[{"add":["smk","tb","smk>tb","rep","smk>rep"]},{"add":["err","err>rep"],"fi":1},{"add":["tb>err"],"fi":2}]' role="img" aria-label="TB death affects reporting error"></svg></div>
+    <div>
+      <p class="fragment" data-fragment-index="1">Reporting has errors of its own.</p>
+      <p class="fragment" data-fragment-index="2">If the outcome changes the error, for instance a widow recalls heavy smoking in a husband who died coughing, the error is <b>differential</b>.</p>
+      <p class="fragment" data-fragment-index="2">Its bias can go in either direction.</p>
+    </div>
+  </div>
+  <aside class="notes">An arrow from outcome to the measurement error is the diagram of differential misclassification.</aside>
+</section>
+
+<section data-core>
+  <h2>Recall bias, in numbers</h2>
+  <p>A case-control study: 200 cases, 100 truly exposed; 200 controls, 50 truly exposed. True odds ratio <b>3.0</b>.</p>
+  <p>Cases search their memory harder: 95% of exposed cases report it, but only 80% of exposed controls.</p>
+  <table class="calc">
+    <tr><th class="l">Reported</th><th>Exposed</th><th>Not exposed</th></tr>
+    <tr class="fragment"><td class="l">Cases</td><td>95</td><td>105</td></tr>
+    <tr class="fragment"><td class="l">Controls</td><td>40</td><td>160</td></tr>
+  </table>
+  <div class="work fragment"><p>Odds ratio = (95 × 160) / (105 × 40) = <b>3.6</b>, further from 1 than the truth.</p></div>
+  <p class="small dim">Made-up numbers.</p>
+  <aside class="notes">Differential error here inflates the estimate. Reverse the difference in recall and it would shrink it.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In NFHS-4, mothers report whether the child had fast or difficult breathing in the last two weeks. Educated mothers may notice it more.</p>
+    <p>Draw it. Is the error in ARI differential with respect to mother's education? Which way might it bias the education odds ratio?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Education → reporting error → reported ARI. The error depends on the exposure, so it is differential. It would push the education OR <b>up</b>, which may help explain the "surprising" 1.32.</p></div>
+  <aside class="notes">This connects to Modules 11 and 14.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">Draw the recorded variable as its own box. Ask who recorded it, when, and whether they knew the outcome.</p>
+  <p class="claim">Non-differential error in a yes or no exposure usually weakens the estimate: 2.0 became 1.6.</p>
+  <p class="claim warn">Differential error can go either way: 3.0 became 3.6.</p>
+  <aside class="notes">Lab: Misclassification calculator. Rothman chapter 13; for correcting it, chapter 29 on bias analysis.</aside>
+</section>

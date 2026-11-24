@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 5: Drawing a causal diagram</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 5 of 15</p>
+  <h1>Drawing a causal diagram</h1>
+  <p>A causal diagram is a picture of your assumptions. Learn the four rules and how to read paths.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Draw a causal diagram from a short description of a study</li><li>State what an arrow, and a missing arrow, claim</li><li>List every path between an exposure and an outcome</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m05-drawing-diagrams.html"><span class="label">Slides</span><h2>Drawing a causal diagram</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/dag-lab.html?d=tb"><span class="label">Lab</span><h2>Causal Diagram Lab: smoking and TB</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 3, the section on causal diagrams.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m04-causal-pies.html">← Module 4: Causes come in teams</a><a class="act navbtn" href="m06-fork-confounding.html">Module 6: The fork: confounding →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "In a causal diagram, a missing arrow between two variables claims that:", "o": ["The link has not been studied yet", "One does not directly cause the other", "The link is weak and can be ignored", "The data showed no correlation there"], "a": 1, "e": "Leaving an arrow out is the strongest claim in a diagram: no direct effect at all."}, {"q": "Smoking ← Alcohol → TB death. How many paths join smoking and TB death if there is also an arrow smoking → TB death?", "o": ["One", "Two", "Three", "None"], "a": 1, "e": "The direct path smoking → TB death, and the path through alcohol. A path may go against the arrows."}, {"q": "Where do the arrows in a causal diagram come from?", "o": ["A stepwise regression on the study data", "Correlations above 0.3 in the dataset", "Subject knowledge, before the analysis", "The variables the journal asks for"], "a": 2, "e": "The data you are analysing cannot tell you the arrows. They come from biology, earlier studies, and how the data were collected."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>

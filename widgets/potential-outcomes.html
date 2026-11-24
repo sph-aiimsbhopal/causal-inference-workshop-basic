@@ -23,16 +23,18 @@
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 1</p>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Lab 1 · Modules 1 and 2</p>
   <h1>Potential Outcomes Lab</h1>
-  <p>Every man has two possible futures: one if he smokes, one if he never does. We only ever see one of them.</p>
+  <p>Eight short steps. Every man has two possible futures, one if he smokes and one if he never does. We only ever see one of them.</p>
 </div></header>
 <main>
   <section class="panel story">
-    <p>Gajalakshmi and colleagues found that men in Tamil Nadu who smoked had 4.5 times the TB death rate of never smokers. They did not adjust for alcohol. Here is a made-up group of 100 men to show what that could mean. We built the true effect of smoking into it ourselves, so we can check any method against it. The risks are exaggerated so that you can see them.</p>
+    <p>A made-up group of 100 men. We built the true effect of smoking into them ourselves: it triples every man's risk of TB death. So we can check any comparison against the truth. The risks are exaggerated so that you can see them.</p>
   </section>
 
-  <section class="panel">
+  <section id="guide" aria-live="polite"></section>
+
+  <section class="panel hide" id="controls">
     <h2>What can you see?</h2>
     <div class="seg" id="view" role="group" aria-label="View">
       <button type="button" data-v="god">Both futures (thought experiment)</button>
@@ -55,17 +57,18 @@
     <div class="key" id="key"></div>
   </section>
 
-  <section class="stats" aria-live="polite" id="stats"></section>
+  <section class="stats hide" aria-live="polite" id="stats"></section>
   <section class="panel" id="stratbox" hidden><div class="scroll"><table id="stab"></table></div></section>
-  <p class="claim" id="msg" aria-live="polite"></p>
+  <div id="msgwrap" class="hide"><p class="claim" id="msg" aria-live="polite"></p></div>
 
-  <section class="panel">
+  <section class="panel hide" id="typesbox">
     <h2>Four kinds of men</h2>
     <div class="scroll"><table class="types" id="types"></table></div>
     <p class="note">Rothman's sufficient-cause model says the same thing in another language: for some men, smoking completes a sufficient cause of TB death; for others the cause is already complete, or never will be.</p>
   </section>
-  <footer>Illustrative group of 100 men, constructed for teaching; only the 4.5 comes from the study (Gajalakshmi et al., Lancet 2003).</footer>
+  <footer>Illustrative group of 100 men, constructed for teaching; inspired by the Tamil Nadu study of smoking and TB deaths (Gajalakshmi et al., Lancet 2003).</footer>
 </main>
+<script src="guide.js"></script>
 <script>
 // Each man: drink (0/1), y0 (dies if he never smokes), y1 (dies if he smokes), lifeSmoke (smokes in the "as in life" world).
 const men = [];
@@ -78,7 +81,7 @@ add(3, 0, 1, 1, 1); add(6, 0, 0, 1, 2); add(51, 0, 0, 0, 17);
 let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 for (let i = men.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [men[i], men[j]] = [men[j], men[i]]; }
 
-let view = 'god', assign = 'life', coin = [];
+let view = 'god', assign = 'life', coin = [], showFrame = false;
 function toss() { const idx = men.map((_, i) => i).sort(() => Math.random() - 0.5); coin = men.map(() => 0); idx.slice(0, 50).forEach(i => coin[i] = 1); }
 toss();
 const smokes = i => assign === 'life' ? men[i].lifeSmoke : coin[i];
@@ -100,11 +103,11 @@ function draw() {
     const half = (x, val, seen) => seen ? `<rect class="${val ? 'dead' : 'alive'}" x="${x}" y="${cy + 4}" width="15" height="30" rx="2"/>` : `<rect class="unk" x="${x}" y="${cy + 4}" width="15" height="30" rx="2"/><text class="q" x="${x + 7.5}" y="${cy + 24}" text-anchor="middle">?</text>`;
     const see0 = view === 'god' || !sm, see1 = view === 'god' || sm;
     s += half(cx + 3, m.y0, see0) + half(cx + 20, m.y1, see1);
-    s += `<rect class="smk" x="${cx + (sm ? 18.5 : 1.5)}" y="${cy + 2.5}" width="18" height="33" rx="3" ${view === 'god' ? 'opacity=".55"' : ''}/>`;
+    if (view === 'real' || showFrame) s += `<rect class="smk" x="${cx + (sm ? 18.5 : 1.5)}" y="${cy + 2.5}" width="18" height="33" rx="3" ${view === 'god' ? 'opacity=".55"' : ''}/>`;
     if (showD && m.drink) s += `<circle class="drk" cx="${cx + 34}" cy="${cy + 5}" r="4.5"/>`;
   });
   svg.innerHTML = s;
-  document.getElementById('key').innerHTML = `<span>Left half: if he never smokes. Right half: if he smokes.</span><span><i style="background:var(--bad)"></i>dies of TB</span><span><i style="background:var(--good-wash)"></i>survives</span><span><i style="border:2px solid var(--band)"></i>what he actually did</span>` + (showD ? `<span><i style="background:var(--warn);border-radius:50%"></i>drinks alcohol</span>` : '');
+  document.getElementById('key').innerHTML = `<span>Left half: if he never smokes. Right half: if he smokes.</span><span><i style="background:var(--bad)"></i>dies of TB</span><span><i style="background:var(--good-wash)"></i>survives</span>` + (view === 'real' || showFrame ? `<span><i style="border:2px solid var(--band)"></i>what he actually did</span>` : '') + (showD ? `<span><i style="background:var(--warn);border-radius:50%"></i>drinks alcohol</span>` : '');
 
   const all = () => true;
   const truth = risk(all, m => m.y1).r / risk(all, m => m.y0).r;
@@ -142,7 +145,47 @@ document.querySelectorAll('#assign button').forEach(b => b.onclick = () => { ass
 document.getElementById('toss').onclick = () => { toss(); draw(); };
 document.getElementById('showdrk').onchange = draw;
 document.getElementById('strat').onchange = draw;
-draw();
+const $ = id => document.getElementById(id);
+function set(o) {
+  if ('view' in o) view = o.view; if ('assign' in o) assign = o.assign; if ('frame' in o) showFrame = o.frame;
+  if ('drink' in o) $('showdrk').checked = o.drink; if ('strat' in o) $('strat').checked = o.strat;
+  $('stats').classList.toggle('hide', !o.stats); $('msgwrap').classList.toggle('hide', !o.msg);
+  $('controls').classList.toggle('hide', !o.controls); $('typesbox').classList.toggle('hide', !o.types);
+  draw();
+}
+Guide.run($('guide'), [
+  { title: 'Meet 100 men', enter: () => set({ view: 'god', frame: false, drink: false, strat: false }),
+    html: '<p>Each square is one man. The <b>left half</b> is his future if he never smokes; the <b>right half</b>, if he smokes. Red means he dies of TB.</p>',
+    ask: { type: 'choice', prompt: 'A square with both halves red is a man who:', options: ['Dies whether or not he smokes', 'Dies only because he smokes', 'Survives whether or not he smokes', 'Dies only if he does not smoke'], answer: 0,
+      after: 'Right: he is "doomed". Smoking makes no difference to him. A square red only on the right is a man whom smoking kills.' } },
+  { title: 'The true effect', enter: () => set({ view: 'god', frame: false, types: true }),
+    html: '<p>If all 100 smoked, <b>39</b> would die (red right halves). If none smoked, <b>13</b> would die (red left halves).</p>',
+    ask: { type: 'number', prompt: 'What is the causal risk ratio? (0.39 divided by 0.13)', answer: 3, tol: 0.05,
+      after: 'Right: 3.0. Smoking triples the risk. This is the number every comparison below should find.' } },
+  { title: 'Real life: each man chose', enter: () => set({ view: 'real', assign: 'life', drink: false }),
+    html: '<p>Now each man lives only one future. The blue frame shows what he actually did; the other half is hidden.</p><p>Of the 44 men who smoked, <b>21</b> died. Of the 56 who did not, <b>6</b> died.</p>',
+    ask: { type: 'number', prompt: 'What risk ratio would a study report? (21/44 divided by 6/56)', answer: 4.45, tol: 0.1,
+      after: 'Right: 4.45, not 3.0. Same men, same biology. Only the comparison changed.' } },
+  { title: 'Who smokes?', enter: () => set({ view: 'real', assign: 'life', drink: true }),
+    html: '<p>The orange dots mark men who drink alcohol.</p><p>24 of the 40 drinkers smoke (60%). 20 of the 60 non-drinkers smoke (33%).</p>',
+    ask: { type: 'choice', prompt: 'Why is 4.45 bigger than 3.0?', options: ['Smokers are more often drinkers, who die more anyway', 'Smoking has a bigger effect in this group', 'The sample of 100 men is too small', 'Some deaths were recorded wrongly'], answer: 0,
+      after: 'Right. Part of the 4.45 is alcohol, not tobacco. The two groups are not exchangeable.' } },
+  { title: 'Check it with the hidden futures', enter: () => set({ view: 'god', assign: 'life', frame: true, drink: true }),
+    html: '<p>Peek at the hidden halves. Had the 44 smokers <b>never</b> smoked, 7 of them would still have died: risk 7/44 = 0.16. The non-smokers\' actual risk was 6/56 = 0.11.</p>',
+    ask: { type: 'choice', prompt: 'Are smokers and non-smokers exchangeable?', options: ['No: 0.16 and 0.11 should be equal but are not', 'Yes: both risks are fairly low', 'Yes: they come from the same 100 men', 'Cannot tell without more men'], answer: 0,
+      after: 'Right. For a fair comparison, the smokers\' risk without smoking must equal the non-smokers\' risk. It does not.' } },
+  { title: 'Compare within drinking groups', enter: () => set({ view: 'real', assign: 'life', drink: true, strat: true }),
+    html: '<p>The table below the grid compares smokers with non-smokers <b>within</b> drinkers and <b>within</b> non-drinkers.</p>',
+    ask: { type: 'number', prompt: 'Among drinkers, 18 of 24 smokers and 4 of 16 non-smokers died. Risk ratio?', answer: 3, tol: 0.05,
+      after: 'Right: 3.0, the truth. Holding alcohol fixed removes the confounding. Module 6 calls this stratification.' } },
+  { title: 'Let a coin decide', enter: () => set({ view: 'real', assign: 'coin', drink: true, strat: false, stats: true, msg: true }),
+    html: '<p>Now a coin decides who smokes, as in a trial. The numbers below update. Press <b>Toss again</b> a few times.</p><div class="row"><button class="act ghost" type="button" onclick="toss();draw()">Toss again</button></div>',
+    ask: { type: 'choice', prompt: 'What do you see over several tosses?', options: ['The ratio jumps around 3.0', 'The ratio always stays near 4.45', 'The ratio is exactly 3.0 every time', 'The ratio is always below 1'], answer: 0,
+      after: 'Right. With a coin, drinkers end up in both groups equally on average. The ratio centres on 3.0 and varies only by chance.' } },
+  { title: 'Explore on your own', enter: () => set({ view: 'god', assign: 'life', drink: true, strat: true, stats: true, msg: true, controls: true, types: true }),
+    html: '<p>All the controls are now open above the grid. Switch views, change who smokes, compare within groups.</p>',
+    after: 'Take away: an observed comparison is causal only if the groups are exchangeable. A coin toss buys that; choice usually does not.' }
+]);
 </script>
 </body>
 </html>

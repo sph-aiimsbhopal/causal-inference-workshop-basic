@@ -1,0 +1,50 @@
+"""Pre/post test: 12 items. Correct answers fall three times on each of a, b, c, d.
+Options are of similar length; each wrong option is a real misconception.
+python3 src/quiz_items.py checks positions and lengths and prints the JS array."""
+import json
+Q = [
+ dict(q="For one man, the causal effect of smoking on TB death is the difference between:",
+      o=["His risk and the average risk of non-smokers", "His risk before and after he started smoking", "His outcome if he smokes and if he never smokes", "TB risk in smokers and non-smokers in his village"], a=2,
+      e="A causal effect compares two potential outcomes of the same person under two exposures. Only one is ever observed."),
+ dict(q="Selvam smoked and died of TB. Had he never smoked, he would still have died of TB. For Selvam, smoking:",
+      o=["Made no difference to his death", "Caused his death from TB", "Protected him from an earlier death", "Doubled his risk of dying of TB"], a=0,
+      e="Both his potential outcomes are death, so smoking had no effect on him, even though he smoked and died."),
+ dict(q="If all 100 men smoked, 30 would die of TB. If none smoked, 10 would. The causal risk ratio is:",
+      o=["0.20", "0.33", "2.00", "3.00"], a=3,
+      e="0.30 / 0.10 = 3.0. The causal risk difference is 0.20."),
+ dict(q="Smokers and non-smokers are exchangeable when:",
+      o=["Both groups contain the same number of men", "Swapping exposures would swap their risks", "Both groups were sampled from the same town", "Smoking was recorded the same way in both"], a=1,
+      e="Had the smokers not smoked, their risk would equal the non-smokers' actual risk, and the other way round."),
+ dict(q="Crude RR for smoking and TB death is 2.1. It is 1.0 among drinkers and 1.0 among non-drinkers. Most likely:",
+      o=["Alcohol confounds; smoking has no effect", "Alcohol is a mediator of smoking's effect", "Smoking's effect differs by alcohol use", "The stratified figures are less reliable"], a=0,
+      e="The association vanishes within each level of alcohol, so the 2.1 came through the back-door path via alcohol."),
+ dict(q="Why does randomising who smokes give an unbiased risk ratio?",
+      o=["It makes the trial larger than a cohort", "It measures smoking more accurately", "It removes chance from the comparison", "It balances all other causes on average"], a=3,
+      e="A coin cannot be influenced by alcohol or anything else, so other causes are spread equally on average. Chance remains."),
+ dict(q="Which of these is a back-door path from smoking to TB death?",
+      o=["Smoking → Undernutrition → TB death", "Smoking → Hospital ← TB death", "Smoking ← Alcohol → TB death", "Smoking → Cough → TB diagnosis"], a=2,
+      e="A back-door path starts with an arrow pointing into the exposure."),
+ dict(q="Smoking lowers birth weight, which raises infant deaths. For the total effect of smoking, adjusting for birth weight:",
+      o=["Removes confounding by birth weight", "Removes part of the effect you want", "Improves precision with no other change", "Is required by most journals"], a=1,
+      e="Birth weight is a mediator. Adjusting for it blocks part of the causal path."),
+ dict(q="Smoking and TB are unrelated in a town (OR 1.0). Both raise the chance of admission. Among admitted patients the OR is 0.45. This is:",
+      o=["Confounding by age", "A true protective effect", "Recall bias by patients", "Selection on a collider"], a=3,
+      e="Admission is a common effect of smoking and TB. Studying only admitted patients opens the path through it (Berkson's bias)."),
+ dict(q="40% of men drink. TB risks: drinkers 0.6 if smokers, 0.3 if not; non-drinkers 0.2 and 0.1. The standardised risk ratio is:",
+      o=["1.5", "3.0", "2.0", "4.0"], a=2,
+      e="All smoked: 0.4 × 0.6 + 0.6 × 0.2 = 0.36. None: 0.4 × 0.3 + 0.6 × 0.1 = 0.18. 0.36 / 0.18 = 2.0."),
+ dict(q="For a total effect, which kind of variable should you never adjust for?",
+      o=["One caused by the exposure", "One that causes the outcome", "A common cause of both", "One measured at baseline"], a=0,
+      e="Anything downstream of the exposure, such as a mediator, removes part of the effect or opens a collider path."),
+ dict(q="One model, built for cooking fuel, also gives an OR of 1.32 for mother's education. That 1.32 is:",
+      o=["The total effect of mother's education", "Not a total effect: fuel is a mediator", "Unbiased, because it is adjusted", "Smaller than the true effect, always"], a=1,
+      e="The model adjusts for fuel and kitchen, which education causes. Reading it as education's effect is the Table 2 fallacy."),
+]
+pos = [q["a"] for q in Q]
+assert all(pos.count(i) == 3 for i in range(4)), pos
+for i, q in enumerate(Q):
+    L = [len(o) for o in q["o"]]; a = q["a"]; others = [l for j, l in enumerate(L) if j != a]
+    flag = " <-- correct notably longest" if L[a] > 1.15 * max(others) else ""
+    print(i + 1, "abcd"[a], L, flag)
+if __name__ == "__main__":
+    open("src/quiz_items.json", "w").write(json.dumps(Q, ensure_ascii=False, indent=1))

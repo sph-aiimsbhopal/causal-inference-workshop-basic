@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Exercise Workbook: Causal Inference Workshop</title>
+<title>Workbook: Causal Inference for Beginners</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="widgets/widget.css">
 <script src="widgets/theme.js"></script>
@@ -14,7 +14,15 @@
   .box { border: 1px solid var(--rule); background: var(--wash); padding: 10px 14px; }
   .box p { margin: 0 0 6px; }
   .ans { border: 1px solid var(--rule); min-height: 64px; background: var(--paper); }
-  .ans.tall { min-height: 150px; } .ans.draw { min-height: 260px; }
+  .ans.tall { min-height: 150px; } .ans.draw { min-height: 260px; } .ans.short { min-height: 40px; }
+  table.fill { border-collapse: collapse; width: 100%; }
+  table.fill td, table.fill th { border: 1px solid var(--rule); padding: 6px 8px; height: 30px; text-align: center; }
+  table.fill td.l, table.fill th.l { text-align: left; }
+  table.fill td.blank { background: var(--paper); min-width: 70px; }
+  .eqline { font-family: var(--font-body); margin: 4px 0; }
+  .eqline i { display: inline-block; border-bottom: 1px solid var(--dim); min-width: 70px; height: 1.1em; vertical-align: bottom; }
+  svg.dag.boxesonly { max-width: 300px; border: 1px solid var(--rule); }
+  .mod { font: 600 12px var(--font-body); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
   ol.q > li { margin-bottom: 12px; }
   ol.q > li > p { margin: 0 0 6px; }
   table.fill td { height: 34px; min-width: 120px; }
@@ -37,99 +45,145 @@
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker"><a href="index.html">Causal inference workshop</a> · Workbook</p>
-  <h1>Exercise Workbook</h1>
-  <p>The paper exercises for the workshop. Print it on A4, or write your answers alongside the labs.</p>
+  <p class="kicker"><a href="index.html">Causal inference for beginners</a> · Workbook</p>
+  <h1>Workbook</h1>
+  <p>Fill-in pages for each module: tables to complete, numbers to calculate, diagrams to draw. Print it on A4, or keep it beside the slides.</p>
 </div></header>
 <main>
-  <div class="printbar"><button class="act" type="button" onclick="window.print()">Print or save as PDF</button><span class="note">Six A4 pages.</span></div>
-
-  <!-- Page 1 -->
-  <section class="page">
-    <h2><span class="pno">Page 1</span>Causal Inference in Epidemiology: A Basic Workshop</h2>
-    <p>Name: ______________________________ &nbsp; Institute: ______________________________</p>
-    <p><b>Before quiz on paper</b> (only if your phone cannot open the site). Circle one answer each.</p>
-    <ol class="q mcq">
-      <li>For one man, the causal effect of smoking on TB death is the difference between: (a) his risk and the average non-smoker's risk; (b) his outcome if he smokes and if he never smokes, at the same time; (c) his outcome before and after he starts smoking; (d) risk in smokers and non-smokers in his village.</li>
-      <li>Smokers and non-smokers are "exchangeable" when: (a) the groups are the same size; (b) non-smokers would have had the smokers' risk had they smoked, and vice versa; (c) they live in the same district; (d) the confidence interval is narrow.</li>
-      <li>Alcohol use causes smoking and raises TB death risk. In a diagram, alcohol use is: (a) a mediator; (b) a collider; (c) a common cause (confounder); (d) an effect modifier only.</li>
-      <li>For the total effect of maternal smoking on infant death, adjusting for birth weight will: (a) remove confounding; (b) remove part of the effect and can create a spurious association; (c) only improve precision; (d) change nothing.</li>
-      <li>A variable changed the odds ratio by more than 10%. This shows it: (a) is a confounder; (b) is a mediator; (c) is associated with the estimate, but whether to adjust needs causal reasoning; (d) is an instrument.</li>
-      <li>Controls taken from other hospital patients, when both exposure and disease raise admission, cause: (a) recall bias; (b) bias from conditioning on a collider; (c) confounding by indication; (d) outcome misclassification.</li>
-      <li>One model gives odds ratios for fuel, education and wealth: (a) each is a total effect; (b) only the variable the model was built for may be read as an effect, if its adjustment set is right; (c) the largest is the main cause; (d) all are unbiased because adjusted.</li>
-      <li>A confounder in your diagram was never measured: (a) adjust for everything else and the bias goes; (b) no adjustment set from your data is enough, so consider another design, a negative control or a bias analysis; (c) use a larger sample; (d) drop it from the diagram.</li>
-    </ol>
-  </section>
-
-  <!-- Page 2 -->
-  <section class="page">
-    <h2><span class="pno">Page 2</span>Exercise 1 · Smoking and TB deaths in Tamil Nadu</h2>
-    <div class="box">
-      <p>Gajalakshmi and colleagues studied the smoking habits of 43,000 men who died in Tamil Nadu from medical causes, and 35,000 living men. Surviving family members reported each man's smoking. Ever smokers (current or former) were compared with never smokers.</p>
-      <p>Urban men aged 25 to 69: <b>TB death risk ratio 4.5 (95% CI 4.0 to 5.0)</b>, standardised for age, educational level and tobacco chewing. Smokers also had a raised death rate from alcoholism or cirrhosis (3.3). Alcohol was not adjusted for.</p>
-      <p class="src">Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</p>
-    </div>
-    <ol class="q">
-      <li><p>Write the causal question as a change: who, what change, what outcome, over what time.</p><div class="ans"></div></li>
-      <li><p>If you could run a trial to answer it, describe it in two lines. Who would be randomised, to what?</p><div class="ans"></div></li>
-      <li><p>For the never smokers to stand in for what smokers would have experienced without smoking, how should they resemble the smokers? Name two ways they might differ.</p><div class="ans"></div></li>
-      <li><p>Is "ever smoked" a well-defined exposure? What versions of smoking does it mix?</p><div class="ans"></div></li>
-      <li><p>Lab 1: what is the true risk ratio, and what is the observed one? What brings them together?</p><div class="ans"></div></li>
-    </ol>
-  </section>
-
-  <!-- Page 3 -->
-  <section class="page">
-    <h2><span class="pno">Page 3</span>Exercise 2 · Hormone therapy and heart disease</h2>
-    <div class="box">
-      <p><b>Nurses' Health Study</b> (cohort, 59,337 women, up to 16 years): users of oestrogen plus progestin vs never users, adjusted relative risk of major coronary heart disease <b>0.39</b>.</p>
-      <p><b>Women's Health Initiative</b> (trial, 16,608 women): oestrogen plus progestin vs placebo, hazard ratio of coronary heart disease <b>1.29 (1.02 to 1.63)</b>.</p>
-      <p class="src">Grodstein F et al. N Engl J Med 1996;335:453-61. Writing Group for the WHI Investigators. JAMA 2002;288:321-33.</p>
-    </div>
-    <ol class="q">
-      <li><p>Draw a causal diagram with: hormone therapy, CHD, age, education and income, smoking/diet/BMI, health-seeking behaviour, lipids and blood pressure after starting.</p><div class="ans draw"></div></li>
-      <li><p>List every back-door path from hormone therapy to CHD.</p><div class="ans"></div></li>
-      <li><p>Which can the cohort block with what it measured? Which cannot be blocked?</p><div class="ans"></div></li>
-      <li><p>Should lipids and blood pressure measured after starting hormones be adjusted for? Why?</p><div class="ans"></div></li>
-    </ol>
-  </section>
-
-  <!-- Page 4 -->
-  <section class="page">
-    <h2><span class="pno">Page 4</span>Exercise 3 · Is smoking good for small babies?</h2>
-    <div class="box">
-      <p>United States births, 1991. Infant deaths per 100,000 live births: <b>1,235</b> for babies of mothers who smoked, <b>805</b> for babies of mothers who did not. Rate ratio <b>1.55</b>.</p>
-      <p>Among low birth weight babies only, infant mortality was <b>lower</b> for babies of smokers: rate ratio <b>0.79</b>.</p>
-      <p class="src">Hernández-Díaz S, Schisterman EF, Hernán MA. Am J Epidemiol 2006;164:1115-20.</p>
-    </div>
-    <ol class="q">
-      <li><p>Draw a diagram with maternal smoking, low birth weight, infant death, and birth defects (and other serious causes of low birth weight).</p><div class="ans draw"></div></li>
-      <li><p>On which path is low birth weight a mediator? On which is it a collider?</p><div class="ans"></div></li>
-      <li><p>Lab 3: choose "Low birth weight only", then raise the direct harm of smoking. How harmful can smoking be for every baby and still look protective among small babies? Why?</p><div class="ans"></div></li>
-      <li><p>A colleague wants to "control for birth weight" in her study of anaemia in pregnancy and neonatal death. What do you tell her?</p><div class="ans"></div></li>
-    </ol>
-  </section>
-
-  <!-- Page 5 -->
-  <section class="page">
-    <h2><span class="pno">Page 5</span>Group exercise · Cooking fuel and childhood ARI</h2>
-    <div class="box">
-      <p>Mondal and Paul analysed NFHS-4 (2015-16): 247,743 living children under five. ARI: cough with short, rapid or difficult breathing in the last two weeks, reported by the mother. "Biomass" included kerosene, coal, lignite, charcoal, wood, straw, crop waste and dung.</p>
-      <p>One logistic model included: biomass fuel, separate kitchen, household smoking, child's age and sex, birth order, mother's age and education, caste, religion, wealth quintile, TB in the household, crowding. Adjusted odds ratios: biomass fuel <b>1.10 (1.01 to 1.20)</b>; no separate kitchen <b>1.22 (1.14 to 1.30)</b>; mother's education, primary vs none <b>1.32</b>.</p>
-      <p class="src">Mondal D, Paul P. PLoS ONE 2020;15(8):e0237611.</p>
-    </div>
-    <p>Our group's exposure (circle): &nbsp; biomass fuel &nbsp; · &nbsp; separate kitchen &nbsp; · &nbsp; mother's education</p>
-    <ol class="q">
-      <li><p>Our causal question, as a change:</p><div class="ans"></div></li>
-      <li><p>Our diagram (draw it here, then in Lab 4):</p><div class="ans draw"></div></li>
-      <li><p>Our minimal adjustment set. Is the paper's model enough under our diagram? What is missing, and what should not be there?</p><div class="ans"></div></li>
-      <li><p>One minute for the room: what should the authors have done differently?</p><div class="ans"></div></li>
-    </ol>
-  </section>
-
-  <!-- Page 6 -->
-  <section class="page">
-    <h2><span class="pno">Page 6</span>Your own causal question</h2>
+  <div class="printbar"><button class="act" type="button" onclick="window.print()">Print or save as PDF</button></div>
+  <section class="page"><h2><span class="pno">Before</span>Before you start: twelve questions</h2>
+<p>Name: ______________________________ &nbsp; Institute: ______________________________</p>
+<p>Use this page only if your phone cannot open the quiz. Circle one answer for each.</p><ol class="q mcq"><li>For one man, the causal effect of smoking on TB death is the difference between: (a) His risk and the average risk of non-smokers; (b) His risk before and after he started smoking; (c) His outcome if he smokes and if he never smokes; (d) TB risk in smokers and non-smokers in his village.</li><li>Selvam smoked and died of TB. Had he never smoked, he would still have died of TB. For Selvam, smoking: (a) Made no difference to his death; (b) Caused his death from TB; (c) Protected him from an earlier death; (d) Doubled his risk of dying of TB.</li><li>If all 100 men smoked, 30 would die of TB. If none smoked, 10 would. The causal risk ratio is: (a) 0.20; (b) 0.33; (c) 2.00; (d) 3.00.</li><li>Smokers and non-smokers are exchangeable when: (a) Both groups contain the same number of men; (b) Swapping exposures would swap their risks; (c) Both groups were sampled from the same town; (d) Smoking was recorded the same way in both.</li><li>Crude RR for smoking and TB death is 2.1. It is 1.0 among drinkers and 1.0 among non-drinkers. Most likely: (a) Alcohol confounds; smoking has no effect; (b) Alcohol is a mediator of smoking&#x27;s effect; (c) Smoking&#x27;s effect differs by alcohol use; (d) The stratified figures are less reliable.</li><li>Why does randomising who smokes give an unbiased risk ratio? (a) It makes the trial larger than a cohort; (b) It measures smoking more accurately; (c) It removes chance from the comparison; (d) It balances all other causes on average.</li></ol></section><section class="page"><h2><span class="pno">Before</span>Questions 7 to 12</h2><ol class="q mcq" start="7"><li>Which of these is a back-door path from smoking to TB death? (a) Smoking → Undernutrition → TB death; (b) Smoking → Hospital ← TB death; (c) Smoking ← Alcohol → TB death; (d) Smoking → Cough → TB diagnosis.</li><li>Smoking lowers birth weight, which raises infant deaths. For the total effect of smoking, adjusting for birth weight: (a) Removes confounding by birth weight; (b) Removes part of the effect you want; (c) Improves precision with no other change; (d) Is required by most journals.</li><li>Smoking and TB are unrelated in a town (OR 1.0). Both raise the chance of admission. Among admitted patients the OR is 0.45. This is: (a) Confounding by age; (b) A true protective effect; (c) Recall bias by patients; (d) Selection on a collider.</li><li>40% of men drink. TB risks: drinkers 0.6 if smokers, 0.3 if not; non-drinkers 0.2 and 0.1. The standardised risk ratio is: (a) 1.5; (b) 3.0; (c) 2.0; (d) 4.0.</li><li>For a total effect, which kind of variable should you never adjust for? (a) One caused by the exposure; (b) One that causes the outcome; (c) A common cause of both; (d) One measured at baseline.</li><li>One model, built for cooking fuel, also gives an OR of 1.32 for mother&#x27;s education. That 1.32 is: (a) The total effect of mother&#x27;s education; (b) Not a total effect: fuel is a mediator; (c) Unbiased, because it is adjusted; (d) Smaller than the true effect, always.</li></ol></section><section class="page"><h2><span class="pno">Modules 0 and 1</span>Two studies, and two futures</h2>
+<p class="mod">Module 0</p>
+<p>The cohort found RR 0.39; the trial found HR 1.29. Which do you believe, and why? One sentence.</p><div class="ans short"></div>
+<p class="eqline">If 10 in 1,000 non-users had a heart attack, users had 0.39 × 10 = <i></i> in 1,000.</p>
+<p class="mod">Module 1 · Count the deaths in each future (the ten men on the slides)</p>
+<table class="fill"><tr><th class="l"></th><th>Deaths</th><th>Out of</th><th>Risk</th></tr>
+<tr><td class="l">If all ten smoked</td><td class="blank"></td><td>10</td><td class="blank"></td></tr>
+<tr><td class="l">If none of them smoked</td><td class="blank"></td><td>10</td><td class="blank"></td></tr></table>
+<p class="eqline">Causal risk difference = <i></i> − <i></i> = <i></i> &nbsp;&nbsp; Causal risk ratio = <i></i> / <i></i> = <i></i></p>
+<p class="mod">Your turn</p>
+<p>100 men: if all smoked, 25 would die of TB; if none smoked, 5 would.</p>
+<p class="eqline">Risk difference = <i></i> &nbsp;&nbsp; Risk ratio = <i></i></p>
+<p>Selvam smoked and died of TB; he would have died anyway. Did smoking cause his death? Why?</p><div class="ans short"></div></section><section class="page"><h2><span class="pno">Module 2</span>Association is not causation</h2>
+<p class="mod">What a study would calculate</p>
+<table class="fill"><tr><th class="l"></th><th>Died</th><th>Total</th><th>Risk</th></tr>
+<tr><td class="l">Smokers (Murugan, Selvam, Ravi, Arul)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Non-smokers (the other six)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Observed risk ratio = <i></i> &nbsp;&nbsp; True causal risk ratio (Module 1) = <i></i></p>
+<p class="mod">The exchangeability check</p>
+<p class="eqline">Smokers' risk had they never smoked = <i></i> / 4 = <i></i> &nbsp;&nbsp; Non-smokers' actual risk = <i></i></p>
+<p>Are the groups exchangeable? Why not?</p><div class="ans short"></div>
+<p class="mod">Your turn: a fairer split</p>
+<p>Murugan, Kannan, Arul, Mani and Raja smoke; the other five do not.</p>
+<p class="eqline">Smokers who die = <i></i> / 5 &nbsp;&nbsp; Non-smokers who die = <i></i> / 5 &nbsp;&nbsp; Risk ratio = <i></i></p>
+<p class="mod">The real study</p>
+<p>Gajalakshmi et al.: ever smokers had 4.5 times the TB death rate; alcohol was not adjusted for. List two ways smokers and never smokers might differ.</p><div class="ans"></div></section><section class="page extra"><h2><span class="pno">Modules 3 and 4</span>A well-defined exposure; causes in teams</h2>
+<p class="mod">Module 3 · The mix of versions (never smokers 1%, bidi smokers 6%, cigarette smokers 2%)</p>
+<p class="eqline">Town A, 70% bidi: 0.7 × 6% + 0.3 × 2% = <i></i> &nbsp;&nbsp; RR = <i></i></p>
+<p class="eqline">Town B, 30% bidi: 0.3 × 6% + 0.7 × 2% = <i></i> &nbsp;&nbsp; RR = <i></i></p>
+<p>Rewrite "physical inactivity" as a change you could make, and name one group where positivity might fail:</p><div class="ans short"></div>
+<p class="mod">Module 4 · Pies for 100 TB deaths (A: smoking + undernutrition, 50; B: HIV + undernutrition, 30; C: smoking + diabetes, 20)</p>
+<table class="fill"><tr><th class="l">Remove</th><th>Pies broken</th><th>Deaths prevented</th></tr>
+<tr><td class="l">Smoking</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Undernutrition</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">HIV</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Diabetes</td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Total of the four = <i></i> &nbsp;&nbsp; Why more than 100? <i style="min-width:260px"></i></p>
+<p class="mod">Your turn · Low birth weight (anaemia + short interval 40; anaemia + smoking 35; hypertension + smoking 25)</p>
+<p class="eqline">Treating anaemia prevents <i></i> &nbsp;&nbsp; Stopping smoking prevents <i></i> &nbsp;&nbsp; Sum <i></i></p>
+</section><section class="page"><h2><span class="pno">Module 5</span>Drawing a causal diagram</h2>
+<p class="mod">Your turn</p>
+<p>Diabetes raises the risk of active TB. Age raises the risk of both. Draw the diagram.</p><div class="ans draw"></div>
+<p class="eqline">Number of paths between diabetes and TB = <i></i>. Causal: <i></i>. Non-causal: <i></i>.</p>
+<p>Write the four rules for drawing, in your own words.</p><div class="ans tall"></div></section><section class="page"><h2><span class="pno">Module 6</span>The fork: confounding</h2>
+<p class="mod">1,000 men where smoking does nothing</p>
+<table class="fill"><tr><th class="l"></th><th>Men</th><th>TB deaths</th><th>Risk</th></tr>
+<tr><td class="l">Smokers (300 drinkers + 150 non-drinkers)</td><td>450</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Non-smokers (100 + 450)</td><td>550</td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Crude risk ratio = <i></i></p>
+<table class="fill"><tr><th class="l">Split by alcohol</th><th>Smokers: deaths / men</th><th>Non-smokers: deaths / men</th><th>Risk ratio</th></tr>
+<tr><td class="l">Drinkers (risk 10%)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Non-drinkers (risk 2%)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="mod">Standardise: the 100 men of Lab 1 (40 drinkers, 60 non-drinkers)</p>
+<p class="eqline">If all smoked: 0.4 × 0.75 + 0.6 × 0.15 = <i></i> &nbsp;&nbsp; If none smoked: 0.4 × 0.25 + 0.6 × 0.05 = <i></i> &nbsp;&nbsp; Ratio = <i></i></p>
+<p class="mod">Your turn: 30% of men drink</p>
+<table class="fill"><tr><th class="l">TB death risk</th><th>Smokers</th><th>Non-smokers</th></tr><tr><td class="l">Drinkers</td><td>0.50</td><td>0.25</td></tr><tr><td class="l">Non-drinkers</td><td>0.10</td><td>0.05</td></tr></table>
+<p class="eqline">All smoked = <i></i> &nbsp;&nbsp; None smoked = <i></i> &nbsp;&nbsp; Standardised risk ratio = <i></i></p>
+<p>Tamil Nadu: after adjusting for age and education, which back-door path stays open?</p><div class="ans short"></div></section><section class="page"><h2><span class="pno">Modules 7 and 8</span>The chain and the collider</h2>
+<p class="mod">Module 7 · Total effect when smoking acts only through low birth weight</p>
+<p class="eqline">Smokers: 0.14 × 4% + 0.86 × 0.4% = <i></i> &nbsp;&nbsp; Non-smokers: 0.05 × 4% + 0.95 × 0.4% = <i></i> &nbsp;&nbsp; RR = <i></i></p>
+<p class="eqline">RR within low birth weight babies = <i></i> &nbsp;&nbsp; within normal weight = <i></i></p>
+<p>ASHA visits → knowledge of danger signs → institutional delivery. Adjust for knowledge for the total effect? Why?</p><div class="ans short"></div>
+<p class="mod">Module 8 · The chest ward (admission: TB smokers 90%, TB non-smokers 80%, no-TB smokers 5%, no-TB non-smokers 2%)</p>
+<table class="fill"><tr><th class="l">In the ward</th><th>TB</th><th>No TB</th></tr>
+<tr><td class="l">Smokers (town: 300 TB, 29,700 no TB)</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Non-smokers (town: 700 TB, 69,300 no TB)</td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Odds ratio in the ward = <i></i> &nbsp;&nbsp; in the town = <i></i></p>
+<p class="mod">The three shapes: fill in</p>
+<table class="fill"><tr><th class="l">Shape</th><th>Middle variable is a…</th><th>Path left alone is…</th><th>Adjusting for the middle…</th></tr>
+<tr><td class="l">Fork ← →</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Chain → →</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Collider → ←</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr></table>
+<p>COVID ward: why might smoking look protective? Draw it.</p><div class="ans"></div></section><section class="page extra"><h2><span class="pno">Module 9</span>Measurement error in a diagram</h2>
+<p class="mod">Non-differential · True cohort: 1,000 exposed (100 ill), 1,000 unexposed (50 ill). Sensitivity 80%, specificity 90%</p>
+<table class="fill"><tr><th class="l">Recorded as</th><th>Ill</th><th>People</th><th>Risk</th></tr>
+<tr><td class="l">Exposed (80% of exposed + 10% of unexposed)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Unexposed (20% of exposed + 90% of unexposed)</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Recorded RR = <i></i> &nbsp;&nbsp; True RR = 2.0 &nbsp;&nbsp; Towards or away from 1? <i></i></p>
+<p class="mod">Differential · Case-control: true OR 3.0. Exposed cases report 95%, exposed controls 80%</p>
+<table class="fill"><tr><th class="l">Reported</th><th>Exposed</th><th>Not exposed</th></tr>
+<tr><td class="l">Cases (truly 100 exposed of 200)</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Controls (truly 50 exposed of 200)</td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Recorded OR = <i></i> &nbsp;&nbsp; Towards or away from 1? <i></i></p>
+<p>Draw true smoking, reported smoking, TB death and reporting error. Add the arrow that makes the error differential.</p><div class="ans draw" style="min-height:200px"></div>
+<p>NFHS-4: educated mothers may notice fast breathing more. Which way could this push the education odds ratio?</p><div class="ans short"></div>
+</section><section class="page"><h2><span class="pno">Module 10</span>Choosing what to adjust for</h2>
+<p class="mod">Practice 1 · Tobacco chewing and oral cancer</p>
+<table class="fill"><tr><th class="l">Path</th><th>Causal, back-door, or through a collider?</th><th>Your decision</th></tr>
+<tr><td class="l">Chewing → Leukoplakia → Cancer</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Chewing ← Age → Cancer</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Chewing → Camp ← Cancer</td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">Adjustment set = { <i></i> }</p>
+<p class="mod">Practice 2 · Diabetes and TB (age, poverty, undernutrition, HbA1c after diagnosis)</p>
+<p>List the back-door paths:</p><div class="ans short"></div>
+<p class="eqline">One adjustment set = { <i></i> } &nbsp;&nbsp; Another = { <i></i> } &nbsp;&nbsp; Never adjust for: <i></i></p>
+<p class="mod">Practice 3 · Tamil Nadu</p>
+<p>Why is no adjustment set enough with the data the study had? What would you write in the limitations?</p><div class="ans"></div></section><section class="page extra"><h2><span class="pno">Modules 11 and 12</span>One model, one question; unmeasured confounders</h2>
+<p class="mod">Module 11 · Education acts only through fuel (biomass 60% vs 20%; ARI 15% with biomass, 10% without)</p>
+<p class="eqline">No schooling: 0.6 × 15% + 0.4 × 10% = <i></i> &nbsp;&nbsp; Schooling: 0.2 × 15% + 0.8 × 10% = <i></i></p>
+<p class="eqline">Total effect = <i></i> &nbsp;&nbsp; Adjusted for fuel = <i></i> &nbsp;&nbsp; With 20% more reporting by educated mothers = <i></i></p>
+<p>A model for smoking and TB death adjusts for alcohol. Is the alcohol odds ratio its total effect? Why?</p><div class="ans short"></div>
+<p class="mod">Module 12 · Bias factor = [p1(RR − 1) + 1] ÷ [p0(RR − 1) + 1]; observed RR 4.5</p>
+<table class="fill"><tr><th class="l">p1 (smokers)</th><th>p0 (non-smokers)</th><th>RR alcohol</th><th>Bias factor</th><th>Corrected RR</th></tr>
+<tr><td class="l">0.60</td><td>0.25</td><td>3</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">0.50</td><td>0.20</td><td>2</td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">0.80</td><td>0.20</td><td>5</td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="eqline">E-value = RR + √(RR × (RR − 1)). &nbsp; For 4.5: <i></i> &nbsp;&nbsp; For 1.10: <i></i></p>
+<p>Write two sentences for a limitations section about alcohol in the Tamil Nadu study:</p><div class="ans"></div>
+</section><section class="page extra"><h2><span class="pno">Module 13</span>Ask it like a trial</h2>
+<p class="mod">Immortal time · 200 patients; drug can start only at month 6; 20 die before; 90 start, 90 do not; 9 deaths in each</p>
+<table class="fill"><tr><th class="l">Counting</th><th>Users: deaths / people</th><th>Non-users: deaths / people</th><th>RR</th></tr>
+<tr><td class="l">Ever vs never, from diagnosis</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="l">Clock starts at month 6</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr></table>
+<p class="mod">The target trial for hormone therapy and heart disease</p>
+<table class="fill"><tr><th class="l">Part</th><th>Your entry</th></tr>
+<tr><td class="l">Eligibility</td><td class="blank"></td></tr>
+<tr><td class="l">Strategies compared</td><td class="blank"></td></tr>
+<tr><td class="l">Time zero</td><td class="blank"></td></tr>
+<tr><td class="l">Outcome and follow-up</td><td class="blank"></td></tr></table>
+<p>Why did the cohort's "users" look protected (0.39), when new users in the first two years did not (1.42)?</p><div class="ans"></div>
+<p>TB treatment completers vs non-completers, counted from diagnosis: where is the bias, and how would you fix time zero?</p><div class="ans"></div>
+</section><section class="page"><h2><span class="pno">Module 14</span>Capstone: cooking fuel and ARI</h2>
+<p>Group: ______ &nbsp; Our exposure (circle): biomass fuel · separate kitchen · mother's education</p>
+<p>Our causal question, as a change:</p><div class="ans short"></div>
+<p>Draw the arrows you believe between these eight boxes:</p>
+<svg class="dag boxesonly" data-dag="fuel8" role="img" aria-label="Eight boxes without arrows"></svg>
+<p class="eqline">Back-door paths we found: <i></i><i></i><i></i></p>
+<p class="eqline">Our minimal adjustment set = { <i></i> }</p>
+<p>The paper adjusted for kitchen, household smoking, child age and sex, birth order, mother's age and education, caste, religion, wealth, TB in the household and crowding. Under our diagram, what is missing and what should not be there?</p><div class="ans"></div>
+<p>One minute for the room: what should the authors have done?</p><div class="ans short"></div></section><section class="page">
+    <h2><span class="pno">Module 15</span>Your own causal question</h2>
     <p>Take your thesis topic, or one you would like to study. Fill in the trial you wish you could run.</p>
     <table class="fill">
       <tr><th>Element</th><th>Your study</th></tr>
@@ -145,8 +199,15 @@
     <div class="box">
       <p><b>Keep going.</b> Modern Epidemiology, 4th ed., chapters 2, 3, 12, 13 and 14. Hernán and Robins, <i>Causal Inference: What If</i> (free online). HarvardX: <i>Causal Diagrams: Draw Your Assumptions Before Your Conclusions</i>. DAGitty, dagitty.net. The full list is on the workshop site under Further Learning.</p>
     </div>
-  </section>
-  <footer class="screen">Workbook prepared by the workshop faculty.</footer>
+  </section><section class="page"><h2><span class="pno">After</span>After you finish: the same twelve questions</h2>
+<p>Use this page only if your phone cannot open the quiz. Circle one answer for each, then compare with your first attempt.</p><ol class="q mcq"><li>For one man, the causal effect of smoking on TB death is the difference between: (a) His risk and the average risk of non-smokers; (b) His risk before and after he started smoking; (c) His outcome if he smokes and if he never smokes; (d) TB risk in smokers and non-smokers in his village.</li><li>Selvam smoked and died of TB. Had he never smoked, he would still have died of TB. For Selvam, smoking: (a) Made no difference to his death; (b) Caused his death from TB; (c) Protected him from an earlier death; (d) Doubled his risk of dying of TB.</li><li>If all 100 men smoked, 30 would die of TB. If none smoked, 10 would. The causal risk ratio is: (a) 0.20; (b) 0.33; (c) 2.00; (d) 3.00.</li><li>Smokers and non-smokers are exchangeable when: (a) Both groups contain the same number of men; (b) Swapping exposures would swap their risks; (c) Both groups were sampled from the same town; (d) Smoking was recorded the same way in both.</li><li>Crude RR for smoking and TB death is 2.1. It is 1.0 among drinkers and 1.0 among non-drinkers. Most likely: (a) Alcohol confounds; smoking has no effect; (b) Alcohol is a mediator of smoking&#x27;s effect; (c) Smoking&#x27;s effect differs by alcohol use; (d) The stratified figures are less reliable.</li><li>Why does randomising who smokes give an unbiased risk ratio? (a) It makes the trial larger than a cohort; (b) It measures smoking more accurately; (c) It removes chance from the comparison; (d) It balances all other causes on average.</li></ol></section><section class="page"><h2><span class="pno">After</span>Questions 7 to 12</h2><ol class="q mcq" start="7"><li>Which of these is a back-door path from smoking to TB death? (a) Smoking → Undernutrition → TB death; (b) Smoking → Hospital ← TB death; (c) Smoking ← Alcohol → TB death; (d) Smoking → Cough → TB diagnosis.</li><li>Smoking lowers birth weight, which raises infant deaths. For the total effect of smoking, adjusting for birth weight: (a) Removes confounding by birth weight; (b) Removes part of the effect you want; (c) Improves precision with no other change; (d) Is required by most journals.</li><li>Smoking and TB are unrelated in a town (OR 1.0). Both raise the chance of admission. Among admitted patients the OR is 0.45. This is: (a) Confounding by age; (b) A true protective effect; (c) Recall bias by patients; (d) Selection on a collider.</li><li>40% of men drink. TB risks: drinkers 0.6 if smokers, 0.3 if not; non-drinkers 0.2 and 0.1. The standardised risk ratio is: (a) 1.5; (b) 3.0; (c) 2.0; (d) 4.0.</li><li>For a total effect, which kind of variable should you never adjust for? (a) One caused by the exposure; (b) One that causes the outcome; (c) A common cause of both; (d) One measured at baseline.</li><li>One model, built for cooking fuel, also gives an OR of 1.32 for mother&#x27;s education. That 1.32 is: (a) The total effect of mother&#x27;s education; (b) Not a total effect: fuel is a mediator; (c) Unbiased, because it is adjusted; (d) Smaller than the true effect, always.</li></ol></section>
+  <footer class="screen">Workbook prepared by the faculty. Answers are in the slides that follow each "Your turn".</footer>
 </main>
+<script>if (/[?&]workshop/.test(location.search)) document.querySelectorAll('.page.extra').forEach(e => e.remove());</script>
+<script src="widgets/dag.js"></script><script src="widgets/dags.js"></script>
+<script>
+document.querySelectorAll('svg.boxesonly').forEach(svg => { const d = DAGS[svg.dataset.dag], g = DAG.create(d);
+  DAG.render(svg, g, { x: d.x, y: d.y, Z: new Set(), show: { nodes: new Set(d.nodes.map(n => n.id)), edges: new Set() }, width: 420, height: d.height, fontSize: 17 }); });
+</script>
 </body>
 </html>

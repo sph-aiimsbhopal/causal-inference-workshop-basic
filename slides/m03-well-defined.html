@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 3: A well-defined exposure</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 3 · Causal inference for beginners</p>
+  <h1>A well-defined exposure</h1>
+  <p class="lede dim">Positivity and consistency in plain words: can everyone be exposed, and what exactly is &#x27;the exposure&#x27;?</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 3. Positivity and consistency in plain words: can everyone be exposed, and what exactly is &#x27;the exposure&#x27;?</aside>
+</section>
+
+<section data-core>
+  <h2>"If he had never smoked." Never smoked what?</h2>
+  <p class="lede">Module 1 compared two futures: smokes, never smokes. But "smokes" hides many different lives.</p>
+  <ul>
+    <li class="fragment">Bidis or cigarettes?</li>
+    <li class="fragment">Two a day, or twenty?</li>
+    <li class="fragment">From age 15, or from age 40?</li>
+    <li class="fragment">Still smoking, or quit five years ago?</li>
+  </ul>
+  <p class="claim fragment">Each of these is a different exposure, with a different effect.</p>
+  <aside class="notes">This is the consistency condition in plain words: the exposure has to be defined well enough that "if exposed" means one thing.</aside>
+</section>
+
+<section data-core>
+  <h2>In the Tamil Nadu study, the versions differed</h2>
+  <table class="calc">
+    <tr><th class="l">Smokers compared with never smokers</th><th>TB death risk ratio</th></tr>
+    <tr class="fragment"><td class="l">Urban men, bidis only</td><td><b>6.3</b> (5.3 to 7.5)</td></tr>
+    <tr class="fragment"><td class="l">Rural men, cigarettes only</td><td><b>2.1</b> (1.6 to 2.9)</td></tr>
+  </table>
+  <p class="fragment">And past TB, self-reported, rose with the amount smoked: 1.7 for under 10 cigarettes a day, 2.6 for 10 or more; 2.9 for under 15 bidis, 4.5 for 15 or more.</p>
+  <p class="cite">Gajalakshmi V, Peto R, Kanaka TS, Jha P. Lancet 2003;362:507-15.</p>
+  <aside class="notes">Real figures from the paper. Place differs between the two rows too, so this is not a clean bidi against cigarette comparison; the point is only that "smoking" is several exposures.</aside>
+</section>
+
+<section data-core>
+  <h2>So "the effect of smoking" depends on the mix</h2>
+  <p>Suppose never smokers have a 1% risk, bidi smokers 6%, cigarette smokers 2%. Made-up numbers.</p>
+  <div class="work">
+    <p class="fragment">Town A, 70% of smokers use bidis: 0.7 × 6% + 0.3 × 2% = <b>4.8%</b>. Risk ratio <b>4.8</b>.</p>
+    <p class="fragment">Town B, 30% use bidis: 0.3 × 6% + 0.7 × 2% = <b>3.2%</b>. Risk ratio <b>3.2</b>.</p>
+  </div>
+  <p class="claim warn fragment">Same biology, same word "smoking", two answers. A vague exposure gives an answer that depends on who happened to be studied.</p>
+  <aside class="notes">This is why an estimate for "ever smoked" may not transfer to a programme that targets bidis.</aside>
+</section>
+
+<section data-core>
+  <h2>Consistency, in one sentence</h2>
+  <p class="lede">The outcome we observe in an exposed person is the potential outcome under the version of the exposure he actually had.</p>
+  <p class="fragment">For that link to mean anything, the exposure must be defined like an intervention: what would we actually change?</p>
+  <p class="cite fragment">Modern Epidemiology, 4th ed., chapter 3. Hernán MA, Taubman SL. Int J Obes 2008;32 Suppl 3:S8-14.</p>
+  <aside class="notes">Hernán and Taubman's paper on obesity is the classic: losing weight by exercise, by diet, by surgery or by illness are different interventions with different effects on death.</aside>
+</section>
+
+<section data-core>
+  <h2>Some exposures are vaguer than they look</h2>
+  <table>
+    <tr><th>Vague</th><th>Closer to an intervention</th></tr>
+    <tr class="fragment"><td>Obesity</td><td>Losing 5 kg through a supervised diet over a year</td></tr>
+    <tr class="fragment"><td>Biomass fuel</td><td>Switching the household's main cooking fuel from wood or dung to LPG</td></tr>
+    <tr class="fragment"><td>ASHA contact</td><td>Three or more ASHA home visits during pregnancy</td></tr>
+    <tr class="fragment"><td>Low education</td><td>Completing secondary school instead of stopping after primary</td></tr>
+  </table>
+  <aside class="notes">Some exposures, like education or caste, cannot easily be imagined as interventions. You can still study them; just say what change you have in mind.</aside>
+</section>
+
+<section data-core>
+  <h2>Positivity: could everyone have been exposed?</h2>
+  <p>To compare exposed and unexposed within a group, the group must contain both.</p>
+  <table class="calc">
+    <tr><th class="l">Villages</th><th>Households using LPG</th><th>Not using LPG</th><th>Risk ratio</th></tr>
+    <tr class="fragment"><td class="l">With an LPG dealer</td><td>420</td><td>580</td><td>can be estimated</td></tr>
+    <tr class="fragment"><td class="l">With no LPG supply at all</td><td><b>0</b></td><td>900</td><td><b>cannot</b>: no one to compare</td></tr>
+  </table>
+  <p class="claim fragment">No adjustment can produce an LPG effect for villages where nobody could use LPG. The data are silent there.</p>
+  <p class="small dim">Made-up numbers.</p>
+  <aside class="notes">Positivity fails structurally (impossible to be exposed) or by chance (too few exposed). Either way, say which population your answer applies to.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>A thesis question reads: "Effect of physical inactivity on hypertension among adults in an urban slum."</p>
+    <p>Rewrite the exposure as a change you could imagine making. Then name one group where positivity might fail.</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px">
+    <p>For example: "Walking 30 minutes on at least 5 days a week, compared with less than 1 day." Positivity may fail among adults who cannot walk because of disability.</p>
+  </div>
+  <aside class="notes">Accept any rewording that names a concrete change and a comparison.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">Define the exposure as a change you could make. "Ever smoked" is many exposures.</p>
+  <p class="claim">The estimate depends on the mix of versions in your study, so describe it.</p>
+  <p class="claim warn">Positivity: in any group where nobody is exposed, your data cannot say what exposure would do.</p>
+  <aside class="notes">Module 13 builds on this: a well-defined exposure is the first line of a target trial.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m03-well-defined.html#check">Open the self-check for Module 3</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 3, the section on consistency and well-defined interventions.</p>
+  <p>Next: <a href="m04-causal-pies.html">Module 4, Causes come in teams</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

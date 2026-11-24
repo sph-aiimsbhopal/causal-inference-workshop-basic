@@ -1,0 +1,44 @@
+  /* shared by every module deck: causal diagrams, worked-number tables, QR, columns */
+  svg.dag { display: block; height: auto; }
+  svg.dag .edge { stroke: var(--dim); stroke-width: 2.2; }
+  svg.dag .edge.on { stroke: var(--ink); stroke-width: 4; }
+  svg.dag .edge.good { stroke: var(--good); stroke-width: 5; }
+  svg.dag .edge.bad { stroke: var(--bad); stroke-width: 5; }
+  svg.dag .edge.blocked { stroke-dasharray: 8 6; }
+  svg.dag .ah.edge { fill: var(--dim); } svg.dag .ah.on { fill: var(--ink); } svg.dag .ah.good { fill: var(--good); } svg.dag .ah.bad { fill: var(--bad); }
+  svg.dag .node rect { fill: var(--wash); stroke: var(--dim); stroke-width: 1.5; }
+  svg.dag .node text { fill: var(--ink); font-family: var(--font-body); }
+  svg.dag .node.expo rect, svg.dag .node.outc rect { fill: var(--band); stroke: var(--band); }
+  svg.dag .node.expo text, svg.dag .node.outc text { fill: #fff; font-weight: 600; }
+  svg.dag .node.unobs rect { stroke-dasharray: 5 4; fill: var(--paper); }
+  svg.dag .node.adj rect { fill: var(--warn-wash); stroke: var(--warn); stroke-width: 2.5; }
+  svg.dag .node.adj rect.inner { fill: none; stroke: var(--warn); stroke-width: 1.5; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .two.wide-left { grid-template-columns: 1.15fr 0.85fr; }
+  .two > div > :last-child { margin-bottom: 0; }
+  .reveal table.po td, .reveal table.po th { text-align: center; padding: 6px 16px; }
+  .reveal table.po td.l { text-align: left; }
+  .q { color: var(--faint); }
+  .dead { color: var(--bad); font-weight: 700; }
+  .qr { width: 230px; height: 230px; display: block; }
+  .url { font-family: var(--font-body); font-size: var(--fs-small); color: var(--band); word-break: break-all; }
+  .pie { display: block; margin: 0 auto; }
+  .pie text { font: 19px var(--font-body); fill: var(--ink); }
+  .pie .w { fill: #fff; font-weight: 600; }
+  .steps li { margin-bottom: 6px; }
+  .tag { display: inline-block; font-size: var(--fs-min); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+  .timer { float: right; font-size: var(--fs-small); color: #f6c177; font-weight: 600; margin-top: 6px; font-variant: normal; }
+  .reveal table.calc td, .reveal table.calc th { text-align: center; padding: 6px 18px; }
+  .reveal table.calc td.l, .reveal table.calc th.l { text-align: left; }
+  .reveal table.calc tr.tot td { border-top: 2px solid var(--ink); font-weight: 700; }
+  .reveal .big { font-size: 64px; font-weight: 700; color: var(--band); line-height: 1.1; font-family: var(--font-head); }
+  .reveal .big.bad { color: var(--bad); } .reveal .big.good { color: var(--good); }
+  .reveal .work { font-family: var(--font-body); font-size: var(--fs-body); line-height: 1.6; }
+  .reveal .work b { color: var(--band); }
+  .reveal .you { border: 2px dashed var(--warn); background: var(--warn-wash); padding: 14px 20px; }
+  .reveal .you::before { content: "Your turn"; display: block; font: 700 var(--fs-min) var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--warn); margin-bottom: 4px; }
+  .reveal .modtag { font: 600 var(--fs-min) var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+  .reveal .center { text-align: center; }
+  .reveal .fragment.highlight-cell.visible { background: var(--warn-wash); }
+  .dagwrap { display: flex; justify-content: center; }
+  .reveal sup, .reveal sub { font-size: 0.9em; }

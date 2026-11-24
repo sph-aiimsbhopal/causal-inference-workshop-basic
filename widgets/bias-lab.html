@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unmeasured Confounding Lab</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="widget.css">
+<script src="theme.js"></script>
+<style>
+  .sl { display: grid; gap: 4px; max-width: 520px; margin-bottom: 10px; }
+  .sl input { width: 100%; accent-color: var(--band); }
+  .sl .v { font-weight: 600; }
+  .work p { margin: 4px 0; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Lab 6 · Module 12</p>
+  <h1>Unmeasured Confounding Lab</h1>
+  <p>Alcohol was never measured. How much of the smoking and TB death ratio could it explain?</p>
+</div></header>
+<main>
+  <section class="panel story">
+    <h2>The study</h2>
+    <div class="stats">
+      <div class="stat bad"><div class="n">4.5</div><div class="l">smoking and TB death, rate ratio, Tamil Nadu</div></div>
+      <div class="stat warn"><div class="n">3.3</div><div class="l">smoking and deaths from alcoholism or cirrhosis</div></div>
+    </div>
+    <p class="src">Gajalakshmi V et al. Lancet 2003;362:507-15.</p>
+  </section>
+
+  <section id="guide" aria-live="polite"></section>
+
+  <section class="panel">
+    <h2>Your assumptions about alcohol</h2>
+    <div class="sl"><label for="p1">Heavy drinkers among smokers: <span class="v" id="vp1"></span></label><input type="range" id="p1" min="0" max="1" step="0.05" value="0.6"></div>
+    <div class="sl"><label for="p0">Heavy drinkers among non-smokers: <span class="v" id="vp0"></span></label><input type="range" id="p0" min="0" max="1" step="0.05" value="0.25"></div>
+    <div class="sl"><label for="ru">How much heavy drinking raises the risk of TB death: <span class="v" id="vru"></span></label><input type="range" id="ru" min="1" max="10" step="0.5" value="3"></div>
+    <div class="seg hide" id="obsbox" role="group" aria-label="Observed estimate">
+      <button type="button" data-o="4.5">Smoking and TB death, 4.5</button>
+      <button type="button" data-o="1.1">Biomass fuel and ARI, 1.10</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="work" id="work" aria-live="polite"></div>
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <p class="claim" id="msg" aria-live="polite"></p>
+  </section>
+  <footer>Simple external adjustment, assuming alcohol's effect is the same in smokers and non-smokers. Modern Epidemiology, 4th ed., chapter 29; VanderWeele and Ding, Ann Intern Med 2017.</footer>
+</main>
+<script src="guide.js"></script>
+<script>
+const el = id => document.getElementById(id);
+let obs = 4.5;
+const ev = r => r <= 1 ? 1 : r + Math.sqrt(r * (r - 1));
+function calc() {
+  const p1 = +el('p1').value, p0 = +el('p0').value, ru = +el('ru').value;
+  const top = p1 * (ru - 1) + 1, bot = p0 * (ru - 1) + 1, bias = top / bot;
+  return { p1, p0, ru, top, bot, bias, adj: obs / bias, e: ev(obs) };
+}
+const fmt = x => x.toFixed(2);
+function draw() {
+  const m = calc();
+  el('vp1').textContent = Math.round(m.p1 * 100) + '%';
+  el('vp0').textContent = Math.round(m.p0 * 100) + '%';
+  el('vru').textContent = '× ' + m.ru;
+  document.querySelectorAll('#obsbox button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.o === obs));
+  el('work').innerHTML = `<p>Top: ${m.p1.toFixed(2)} × (${m.ru} − 1) + 1 = <b>${fmt(m.top)}</b></p>
+    <p>Bottom: ${m.p0.toFixed(2)} × (${m.ru} − 1) + 1 = <b>${fmt(m.bot)}</b></p>
+    <p>Bias factor: ${fmt(m.top)} ÷ ${fmt(m.bot)} = <b>${fmt(m.bias)}</b></p>`;
+  el('stats').innerHTML = `<div class="stat bad"><div class="n">${obs.toFixed(obs < 2 ? 2 : 1)}</div><div class="l">observed ratio</div></div>
+    <div class="stat ${m.adj > 1.05 ? 'bad' : 'good'}"><div class="n">${fmt(m.adj)}</div><div class="l">corrected for alcohol</div></div>
+    <div class="stat warn"><div class="n">${fmt(m.e)}</div><div class="l">E-value of the observed ratio</div></div>`;
+  const msg = el('msg');
+  if (Math.abs(m.bias - 1) < 0.005) { msg.className = 'claim good'; msg.textContent = 'No bias: alcohol is either equally common in both groups or has no effect on the outcome.'; }
+  else if (m.adj <= 1.05) { msg.className = 'claim warn'; msg.textContent = m.adj < 0.95 ? `In this world alcohol explains away the whole association, and more (${fmt(m.adj)}).` : `In this world alcohol explains away the whole association (${fmt(m.adj)}).`; }
+  else { msg.className = 'claim'; msg.textContent = `In this world the effect shrinks from ${obs} to ${fmt(m.adj)}, but does not vanish.`; }
+}
+function set(o) { for (const k in o) el(k).value = o[k]; draw(); }
+['p1', 'p0', 'ru'].forEach(id => el(id).oninput = draw);
+document.querySelectorAll('#obsbox button').forEach(b => b.onclick = () => { obs = +b.dataset.o; draw(); });
+const show = (id, on) => el(id).classList.toggle('hide', !on);
+Guide.run(el('guide'), [
+  { title: 'One possible world', enter: () => { obs = 4.5; show('obsbox', false); set({ p1: 0.6, p0: 0.25, ru: 3 }); },
+    html: '<p>Suppose 60% of smokers and 25% of non-smokers drink heavily, and heavy drinking triples the risk of TB death. The working is shown below.</p>',
+    ask: { type: 'number', prompt: 'What is the corrected rate ratio? (one decimal place)', answer: 3.07, tol: 0.06, after: 'Right: 4.5 ÷ 1.47 = 3.1. Smoking still roughly triples the risk.' } },
+  { title: 'No difference in drinking', enter: () => {},
+    html: '<p>Move the second slider until non-smokers drink as much as smokers: <b>60%</b>.</p>',
+    ask: { type: 'do', prompt: 'Set heavy drinkers among non-smokers to 60%, then press Check.', check: () => Math.abs(+el('p0').value - 0.6) < 0.01,
+      after: 'The bias factor is 1. If alcohol is not linked to smoking, it cannot confound, however harmful it is.' } },
+  { title: 'An extreme world', enter: () => { set({ p1: 0.8, p0: 0.2, ru: 5 }); },
+    html: '<p>Now 80% of smokers and 20% of non-smokers drink heavily, and drinking raises the risk five-fold.</p>',
+    ask: { type: 'choice', prompt: 'In this extreme world, the corrected ratio is:', options: ['Still near 2', 'Below 1', 'Exactly 1', 'Still near 4.5'], answer: 0,
+      after: 'Right: 1.93. Even a strong, very unequal confounder leaves an effect.' } },
+  { title: 'The E-value', enter: () => { show('obsbox', true); obs = 4.5; draw(); },
+    html: '<p>The E-value is the strength a confounder would need, with both smoking and TB death, to explain away the whole 4.5. It is shown in the third box.</p>',
+    ask: { type: 'number', prompt: 'What is the E-value for 4.5? (one decimal place)', answer: 8.47, tol: 0.06, after: 'Right: 8.5. A confounder would need to raise both smoking and TB death about eightfold.' } },
+  { title: 'A small estimate', enter: () => { show('obsbox', true); },
+    html: '<p>Press <b>Biomass fuel and ARI, 1.10</b>.</p>',
+    ask: { type: 'number', prompt: 'What is the E-value now? (one decimal place)', answer: 1.43, tol: 0.06, after: 'Right: 1.4. A modest confounder could explain this one. Small estimates are fragile.' } },
+  { title: 'Explore on your own', enter: () => { obs = 4.5; show('obsbox', false); draw(); },
+    html: '<p>Find the weakest alcohol world that brings the 4.5 down to 1. How unequal must drinking be?</p>',
+    after: 'Take away: for an unmeasured confounder, ask how strong it would need to be, and whether such a confounder is plausible.' }
+]);
+draw();
+</script>
+</body>
+</html>

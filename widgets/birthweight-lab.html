@@ -18,7 +18,7 @@
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Lab 3</p>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Lab 3 · Module 8</p>
   <h1>Birth Weight Paradox Lab</h1>
   <p>Restrict to low birth weight babies and smoking appears to protect them. Find out why, and why that does not make smoking safe.</p>
 </div></header>
@@ -34,13 +34,15 @@
     <p class="src">Hernández-Díaz S, Schisterman EF, Hernán MA. The birth weight "paradox" uncovered? Am J Epidemiol 2006;164:1115-20.</p>
   </section>
 
+  <section id="guide" aria-live="polite"></section>
+
   <section class="panel">
     <h2>The model behind this lab</h2>
     <svg class="dag" id="dag" role="img" aria-label="Diagram: smoking causes low birth weight and infant death; birth defects cause low birth weight and infant death"></svg>
     <p class="note">The lab computes death rates from this diagram. Its numbers were chosen to come close to the 1991 figures. In this model smoking <b>never</b> helps any baby: it lowers birth weight and, by default, adds direct harm too.</p>
   </section>
 
-  <section class="panel">
+  <section class="panel hide" id="grpbox">
     <h2>Which babies do you compare?</h2>
     <div class="seg" id="grp" role="group" aria-label="Babies compared">
       <button type="button" data-g="all">All babies</button>
@@ -55,7 +57,7 @@
     <p class="claim" id="msg" aria-live="polite"></p>
   </section>
 
-  <section class="panel">
+  <section class="panel hide" id="sliders">
     <h2>Change the world</h2>
     <div class="sl"><label for="direct">Direct harm of smoking, apart from birth weight: <span class="v" id="vdirect"></span></label><input type="range" id="direct" min="1" max="1.6" step="0.05" value="1.2"></div>
     <div class="sl"><label for="ud">Death risk of a low birth weight baby who has a birth defect: <span class="v" id="vud"></span></label><input type="range" id="ud" min="0.03" max="0.6" step="0.01" value="0.30"></div>
@@ -63,20 +65,21 @@
     <button class="act ghost" type="button" id="reset">Back to the 1991-like setting</button>
   </section>
 
-  <section class="panel">
+  <section class="panel hide" id="whybox">
     <h2>Why small babies of smokers do better</h2>
     <div class="scroll"><table id="why"></table></div>
     <p class="note">A low birth weight baby has to be small for some reason. If the mother smoked, smoking is often the reason, and it is a mild one. If she did not smoke, the reason is more often a birth defect or another serious cause. Restricting to low birth weight compares babies who are small for different reasons.</p>
   </section>
   <footer>Model constructed for teaching, tuned to come close to the published 1991 rates; it is not the original data.</footer>
 </main>
+<script src="guide.js"></script>
 <script src="dag.js"></script>
 <script src="dags.js"></script>
 <script>
 const P_S = 0.18;
 const LBW = { s0u0: 0.05, s1u0: 0.14, s0u1: 0.50, s1u1: 0.55 };
 const DEF = { direct: 1.2, ud: 0.30, pu: 0.02 };
-let grp = '1';
+let grp = 'all';
 const el = id => document.getElementById(id);
 
 function model() {
@@ -131,6 +134,28 @@ DAG.render(el('dag'), g, { x: 'smk', y: 'die', Z: new Set(), width: 420, height:
 document.querySelectorAll('#grp button').forEach(b => b.onclick = () => { grp = b.dataset.g; draw(); });
 ['direct', 'ud', 'pu'].forEach(id => el(id).oninput = draw);
 el('reset').onclick = () => { el('direct').value = DEF.direct; el('ud').value = DEF.ud; el('pu').value = DEF.pu; draw(); };
+const show = (id, on) => el(id).classList.toggle('hide', !on);
+Guide.run(el('guide'), [
+  { title: 'All babies', enter: () => { grp = 'all'; show('grpbox', false); show('whybox', false); show('sliders', false); draw(); },
+    html: '<p>The bars below compare infant deaths for mothers who smoked and mothers who did not, among <b>all</b> babies.</p>',
+    ask: { type: 'choice', prompt: 'Among all babies, smoking looks:', options: ['Harmful: more infant deaths', 'Protective: fewer infant deaths', 'Neither: the same deaths', 'Impossible to tell from this'], answer: 0,
+      after: 'Right. About 1.6 times the deaths, close to the real 1991 figure of 1.55.' } },
+  { title: 'Small babies only', enter: () => { grp = '1'; draw(); },
+    html: '<p>Now the bars compare only <b>low birth weight</b> babies.</p>',
+    ask: { type: 'choice', prompt: 'Among low birth weight babies, smoking looks:', options: ['Protective: fewer infant deaths', 'Harmful: more infant deaths', 'Neither: the same deaths', 'Impossible to tell from this'], answer: 0,
+      after: 'Right: 0.79, as in the real data. Yet in this model smoking harms every baby. Something about the comparison is wrong.' } },
+  { title: 'Why?', enter: () => { grp = '1'; show('whybox', true); draw(); },
+    html: '<p>Scroll down to the table "Why small babies of smokers do better".</p>',
+    ask: { type: 'choice', prompt: 'Small babies of non-smokers are:', options: ['More often small because of a defect or other serious cause', 'Less often small because of a defect', 'Small for exactly the same reasons', 'Smaller on average than babies of smokers'], answer: 0,
+      after: 'Right: about 17% against 7%. Restricting to low birth weight compares babies who are small for different reasons. Low birth weight is a collider.' } },
+  { title: 'How harmful can smoking be?', enter: () => { grp = '1'; show('sliders', true); draw(); },
+    html: '<p>Use the first slider, <b>direct harm of smoking</b>. Move it up slowly and watch the ratio for small babies.</p>',
+    ask: { type: 'choice', prompt: 'Smoking still looks protective in small babies up to a direct harm of about:', options: ['× 1.5, that is 50% more deaths', '× 1.1, that is 10% more deaths', '× 1.3, that is 30% more deaths', '× 2.0, that is twice the deaths'], answer: 0,
+      after: 'Right. Smoking can raise every baby\'s death risk by half and still look protective among small babies. That is the strength of collider bias.' } },
+  { title: 'Explore on your own', enter: () => { show('grpbox', true); show('whybox', true); show('sliders', true); draw(); },
+    html: '<p>All controls are open. Try making birth defects rarer or less deadly: the paradox shrinks.</p>',
+    after: 'Take away: do not restrict or adjust for a variable caused by the exposure. Here it was both a mediator and a collider.' }
+]);
 draw();
 </script>
 </body>

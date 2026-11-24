@@ -1,0 +1,144 @@
+<section data-core>
+  <h2>The collider: two arrows that meet</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="collider" style="width:520px" data-steps='[{"add":["smk","def"]},{"add":["lbw","smk>lbw"],"fi":1},{"add":["def>lbw"],"fi":2}]' role="img" aria-label="Maternal smoking and birth defects both cause low birth weight"></svg></div>
+    <div>
+      <p>Maternal smoking and birth defects: in the population, they are unrelated.</p>
+      <p class="fragment" data-fragment-index="1">Smoking causes low birth weight.</p>
+      <p class="fragment" data-fragment-index="2">Birth defects cause low birth weight too. The arrows <b>collide</b>.</p>
+    </div>
+  </div>
+  <aside class="notes">A collider is a common effect. It is a property of a variable on a particular path: low birth weight is a collider on Smoking → LBW ← Defect.</aside>
+</section>
+
+<section data-core>
+  <h2>The rule for colliders is the opposite</h2>
+  <div class="cards c2">
+    <div class="card good"><h3>Left alone</h3><p>A path through a collider is <b>closed</b>. No association flows. Smoking and defects stay unrelated.</p></div>
+    <div class="card bad fragment"><h3>Adjusted for, or selected on</h3><p>The path <b>opens</b>. Smoking and defects become associated, though neither causes the other.</p></div>
+  </div>
+  <p class="fragment">Why: among small babies, if the mother did not smoke, something else made the baby small. A defect becomes more likely.</p>
+  <aside class="notes">This is the counter-intuitive one. Forks and chains are open until you adjust; colliders are closed until you adjust. Spend time on the intuition sentence.</aside>
+</section>
+
+<section data-core>
+  <h2>A town where smoking and TB are unrelated</h2>
+  <p>100,000 people. 30% smoke. 1% have TB. Smoking makes no difference to TB here.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>TB</th><th>No TB</th></tr>
+    <tr><td class="l">Smokers</td><td>300</td><td>29,700</td></tr>
+    <tr><td class="l">Non-smokers</td><td>700</td><td>69,300</td></tr>
+  </table>
+  <div class="work fragment"><p>Odds ratio = (300 × 69,300) / (29,700 × 700) = <b>1.0</b></p></div>
+  <p class="small dim">Made-up numbers. In reality smoking does raise TB risk; here we remove that to isolate the bias.</p>
+  <aside class="notes">Start from no association at all, so that anything we find later is created by selection.</aside>
+</section>
+
+<section data-core>
+  <h2>Who gets admitted to the chest ward?</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>TB</th><th>No TB</th></tr>
+    <tr><td class="l">Smokers</td><td>90% admitted</td><td>5% admitted</td></tr>
+    <tr><td class="l">Non-smokers</td><td>80% admitted</td><td>2% admitted</td></tr>
+  </table>
+  <p class="fragment">TB gets you admitted. Smoking does too, through other chest illness.</p>
+  <div class="dagwrap fragment"><svg class="dag" data-dag="berkson" style="width:420px" role="img" aria-label="Smoking and TB both cause admission"></svg></div>
+  <aside class="notes">Admission is a common effect of smoking and TB: a collider.</aside>
+</section>
+
+<section data-core>
+  <h2>Study only the admitted patients</h2>
+  <table class="calc">
+    <tr><th class="l">In the ward</th><th>TB</th><th>No TB</th></tr>
+    <tr class="fragment"><td class="l">Smokers</td><td>300 × 0.9 = 270</td><td>29,700 × 0.05 = 1,485</td></tr>
+    <tr class="fragment"><td class="l">Non-smokers</td><td>700 × 0.8 = 560</td><td>69,300 × 0.02 = 1,386</td></tr>
+  </table>
+  <div class="work fragment"><p>Odds ratio = (270 × 1,386) / (1,485 × 560) = <b>0.45</b></p></div>
+  <p class="claim warn fragment">In the ward, smoking seems to halve the odds of TB. In the town, it made no difference.</p>
+  <aside class="notes">This is Berkson's bias, described in 1946 for hospital-based studies. Nothing about smoking or TB changed; only who we looked at.</aside>
+</section>
+
+<section data-core>
+  <h2>Selection bias is adjusting for a collider</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="berkson" style="width:470px" data-steps='[{"add":"all"},{"z":["adm"],"hl":"smk,adm,tb","fi":1}]' role="img" aria-label="Selecting on admission opens the path between smoking and TB"></svg></div>
+    <div>
+      <p>The path Smoking → Admitted ← TB is closed in the town.</p>
+      <p class="fragment" data-fragment-index="1">Studying only admitted people <b>conditions on</b> admission: the path opens (red).</p>
+    </div>
+  </div>
+  <p class="claim fragment">Selection bias: who entered or stayed in your study depends on both the exposure and the outcome.</p>
+  <p class="cite">Hernán MA, Hernández-Díaz S, Robins JM. Epidemiology 2004;15:615-25.</p>
+  <aside class="notes">Same drawing convention as before: an adjusted box, here because of selection rather than analysis.</aside>
+</section>
+
+<section>
+  <h2>Where it hides in real studies</h2>
+  <ul>
+    <li class="fragment"><b>Hospital controls</b> in a case-control study, as we just saw.</li>
+    <li class="fragment"><b>Loss to follow-up</b> that depends on both exposure and illness.</li>
+    <li class="fragment"><b>Volunteers</b> who join because they are exposed and worried.</li>
+    <li class="fragment"><b>Survivors.</b> Women still taking hormones years later are those who did not have an early heart attack on them. Module 13 returns to this.</li>
+  </ul>
+  <p class="claim warn fragment">You cannot see this bias in the data. Only in how people got into the data.</p>
+  <aside class="notes">The survivor point is the start of the full explanation of the hormone puzzle.</aside>
+</section>
+
+<section data-core>
+  <h2>A real puzzle: US births, 1991</h2>
+  <div class="cards c2">
+    <div class="card"><h3>All babies</h3><p class="work">Infant deaths per 100,000: <b>1,235</b> if the mother smoked, <b>805</b> if not.</p><p>Reported rate ratio <b>1.55</b></p></div>
+    <div class="card warn fragment"><h3>Low birth weight babies only</h3><p class="work">Babies of smokers died <b>less</b> often.</p><p>Reported rate ratio <b>0.79</b></p></div>
+  </div>
+  <p class="claim fragment">Is smoking good for small babies?</p>
+  <p class="cite">Hernández-Díaz S, Schisterman EF, Hernán MA. Am J Epidemiol 2006;164:1115-20.</p>
+  <aside class="notes">Real data. For decades this was called the birth weight paradox, and some argued smoking was protective for small babies. Let the room try to explain it before the next slide.</aside>
+</section>
+
+<section data-core>
+  <h2>The paradox, drawn</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="bw" style="width:480px" data-steps='[{"add":["smk","die","lbw","smk>lbw","lbw>die"]},{"add":["def","def>lbw","def>die"],"fi":1},{"add":["smk>die"],"fi":2},{"z":["lbw"],"hl":"smk,lbw,def,die","fi":3}]' role="img" aria-label="Restricting to low birth weight opens a path through birth defects"></svg></div>
+    <div>
+      <p class="small">Smoking lowers birth weight, which raises deaths.</p>
+      <p class="small fragment" data-fragment-index="1">Birth defects and other serious causes lower birth weight and raise deaths too. Not measured.</p>
+      <p class="small fragment" data-fragment-index="2">Smoking may also harm directly.</p>
+      <p class="small fragment" data-fragment-index="3">Restrict to low birth weight: a collider is adjusted for, and Smoking → LBW ← Defects → Death opens.</p>
+    </div>
+  </div>
+  <aside class="notes">Low birth weight is both a mediator (Module 7) and a collider here. Restricting to it does both kinds of damage.</aside>
+</section>
+
+<section data-core>
+  <h2>Why small babies of smokers do better, in numbers</h2>
+  <p>In the Lab 3 model, tuned to come close to the 1991 figures:</p>
+  <table class="calc">
+    <tr><th class="l">Among low birth weight babies</th><th>Mother smoked</th><th>Did not smoke</th></tr>
+    <tr class="fragment"><td class="l">Share with a birth defect or other serious cause</td><td>7%</td><td>17%</td></tr>
+  </table>
+  <p class="fragment">A small baby of a smoker is usually small because of the smoking, a milder cause. A small baby of a non-smoker is more often small for a serious reason.</p>
+  <p class="claim fragment">Open Lab 3. Raise the direct harm of smoking. How harmful can it be for every baby and still look protective in small babies?</p>
+  <aside class="notes">Answer from the lab: up to about 1.5 times the death risk, that is 50% more, and the low birth weight ratio still sits below 1.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In a COVID ward, smokers seemed to have less severe illness than non-smokers. Both smoking-related illness and severe COVID lead to admission.</p>
+    <p>Draw the diagram. Why might smoking look protective here?</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>Smoking → Admitted ← Severe COVID. Studying only admitted patients conditions on a collider. A non-smoker in the ward is more likely to be there because of severe COVID.</p></div>
+  <aside class="notes">The structure is identical to the chest ward. Accept any drawing that puts admission as a common effect.</aside>
+</section>
+
+<section data-core>
+  <h2>The three shapes, side by side</h2>
+  <table>
+    <tr><th>Shape</th><th>Middle variable</th><th>Path, left alone</th><th>Adjust for the middle</th></tr>
+    <tr><td>Fork ← →</td><td>Confounder</td><td>Open: bias</td><td>Closes it: good</td></tr>
+    <tr class="fragment"><td>Chain → →</td><td>Mediator</td><td>Open: the effect</td><td>Closes it: loses the effect</td></tr>
+    <tr class="fragment"><td>Collider → ←</td><td>Collider</td><td>Closed</td><td>Opens it: bias</td></tr>
+  </table>
+  <p class="claim fragment">Every path in any diagram is built from these three. Module 10 puts them together.</p>
+  <aside class="notes">This table is the single most important summary of the course. Ask students to copy it into the workbook.</aside>
+</section>

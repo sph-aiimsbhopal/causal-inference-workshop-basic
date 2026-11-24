@@ -19,15 +19,15 @@
 </head>
 <body>
 <header class="band"><div>
-  <p class="kicker"><a href="../index.html">Causal inference workshop</a> · Quiz</p>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Quiz</p>
   <h1>Before and After Quiz</h1>
-  <p>Eight questions. Take it at the start, then again at the end. Your answers stay on your phone.</p>
+  <p>Twelve questions. Take it before you start and again at the end. Your answers stay on your phone.</p>
 </div></header>
 <main>
   <section class="panel">
     <div class="seg" id="mode" role="group" aria-label="Which attempt">
-      <button type="button" data-m="pre">Before the workshop</button>
-      <button type="button" data-m="post">After the workshop</button>
+      <button type="button" data-m="pre">Before you start</button>
+      <button type="button" data-m="post">After you finish</button>
     </div>
   </section>
   <form id="quiz" class="panel"></form>
@@ -39,33 +39,141 @@
 </main>
 <script>
 const Q = [
-  { q: 'For one person, the causal effect of smoking on TB death is best defined as the difference between:',
-    o: ['His risk and the average risk of non-smokers', 'His outcome if he smokes and his outcome if he never smokes, at the same time', 'His outcome before and after he starts smoking', 'The risk in smokers and non-smokers in the same village'], a: 1,
-    e: 'A causal effect contrasts two potential outcomes of the same person under two exposures. Only one can ever be observed; the other is counterfactual.' },
-  { q: 'Smokers and non-smokers are "exchangeable" when:',
-    o: ['They are the same size', 'Non-smokers would have had the smokers\' risk if they had smoked, and the other way round', 'They come from the same district', 'The study is large enough to give a narrow confidence interval'], a: 1,
-    e: 'Exchangeability means the groups differ only in exposure: swap their exposures and you would see the same risks. Randomisation gives it on average; observational studies have to argue for it.' },
-  { q: 'Alcohol use makes men more likely to smoke and also raises TB death risk. In a diagram, alcohol use is:',
-    o: ['A mediator', 'A collider', 'A common cause (confounder) of smoking and TB death', 'An effect modifier only'], a: 2,
-    e: 'Smoking ← Alcohol → TB death is a fork. It opens a back-door path, so alcohol use confounds the smoking and TB death association unless blocked.' },
-  { q: 'You want the total effect of maternal smoking on infant death. Adjusting for birth weight will:',
-    o: ['Remove confounding', 'Remove the part of the effect that works through birth weight, and can create a spurious association', 'Increase precision without changing the estimate', 'Have no effect, because birth weight comes after smoking'], a: 1,
-    e: 'Birth weight is caused by smoking (a mediator) and shares causes with death, such as birth defects (a collider). Adjusting for it both cuts part of the effect and opens a non-causal path.' },
-  { q: 'Adding a variable changed the odds ratio by more than 10%. This shows that the variable:',
-    o: ['Is a confounder and must be kept', 'Is a mediator', 'Is associated with the estimate, but whether to adjust for it needs causal reasoning', 'Is an instrumental variable'], a: 2,
-    e: 'Colliders and mediators also change estimates when added. The change-in-estimate rule cannot tell them apart from confounders; a causal diagram can.' },
-  { q: 'A hospital-based case-control study takes controls from other admitted patients. If both the exposure and the disease raise the chance of admission, the bias is best described as:',
-    o: ['Recall bias', 'Conditioning on a common effect (collider) of exposure and disease', 'Confounding by indication', 'Misclassification of the outcome'], a: 1,
-    e: 'Admission is caused by both exposure and disease. Restricting to admitted patients conditions on a collider and can create an association (Berkson\'s bias).' },
-  { q: 'One regression model gives odds ratios for cooking fuel, mother\'s education and wealth. Which reading is correct?',
-    o: ['Each odds ratio is the total effect of that variable', 'Only the variable the model was built for can be read as a total effect, and only if its adjustment set is right', 'The largest odds ratio is the most important cause', 'All odds ratios are unbiased because they are adjusted'], a: 1,
-    e: 'This is the "Table 2 fallacy". The covariates were chosen for one exposure. For another variable, the same model may adjust for its mediators or miss its confounders.' },
-  { q: 'Your diagram shows that a confounder of the effect you want was never measured. What follows?',
-    o: ['Adjust for everything else you measured; the bias goes away', 'No adjustment set from your data is enough; consider another design, a negative control, or a bias analysis', 'Use a larger sample', 'Drop the confounder from the diagram'], a: 1,
-    e: 'Adjustment can only use measured variables. If an open back-door path runs through something unmeasured, more adjustment on what you have cannot close it.' }
+ {
+  "q": "For one man, the causal effect of smoking on TB death is the difference between:",
+  "o": [
+   "His risk and the average risk of non-smokers",
+   "His risk before and after he started smoking",
+   "His outcome if he smokes and if he never smokes",
+   "TB risk in smokers and non-smokers in his village"
+  ],
+  "a": 2,
+  "e": "A causal effect compares two potential outcomes of the same person under two exposures. Only one is ever observed."
+ },
+ {
+  "q": "Selvam smoked and died of TB. Had he never smoked, he would still have died of TB. For Selvam, smoking:",
+  "o": [
+   "Made no difference to his death",
+   "Caused his death from TB",
+   "Protected him from an earlier death",
+   "Doubled his risk of dying of TB"
+  ],
+  "a": 0,
+  "e": "Both his potential outcomes are death, so smoking had no effect on him, even though he smoked and died."
+ },
+ {
+  "q": "If all 100 men smoked, 30 would die of TB. If none smoked, 10 would. The causal risk ratio is:",
+  "o": [
+   "0.20",
+   "0.33",
+   "2.00",
+   "3.00"
+  ],
+  "a": 3,
+  "e": "0.30 / 0.10 = 3.0. The causal risk difference is 0.20."
+ },
+ {
+  "q": "Smokers and non-smokers are exchangeable when:",
+  "o": [
+   "Both groups contain the same number of men",
+   "Swapping exposures would swap their risks",
+   "Both groups were sampled from the same town",
+   "Smoking was recorded the same way in both"
+  ],
+  "a": 1,
+  "e": "Had the smokers not smoked, their risk would equal the non-smokers' actual risk, and the other way round."
+ },
+ {
+  "q": "Crude RR for smoking and TB death is 2.1. It is 1.0 among drinkers and 1.0 among non-drinkers. Most likely:",
+  "o": [
+   "Alcohol confounds; smoking has no effect",
+   "Alcohol is a mediator of smoking's effect",
+   "Smoking's effect differs by alcohol use",
+   "The stratified figures are less reliable"
+  ],
+  "a": 0,
+  "e": "The association vanishes within each level of alcohol, so the 2.1 came through the back-door path via alcohol."
+ },
+ {
+  "q": "Why does randomising who smokes give an unbiased risk ratio?",
+  "o": [
+   "It makes the trial larger than a cohort",
+   "It measures smoking more accurately",
+   "It removes chance from the comparison",
+   "It balances all other causes on average"
+  ],
+  "a": 3,
+  "e": "A coin cannot be influenced by alcohol or anything else, so other causes are spread equally on average. Chance remains."
+ },
+ {
+  "q": "Which of these is a back-door path from smoking to TB death?",
+  "o": [
+   "Smoking → Undernutrition → TB death",
+   "Smoking → Hospital ← TB death",
+   "Smoking ← Alcohol → TB death",
+   "Smoking → Cough → TB diagnosis"
+  ],
+  "a": 2,
+  "e": "A back-door path starts with an arrow pointing into the exposure."
+ },
+ {
+  "q": "Smoking lowers birth weight, which raises infant deaths. For the total effect of smoking, adjusting for birth weight:",
+  "o": [
+   "Removes confounding by birth weight",
+   "Removes part of the effect you want",
+   "Improves precision with no other change",
+   "Is required by most journals"
+  ],
+  "a": 1,
+  "e": "Birth weight is a mediator. Adjusting for it blocks part of the causal path."
+ },
+ {
+  "q": "Smoking and TB are unrelated in a town (OR 1.0). Both raise the chance of admission. Among admitted patients the OR is 0.45. This is:",
+  "o": [
+   "Confounding by age",
+   "A true protective effect",
+   "Recall bias by patients",
+   "Selection on a collider"
+  ],
+  "a": 3,
+  "e": "Admission is a common effect of smoking and TB. Studying only admitted patients opens the path through it (Berkson's bias)."
+ },
+ {
+  "q": "40% of men drink. TB risks: drinkers 0.6 if smokers, 0.3 if not; non-drinkers 0.2 and 0.1. The standardised risk ratio is:",
+  "o": [
+   "1.5",
+   "3.0",
+   "2.0",
+   "4.0"
+  ],
+  "a": 2,
+  "e": "All smoked: 0.4 × 0.6 + 0.6 × 0.2 = 0.36. None: 0.4 × 0.3 + 0.6 × 0.1 = 0.18. 0.36 / 0.18 = 2.0."
+ },
+ {
+  "q": "For a total effect, which kind of variable should you never adjust for?",
+  "o": [
+   "One caused by the exposure",
+   "One that causes the outcome",
+   "A common cause of both",
+   "One measured at baseline"
+  ],
+  "a": 0,
+  "e": "Anything downstream of the exposure, such as a mediator, removes part of the effect or opens a collider path."
+ },
+ {
+  "q": "One model, built for cooking fuel, also gives an OR of 1.32 for mother's education. That 1.32 is:",
+  "o": [
+   "The total effect of mother's education",
+   "Not a total effect: fuel is a mediator",
+   "Unbiased, because it is adjusted",
+   "Smaller than the true effect, always"
+  ],
+  "a": 1,
+  "e": "The model adjusts for fuel and kitchen, which education causes. Reading it as education's effect is the Table 2 fallacy."
+ }
 ];
 let mode = 'pre';
-const KEY = 'ci-quiz-pre';
+const KEY = 'ci-quiz-pre-v2';
 const get = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
 const set = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
 function render() {
@@ -88,7 +196,7 @@ document.getElementById('submit').onclick = () => {
   const el = document.getElementById('score'); el.hidden = false;
   let t = `You scored ${s} out of ${Q.length}.` + (blank ? ` ${blank} left blank.` : '');
   if (mode === 'pre') { set(String(s)); el.className = 'claim'; }
-  else { const p = get(); el.className = 'claim good'; if (p !== null) t += ` Before the workshop you scored ${p}.`; }
+  else { const p = get(); el.className = 'claim good'; if (p !== null) t += ` Before you started, you scored ${p}.`; }
   el.textContent = t;
 };
 render();

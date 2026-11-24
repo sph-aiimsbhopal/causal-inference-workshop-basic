@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 7: The chain: mediators</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 7 · Causal inference for beginners</p>
+  <h1>The chain: mediators</h1>
+  <p class="lede dim">When the exposure works through a middle variable, adjusting for that variable removes the effect you wanted.</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 7. When the exposure works through a middle variable, adjusting for that variable removes the effect you wanted.</aside>
+</section>
+
+<section data-core>
+  <h2>The chain: a cause that works through something</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="chain" style="width:520px" data-steps='[{"add":["smk","die"]},{"add":["lbw","smk>lbw"],"fi":1},{"add":["lbw>die"],"fi":2}]' role="img" aria-label="Maternal smoking causes low birth weight, which causes infant death"></svg></div>
+    <div>
+      <p>Mothers who smoke in pregnancy have more infant deaths. How?</p>
+      <p class="fragment" data-fragment-index="1">Smoking lowers birth weight.</p>
+      <p class="fragment" data-fragment-index="2">Low birth weight raises the risk of infant death.</p>
+      <p class="fragment small dim" data-fragment-index="2">Low birth weight is a <b>mediator</b>: it lies on the causal path.</p>
+    </div>
+  </div>
+  <aside class="notes">The chain: exposure, then mediator, then outcome. For now, suppose smoking acts only through birth weight.</aside>
+</section>
+
+<section data-core>
+  <h2>Births where smoking acts only through birth weight</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Low birth weight</th></tr>
+    <tr><td class="l">Mothers who smoke</td><td>14%</td></tr>
+    <tr><td class="l">Mothers who do not</td><td>5%</td></tr>
+  </table>
+  <table class="calc">
+    <tr><th class="l"></th><th>Infant death risk, whatever the mother did</th></tr>
+    <tr><td class="l">Low birth weight</td><td>4%</td></tr>
+    <tr><td class="l">Normal birth weight</td><td>0.4%</td></tr>
+  </table>
+  <p class="small dim">Made-up numbers, chosen to land near the real US figures you meet in Module 8.</p>
+  <aside class="notes">The death risk depends only on birth weight, not on smoking directly. So all of smoking's effect runs through low birth weight.</aside>
+</section>
+
+<section data-core>
+  <h2>The total effect of smoking</h2>
+  <div class="work">
+    <p>Smokers: 0.14 × 4% + 0.86 × 0.4% = 0.560% + 0.344% = <b>0.904%</b></p>
+    <p class="fragment">Non-smokers: 0.05 × 4% + 0.95 × 0.4% = 0.200% + 0.380% = <b>0.580%</b></p>
+    <p class="fragment">Risk ratio = 0.904 / 0.580 = <b>1.56</b></p>
+  </div>
+  <p class="claim fragment">Smoking raises infant deaths by 56%. That is the <b>total effect</b>, the one a mother or a programme cares about.</p>
+  <aside class="notes">904 against 580 per 100,000 births. Work it in the workbook first.</aside>
+</section>
+
+<section data-core>
+  <h2>Now "adjust for birth weight"</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Smokers</th><th>Non-smokers</th><th>Risk ratio</th></tr>
+    <tr class="fragment"><td class="l">Low birth weight babies</td><td>4%</td><td>4%</td><td><b>1.0</b></td></tr>
+    <tr class="fragment"><td class="l">Normal weight babies</td><td>0.4%</td><td>0.4%</td><td><b>1.0</b></td></tr>
+  </table>
+  <p class="claim warn fragment">Adjusted for birth weight, smoking looks harmless. Yet it raised deaths by 56%.</p>
+  <aside class="notes">Stratifying on the mediator removes the very route the effect travels by. This is over-adjustment.</aside>
+</section>
+
+<section data-core>
+  <h2>What happened, in the diagram</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="chain" style="width:520px" data-steps='[{"add":"all","hl":"smk,lbw,die"},{"z":["lbw"],"fi":1}]' role="img" aria-label="The causal path, open, then blocked by adjusting for low birth weight"></svg></div>
+    <div>
+      <p>Green: a causal path, open. This carries the effect.</p>
+      <p class="fragment" data-fragment-index="1">Adjusting for low birth weight blocks it (dashed). The effect is gone from the estimate, not from the babies.</p>
+    </div>
+  </div>
+  <aside class="notes">Same blocking rule as Module 6: adjusting for a middle variable blocks the path. With a fork that is what we want; with a chain it is not.</aside>
+</section>
+
+<section data-core>
+  <h2>How to spot a mediator</h2>
+  <ul>
+    <li class="fragment">It is <b>caused by the exposure</b>.</li>
+    <li class="fragment">It is usually <b>measured after</b> the exposure started.</li>
+    <li class="fragment">Examples: cholesterol after starting hormones; CD4 count after starting ART; weight after joining a diet programme.</li>
+  </ul>
+  <p class="claim fragment">For the total effect, do not adjust, restrict, match or stratify on a mediator.</p>
+  <aside class="notes">A rough but useful rule for beginners: be suspicious of any covariate measured after the exposure began.</aside>
+</section>
+
+<section>
+  <h2>But what if I want the direct effect?</h2>
+  <p>Sometimes the question is: how much of the effect does <b>not</b> go through birth weight?</p>
+  <p class="fragment">That is a different question, the direct effect. Simply adjusting for the mediator usually does not answer it, for a reason you will see in Module 8: the mediator can also be a collider.</p>
+  <p class="cite fragment">Modern Epidemiology, 4th ed., chapter 27, Mediation Analysis.</p>
+  <aside class="notes">Keep this short. Its job is to stop students concluding that adjusting for mediators is always wrong; it is wrong for the total effect, and too simple for the direct effect.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>ASHA home visits in pregnancy increase institutional delivery. Partly, visits raise the mother's knowledge of danger signs, and that knowledge leads to institutional delivery.</p>
+    <p>You want the total effect of home visits. Should you adjust for the mother's knowledge? Draw it.</p>
+  </div>
+  <div class="work fragment" style="margin-top:14px"><p>No. Visits → Knowledge → Delivery is a chain: knowledge is a mediator. Adjusting would hide part of what the visits achieve.</p></div>
+  <aside class="notes">A Community Medicine example to show the idea is not specific to birth weight.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A chain carries the effect. The middle variable is a mediator.</p>
+  <p class="claim warn">Adjusting for a mediator removes part of the effect you want. In our numbers, 1.56 became 1.0.</p>
+  <p class="claim">Next: the collider, where adjusting creates an association out of nothing.</p>
+  <aside class="notes">Lab 2, diagram "Chain": tap Low birth weight and watch the green path turn dashed.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m07-chain-mediation.html#check">Open the self-check for Module 7</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 12, the section on intermediate variables; chapter 27, Mediation Analysis, for later.</p>
+  <p>Next: <a href="m08-collider-selection.html">Module 8, The collider: selection bias</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

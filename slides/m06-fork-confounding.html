@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Module 6: The fork: confounding</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/slides.css">
+<link rel="stylesheet" href="../assets/css/deck.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section class="cover" data-core>
+  <p class="kicker">Module 6 · Causal inference for beginners</p>
+  <h1>The fork: confounding</h1>
+  <p class="lede dim">A common cause can make two things look linked when neither causes the other. Learn to spot it and remove it.</p>
+  <p class="small faint">Use the arrow keys or swipe. Each click adds one step.</p>
+  <aside class="notes">Module 6. A common cause can make two things look linked when neither causes the other. Learn to spot it and remove it.</aside>
+</section>
+
+<section data-core>
+  <h2>The fork: one cause, two arrows out</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="fork" style="width:520px" data-steps='[{"add":["smk","tb"]},{"add":["alc"],"fi":1},{"add":["alc>smk","alc>tb"],"fi":2}]' role="img" aria-label="Alcohol causes smoking and TB death; no arrow from smoking to TB death"></svg></div>
+    <div>
+      <p>Imagine smoking has <b>no</b> effect on TB death: no arrow between them.</p>
+      <p class="fragment" data-fragment-index="1">Alcohol use is a common cause.</p>
+      <p class="fragment" data-fragment-index="2">Drinkers smoke more, and drinkers die of TB more.</p>
+    </div>
+  </div>
+  <p class="claim fragment">Will smokers still die of TB more often? Guess before the next slide.</p>
+  <aside class="notes">The fork: a common cause with arrows to exposure and outcome. Deliberately no arrow from smoking to TB, so any association we find is pure confounding.</aside>
+</section>
+
+<section data-core>
+  <h2>A town of 1,000 men where smoking does nothing</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Men</th><th>Who smoke</th><th>TB death risk, smoker or not</th></tr>
+    <tr><td class="l">Drinkers</td><td>400</td><td>300 (75%)</td><td>10%</td></tr>
+    <tr><td class="l">Non-drinkers</td><td>600</td><td>150 (25%)</td><td>2%</td></tr>
+  </table>
+  <p class="small dim">Made-up numbers. Within each row, smokers and non-smokers have the same risk, so smoking has no effect.</p>
+  <aside class="notes">Make sure students see that the risk column does not depend on smoking. That is the "no effect" built in.</aside>
+</section>
+
+<section data-core>
+  <h2>Compare smokers with non-smokers, all together</h2>
+  <table class="calc">
+    <tr><th class="l"></th><th>Men</th><th>TB deaths</th><th>Risk</th></tr>
+    <tr><td class="l">Smokers</td><td>300 + 150 = 450</td><td class="fragment">30 + 3 = 33</td><td class="fragment">7.3%</td></tr>
+    <tr><td class="l">Non-smokers</td><td>100 + 450 = 550</td><td class="fragment">10 + 9 = 19</td><td class="fragment">3.5%</td></tr>
+  </table>
+  <div class="work fragment"><p>Crude risk ratio = 7.3% / 3.5% = <b>2.1</b></p></div>
+  <p class="claim warn fragment">Smokers die twice as often, though smoking does nothing here.</p>
+  <aside class="notes">Deaths among smoking drinkers: 300 × 10% = 30; smoking non-drinkers 150 × 2% = 3. Non-smoking drinkers 100 × 10% = 10; non-smoking non-drinkers 450 × 2% = 9. Do this in the workbook table.</aside>
+</section>
+
+<section data-core>
+  <h2>Now split the table by alcohol</h2>
+  <div class="two">
+    <div class="card"><h3>Drinkers</h3>
+      <table class="calc"><tr><th class="l"></th><th>Deaths</th><th>Risk</th></tr>
+        <tr><td class="l">Smokers</td><td>30 / 300</td><td>10%</td></tr>
+        <tr><td class="l">Non-smokers</td><td>10 / 100</td><td>10%</td></tr></table>
+      <p class="fragment work">Risk ratio = <b>1.0</b></p></div>
+    <div class="card fragment"><h3>Non-drinkers</h3>
+      <table class="calc"><tr><th class="l"></th><th>Deaths</th><th>Risk</th></tr>
+        <tr><td class="l">Smokers</td><td>3 / 150</td><td>2%</td></tr>
+        <tr><td class="l">Non-smokers</td><td>9 / 450</td><td>2%</td></tr></table>
+      <p class="fragment work">Risk ratio = <b>1.0</b></p></div>
+  </div>
+  <p class="claim good fragment">Within each level of alcohol, no association. The 2.1 came entirely from alcohol.</p>
+  <aside class="notes">This is stratification. Comparing smokers with non-smokers who drink the same makes them exchangeable, as far as alcohol goes.</aside>
+</section>
+
+<section data-core>
+  <h2>What stratifying did, in the diagram</h2>
+  <div class="two">
+    <div class="dagwrap"><svg class="dag" data-dag="fork" style="width:520px" data-steps='[{"add":"all"},{"hl":"smk,alc,tb","fi":1},{"z":["alc"],"fi":2}]' role="img" aria-label="The path through alcohol, open then blocked"></svg></div>
+    <div>
+      <p class="fragment" data-fragment-index="1">The path Smoking ← Alcohol → TB death carries association: it is <b>open</b>.</p>
+      <p class="fragment" data-fragment-index="2">Comparing within levels of alcohol puts alcohol in a box: we <b>adjust</b> for it. The path is now <b>blocked</b> (dashed).</p>
+    </div>
+  </div>
+  <aside class="notes">Red means a non-causal path that is open and biasing the result. Dashed means blocked. These conventions are the same in Lab 2.</aside>
+</section>
+
+<section data-core>
+  <h2>Giving it names</h2>
+  <ul>
+    <li><b>Back-door path:</b> a path that starts with an arrow <b>into</b> the exposure. Smoking ← Alcohol → TB death.</li>
+    <li class="fragment"><b>Confounding:</b> association that flows through an open back-door path.</li>
+    <li class="fragment"><b>Confounder:</b> a variable that, adjusted for, blocks a back-door path. Here, alcohol.</li>
+  </ul>
+  <p class="claim fragment">Confounding is defined by the diagram, not by a statistical test.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 12. Greenland S, Pearl J, Robins JM. Epidemiology 1999;10:37-48.</p>
+  <aside class="notes">This is the structural definition. It agrees with the potential-outcome idea from Module 2: an open back-door path is what makes groups non-exchangeable.</aside>
+</section>
+
+<section data-core>
+  <h2>When smoking does have an effect: the 100 men of Lab 1</h2>
+  <p>Crude: smokers 21/44, non-smokers 6/56. Risk ratio <b>4.45</b>. Now split by alcohol.</p>
+  <table class="calc">
+    <tr><th class="l"></th><th>Smokers</th><th>Non-smokers</th><th>Risk ratio</th></tr>
+    <tr class="fragment"><td class="l">Drinkers</td><td>18 / 24 = 0.75</td><td>4 / 16 = 0.25</td><td><b>3.0</b></td></tr>
+    <tr class="fragment"><td class="l">Non-drinkers</td><td>3 / 20 = 0.15</td><td>2 / 40 = 0.05</td><td><b>3.0</b></td></tr>
+  </table>
+  <p class="claim good fragment">Each stratum recovers the true effect, 3.0, that we built into these men.</p>
+  <aside class="notes">Same men as Module 2. In this teaching example the stratum ratios are equal; in real data they differ somewhat, and we need one summary number.</aside>
+</section>
+
+<section data-core>
+  <h2>One number for everyone: standardise</h2>
+  <p>Ask: what would the risk be if <b>all 100</b> men smoked, keeping the real mix of 40 drinkers and 60 non-drinkers?</p>
+  <div class="work">
+    <p class="fragment">If all smoked: 0.4 × 0.75 + 0.6 × 0.15 = 0.30 + 0.09 = <b>0.39</b></p>
+    <p class="fragment">If none smoked: 0.4 × 0.25 + 0.6 × 0.05 = 0.10 + 0.03 = <b>0.13</b></p>
+    <p class="fragment">Standardised risk ratio = 0.39 / 0.13 = <b>3.0</b></p>
+  </div>
+  <p class="small dim fragment">These are exactly the two futures of Module 1, rebuilt from data we could actually observe, once alcohol is accounted for.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 18, Stratification and Standardization.</p>
+  <aside class="notes">Standardisation is a weighted average of the stratum risks, with the whole population's mix as weights. It answers the counterfactual question directly.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In another town, 30% of men drink. TB death risks:</p>
+    <table class="calc"><tr><th class="l"></th><th>Smokers</th><th>Non-smokers</th></tr>
+      <tr><td class="l">Drinkers</td><td>0.50</td><td>0.25</td></tr>
+      <tr><td class="l">Non-drinkers</td><td>0.10</td><td>0.05</td></tr></table>
+    <p>Calculate the standardised risk if all smoked, if none smoked, and the risk ratio.</p>
+  </div>
+  <div class="work fragment"><p>All smoked: 0.3 × 0.50 + 0.7 × 0.10 = <b>0.22</b>. None: 0.3 × 0.25 + 0.7 × 0.05 = <b>0.11</b>. Ratio <b>2.0</b>.</p></div>
+  <aside class="notes">Invented practice numbers. Both strata have ratio 2.0, so the standardised ratio is 2.0 too.</aside>
+</section>
+
+<section>
+  <h2>Five ways to adjust, one idea</h2>
+  <table>
+    <tr><th>Method</th><th>What you do</th></tr>
+    <tr><td>Stratify</td><td>Compare within each level of alcohol</td></tr>
+    <tr><td>Standardise</td><td>Combine the strata with the population's weights</td></tr>
+    <tr><td>Restrict</td><td>Study only non-drinkers</td></tr>
+    <tr><td>Match</td><td>Pair each smoker with a non-smoker who drinks the same</td></tr>
+    <tr><td>Regression</td><td>Put alcohol in the model</td></tr>
+  </table>
+  <p class="claim">All five hold alcohol fixed while smoking varies. All five block the same path.</p>
+  <aside class="notes">Students often think regression is different in kind. It is the same move: comparing at fixed levels of the covariate.</aside>
+</section>
+
+<section data-core>
+  <h2>A warning about the old rules</h2>
+  <div class="cards c2">
+    <div class="card"><h3>"Associated with both exposure and outcome"</h3><p class="small">A mediator and a collider (Modules 7 and 8) are associated with both too.</p></div>
+    <div class="card"><h3>"It changed the estimate by 10%"</h3><p class="small">Adjusting for a mediator or a collider changes the estimate too, in the wrong direction.</p></div>
+  </div>
+  <p class="claim warn fragment">Only the diagram can tell a confounder from the other two.</p>
+  <p class="cite">Hernán MA, Hernández-Díaz S, Werler MM, Mitchell AA. Am J Epidemiol 2002;155:176-84.</p>
+  <aside class="notes">Plant the doubt now; Modules 7 and 8 deliver the counter-examples with numbers.</aside>
+</section>
+
+<section data-core>
+  <h2>Back to Tamil Nadu</h2>
+  <div class="two wide-left">
+    <div class="dagwrap"><svg class="dag" data-dag="tb" style="width:470px" data-fs="18" data-steps='[{"add":"all"},{"z":["age","edu"],"fi":1},{"hl":"smk,peer,alc,tb","fi":2}]' role="img" aria-label="Age and education adjusted; path through peer group and alcohol still open"></svg></div>
+    <div>
+      <p class="small">The study adjusted for age and education.</p>
+      <p class="small fragment" data-fragment-index="1">That blocks the back-door paths through age and education.</p>
+      <p class="small fragment" data-fragment-index="2">Smoking ← Peer group → Alcohol → TB death stays open. Neither peer group nor alcohol was measured.</p>
+      <p class="claim warn small fragment" data-fragment-index="2">Some confounding remains. The 4.5 is likely too high.</p>
+    </div>
+  </div>
+  <aside class="notes">Tobacco chewing is left off this diagram for simplicity. Module 12, for later, shows how to judge how much an unmeasured confounder could move the estimate.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A fork, a common cause, opens a back-door path and creates confounding.</p>
+  <p class="claim">Adjusting for the common cause, by any method, blocks the path. Stratum and standardised ratios show it in numbers.</p>
+  <p class="claim warn">Next: the chain, where adjusting does harm.</p>
+  <aside class="notes">Lab 2, diagram "Fork": tap Alcohol and watch the path close.</aside>
+</section>
+
+<section>
+  <h2>Check yourself</h2>
+  <p class="lede">Three short questions on the module page tell you whether this module has landed.</p>
+  <p><a href="../modules/m06-fork-confounding.html#check">Open the self-check for Module 6</a></p>
+  <p class="small dim">Read more: Modern Epidemiology, 4th ed., Chapter 12, Confounding and Confounders; chapter 18, Stratification and Standardization.</p>
+  <p>Next: <a href="m07-chain-mediation.html">Module 7, The chain: mediators</a></p>
+  <aside class="notes">Self-paced learners go to the module page from here. In a live session, skip this slide.</aside>
+</section>
+</div></div>
+<script src="../vendor/reveal.js/dist/reveal.js"></script>
+<script src="../vendor/reveal.js/plugin/notes/notes.js"></script>
+<script src="../widgets/dag.js"></script>
+<script src="../widgets/dags.js"></script>
+<script src="../widgets/dagsteps.js"></script>
+<script>
+  DagSteps.setup();
+  const printAll = new URLSearchParams(location.search).has('print');
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0, center: false, transition: 'fade',
+    hash: true, slideNumber: 'c/t', fragments: !printAll, plugins: [RevealNotes]
+  });
+  ['ready', 'slidechanged', 'fragmentshown', 'fragmenthidden'].forEach(e => Reveal.on(e, DagSteps.refresh));
+</script>
+</body>
+</html>

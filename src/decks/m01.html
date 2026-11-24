@@ -1,0 +1,131 @@
+<section data-core>
+  <h2>"Smoking causes TB deaths." What does that claim?</h2>
+  <div class="cards c2">
+    <div class="card fragment"><h3>Reading 1</h3><p>Smokers die of TB more often than non-smokers.</p><p class="small dim">A statement about two different groups of men.</p></div>
+    <div class="card fragment"><h3>Reading 2</h3><p>If these same men had never smoked, fewer of them would have died of TB.</p><p class="small dim">A statement about the same men under two conditions.</p></div>
+  </div>
+  <p class="claim fragment">Reading 2 is the causal claim. This module makes it precise, then puts numbers on it.</p>
+  <aside class="notes">Ask the room which reading a TB programme officer needs. Reading 2: she wants to know what changes if smoking changes.</aside>
+</section>
+
+<section data-core>
+  <h2>One man, two possible futures</h2>
+  <p class="lede">Murugan is 30. Picture two versions of his life from today.</p>
+  <div class="cards c2">
+    <div class="card fragment"><h3>Future A: he smokes</h3><p>At 58 he dies of TB.</p></div>
+    <div class="card fragment"><h3>Future B: he never smokes</h3><p>At 58 he is alive.</p></div>
+  </div>
+  <p class="claim fragment">For Murugan, smoking caused his TB death: the two futures differ.</p>
+  <p class="small dim">Murugan and the other men in this module are illustrative.</p>
+  <aside class="notes">Go slowly; this is the foundation of everything else. The two futures are called potential outcomes. Both exist as possibilities before he makes the choice.</aside>
+</section>
+
+<section data-core>
+  <h2>Giving the two futures a name</h2>
+  <table class="calc">
+    <tr><th class="l">In words</th><th>Written as</th><th>For Murugan</th></tr>
+    <tr><td class="l">His outcome if he smokes</td><td>Y<sup>a=1</sup></td><td class="fragment">dies</td></tr>
+    <tr><td class="l">His outcome if he never smokes</td><td>Y<sup>a=0</sup></td><td class="fragment">lives</td></tr>
+  </table>
+  <p class="fragment">Y is the outcome, TB death. <i>a</i> is the exposure: 1 means smokes, 0 means never smokes.</p>
+  <p class="fragment">These are called <b>potential outcomes</b>. The causal effect for one man is the comparison of his two potential outcomes.</p>
+  <p class="cite">Modern Epidemiology, 4th ed., chapter 3. Hernán and Robins, What If, chapter 1.</p>
+  <aside class="notes">Do not dwell on the notation. Students will meet it in Rothman and in Hernán's book; this slide just makes it familiar.</aside>
+</section>
+
+<section data-core>
+  <h2>Three men, three different effects</h2>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>If he smokes</th><th>If he never smokes</th><th>Effect of smoking for him</th></tr>
+    <tr><td class="l">Murugan</td><td>dies</td><td>lives</td><td class="fragment">Smoking kills him</td></tr>
+    <tr class="fragment"><td class="l">Selvam</td><td>dies</td><td>dies</td><td class="fragment">None: dies either way</td></tr>
+    <tr class="fragment"><td class="l">Bala</td><td>lives</td><td>lives</td><td class="fragment">None: lives either way</td></tr>
+  </table>
+  <p class="claim warn fragment">Selvam smoked and died of TB, yet smoking did not cause his death.</p>
+  <aside class="notes">Selvam is the key teaching case. "He smoked and died" is not evidence that smoking killed him, because he would have died anyway.</aside>
+</section>
+
+<section data-core>
+  <h2>The catch: we only ever see one future</h2>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>Did he smoke?</th><th>If he smokes</th><th>If he never smokes</th></tr>
+    <tr><td class="l">Murugan</td><td>yes</td><td>dies</td><td class="q">?</td></tr>
+    <tr><td class="l">Selvam</td><td>yes</td><td>dies</td><td class="q">?</td></tr>
+    <tr><td class="l">Bala</td><td>no</td><td class="q">?</td><td>lives</td></tr>
+  </table>
+  <p class="fragment">Each man lives only one of his two futures. The other one is <b>counterfactual</b>: contrary to fact.</p>
+  <p class="claim fragment">So we can never measure the effect for one person. This is the fundamental problem of causal inference.</p>
+  <aside class="notes">This is why individual effects are out of reach and why we turn to groups next. Ask: from the visible cells alone, can you tell Murugan from Selvam? No.</aside>
+</section>
+
+<section data-core>
+  <h2>From one man to a group of ten</h2>
+  <p>Suppose, in a thought experiment, we could see both futures for ten men.</p>
+  <table class="calc">
+    <tr><th class="l">Man</th><th>If he smokes</th><th>If he never smokes</th></tr>
+    <tr><td class="l">Murugan</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Selvam</td><td class="dead">dies</td><td class="dead">dies</td></tr>
+    <tr><td class="l">Ravi</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Kannan</td><td class="dead">dies</td><td class="dead">dies</td></tr>
+    <tr><td class="l">Arul</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Suresh</td><td class="dead">dies</td><td>lives</td></tr>
+    <tr><td class="l">Bala, Mani, Raja, Siva</td><td>live</td><td>live</td></tr>
+  </table>
+  <aside class="notes">Ten men, both columns visible. This never happens in real data; it is a thought experiment that lets us define the effect we want to estimate.</aside>
+</section>
+
+<section data-core>
+  <h2>Count the deaths in each future</h2>
+  <div class="two">
+    <div class="card"><h3>If all ten smoked</h3><p class="fragment work">Murugan, Selvam, Ravi, Kannan, Arul, Suresh die.</p><p class="fragment big">6 of 10</p></div>
+    <div class="card"><h3>If none of them smoked</h3><p class="fragment work">Selvam and Kannan die.</p><p class="fragment big">2 of 10</p></div>
+  </div>
+  <aside class="notes">Have them count from the previous slide in the workbook before revealing.</aside>
+</section>
+
+<section data-core>
+  <h2>Turn the counts into a causal effect</h2>
+  <div class="work">
+    <p>Risk if all smoked = 6 / 10 = <b>0.6</b></p>
+    <p class="fragment">Risk if none smoked = 2 / 10 = <b>0.2</b></p>
+    <p class="fragment">Causal risk difference = 0.6 − 0.2 = <b>0.4</b>, that is 40 extra TB deaths per 100 men</p>
+    <p class="fragment">Causal risk ratio = 0.6 / 0.2 = <b>3.0</b>, three times the risk</p>
+  </div>
+  <p class="claim fragment">Both compare the <b>same ten men</b> under two conditions. That is what makes them causal.</p>
+  <aside class="notes">Risk difference and risk ratio should be familiar from 2 by 2 tables. The new idea is only what is being compared: the same group, twice.</aside>
+</section>
+
+<section>
+  <h2>Four kinds of men</h2>
+  <table class="calc">
+    <tr><th class="l">Type</th><th>If he smokes</th><th>If he never smokes</th><th>In our ten</th></tr>
+    <tr><td class="l">Doomed</td><td>dies</td><td>dies</td><td class="fragment">Selvam, Kannan</td></tr>
+    <tr><td class="l">Smoking-caused</td><td>dies</td><td>lives</td><td class="fragment">Murugan, Ravi, Arul, Suresh</td></tr>
+    <tr><td class="l">Protected</td><td>lives</td><td>dies</td><td class="fragment">nobody</td></tr>
+    <tr><td class="l">Immune</td><td>lives</td><td>lives</td><td class="fragment">Bala, Mani, Raja, Siva</td></tr>
+  </table>
+  <p class="fragment">The 4 extra deaths when all smoke are exactly the 4 smoking-caused men.</p>
+  <p class="cite">Greenland S, Robins JM. Int J Epidemiol 1986;15:413-9.</p>
+  <aside class="notes">Optional depth. These response types are another way to see a causal effect, and they connect to Rothman's causal pies in Module 4.</aside>
+</section>
+
+<section data-core>
+  <h2>Your turn</h2>
+  <div class="you">
+    <p>In a group of 100 men, if all of them smoked, 25 would die of TB within 30 years. If none of them smoked, 5 would.</p>
+    <p>Calculate the causal risk difference and the causal risk ratio. Write them in your workbook.</p>
+  </div>
+  <div class="work fragment" style="margin-top:20px">
+    <p>Risk difference = 0.25 − 0.05 = <b>0.20</b>, 20 extra deaths per 100 men</p>
+    <p>Risk ratio = 0.25 / 0.05 = <b>5.0</b></p>
+  </div>
+  <aside class="notes">Give a minute. Reveal the answer only after most have written something. These numbers are invented for practice.</aside>
+</section>
+
+<section data-core>
+  <h2>What to carry forward</h2>
+  <p class="claim">A causal effect compares the same people under two conditions.</p>
+  <p class="claim">For any one person we see only one of the two, so we work with groups.</p>
+  <p class="claim warn">Next problem: in real data, the men who smoked and the men who did not are different men.</p>
+  <aside class="notes">Bridge to Module 2.</aside>
+</section>

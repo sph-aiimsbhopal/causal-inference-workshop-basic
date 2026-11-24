@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Module 6: The fork: confounding</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../widgets/widget.css">
+<script src="../widgets/theme.js"></script>
+</head>
+<body>
+<header class="band"><div>
+  <p class="kicker"><a href="../index.html">Causal inference for beginners</a> · Module 6 of 15</p>
+  <h1>The fork: confounding</h1>
+  <p>A common cause can make two things look linked when neither causes the other. Learn to spot it and remove it.</p>
+</div></header>
+<main>
+<section class="panel"><h2>By the end of this module you can</h2><ol class="steps"><li>Recognise a fork and the open back-door path it creates</li><li>Remove confounding by stratifying, and calculate stratum risk ratios</li><li>Calculate a standardised risk ratio by hand</li></ol></section>
+<section class="cards" aria-label="Module materials">
+  <a class="card" href="../slides/m06-fork-confounding.html"><span class="label">Slides</span><h2>The fork: confounding</h2><p>Arrow keys or swipe to move. Each click adds one step, so take your time.</p><span class="go">Open the slides →</span></a>
+  <a class="card" href="../widgets/dag-lab.html?d=fork"><span class="label">Lab</span><h2>Causal Diagram Lab: the fork</h2><p>Guided, one step at a time, on your phone.</p><span class="go">Open the lab →</span></a>
+</section>
+<section class="panel" id="check"><h2>Check yourself</h2><p class="note">Pick an answer, then press Check. The explanation appears after you commit.</p><div id="checks"></div></section>
+<section class="panel"><h2>Read more</h2><p>Modern Epidemiology, 4th ed. (Lash, VanderWeele, Haneuse, Rothman, 2021): Chapter 12, Confounding and Confounders; chapter 18, Stratification and Standardization.</p></section>
+<nav class="row modnav"><a class="act ghost navbtn" href="m05-drawing-diagrams.html">← Module 5: Drawing a causal diagram</a><a class="act navbtn" href="m07-chain-mediation.html">Module 7: The chain: mediators →</a></nav>
+<footer>AIIMS Bhopal. Developed with Claude (Anthropic) as drafting and coding assistant; teaching judgements and every figure reviewed by the faculty.</footer>
+</main>
+<script type="application/json" id="checkdata">[{"q": "Crude RR for smoking and TB death is 2.1. Within drinkers it is 1.0, and within non-drinkers 1.0. Most likely:", "o": ["Alcohol confounds; smoking has no effect here", "Alcohol is a mediator of smoking's effect", "Smoking's effect differs by alcohol use", "The stratified figures are less reliable"], "a": 0, "e": "The association disappears within each level of alcohol, so the crude 2.1 came from the back-door path through alcohol."}, {"q": "Which of these is a back-door path from smoking to TB death?", "o": ["Smoking → Undernutrition → TB death", "Smoking → Hospital ← TB death", "Smoking → TB death", "Smoking ← Alcohol → TB death"], "a": 3, "e": "A back-door path starts with an arrow pointing into the exposure."}, {"q": "Adjusting for a variable changed the RR by 15%. This tells you that the variable:", "o": ["Is definitely a confounder to keep", "Matters, but the diagram must say why", "Should be dropped from the model", "Is an effect modifier of smoking"], "a": 1, "e": "Mediators and colliders also change estimates. The 10% change-in-estimate rule cannot tell them apart from confounders; a diagram can."}]</script>
+<script src="../widgets/check.js"></script>
+</body>
+</html>
